@@ -78,7 +78,7 @@
   </p>
 
   <p>
-    If you're using a SHA-1 cert, take a few minutes and generate a new one with SHA-2.
+    If you're using a SHA-1 cert, take a few minutes and <a href="https://konklone.com/post/switch-to-https-now-for-free#generating-the-certificate">generate a new one</a> with SHA-2.
   </p>
 
   <p>
@@ -104,10 +104,12 @@ $("form").submit(function() {
 
 var checkDomain = function(domain) {
   $.get("/api/check/" + domain, function(data) {
-    console.log(data);
-    window.data = data;
+    if (data)
+    good(data)
   })
 };
+
+var displayAnswer()
 
 <% if (domain) { %>
 var domain = "<%= domain %>";
