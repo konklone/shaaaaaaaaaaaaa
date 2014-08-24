@@ -12,7 +12,7 @@ Here are 3 ways to quickly test your site's cert:
 * Visit [SSL Labs](https://www.ssllabs.com/ssltest/analyze.html) (comprehensive)
 * Run this repo's `./bin/shaaaaaaaaaaaaa` script.
 
-This repository contains the code for [shaaaaaaaaaaaaa.com](https://shaaaaaaaaaaaaa.com).
+This repository contains the code for [shaaaaaaaaaaaaa.com](https://shaaaaaaaaaaaaa.com). It depends on `openssl`.
 
 #### Do I have to care?
 
@@ -50,4 +50,4 @@ For more information on generating and installing a certificate, see:
 
 ## Author
 
-This is a tiny Node app and CLI tool by [Eric Mill](https://twitter.com/konklone). Released under an [MIT License](LICENSE).
+This is a tiny tool by [Eric Mill](https://twitter.com/konklone). Released under an [MIT License](LICENSE).
