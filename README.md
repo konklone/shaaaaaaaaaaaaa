@@ -6,6 +6,8 @@ Your SSL certificate was signed using a one-way hashing algorithm when it was cr
 
 Which is too bad, because **SHA-1 is dangerously weak**, and **SHA-2 is the replacement**.
 
+SHA-1 was [broken in 2005](https://www.schneier.com/blog/archives/2005/02/sha1_broken.html), and in 2014 [it's estimated to cost $1-2M](https://www.schneier.com/blog/archives/2012/10/when_will_we_se.html) to forge a SHA-1 certificate. That's a tiny amount of money.
+
 Here are 3 ways to quickly test your site's cert:
 
 * Visit [shaaaaaaaaaaaaa.com](https://shaaaaaaaaaaaaa.com) (quick, simple)
@@ -17,8 +19,6 @@ This repository contains the code for [shaaaaaaaaaaaaa.com](https://shaaaaaaaaaa
 #### Do I have to care?
 
 **Yes.** Be a part of the solution.
-
-SHA-1 was [broken in 2005](https://www.schneier.com/blog/archives/2005/02/sha1_broken.html), and in 2014 [it's estimated to cost $1-2M](https://www.schneier.com/blog/archives/2012/10/when_will_we_se.html) to forge a SHA-1 certificate. That's a tiny amount of money.
 
 Eventually, browsers and OSes will distrust SHA-1:
 
