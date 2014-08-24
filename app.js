@@ -25,25 +25,7 @@ if (env == "development")
 else
   app.use(require('errorhandler')())
 
-
-/* actual app */
-
-var shaaa = require("./shaaa");
-
-app.get('/', function(req, res) {
-  res.send("Hello world!");
-});
-
-app.get('/check/:domain', function(req, res) {
-  var domain = req.params.domain;
-
-  // TODO!! Sanitize domain param in the library
-  shaaa.from(domain, function(err, algorithm) {
-    res.send("Detected: " + algorithm + "\n\n");
-  })
-
-});
-
+var routes = require("./routes")(app);
 
 // boot it up!
 app.listen(port, function() {
