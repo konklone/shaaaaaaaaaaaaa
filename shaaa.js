@@ -55,9 +55,16 @@ var Shaaa = {
     exec(Shaaa.cmd(domain), function(error, stdout, stderr) {
       if (error) return callback(error);
 
-      var answer = Shaaa.extract(stdout)
+      var answer = Shaaa.extract(stdout);
+      var good = (
+        (answer == "sha256") ||
+        (answer == "sha224") ||
+        (answer == "sha384") ||
+        (answer == "sha512")
+      );
+
       if (callback)
-        callback(null, answer);
+        callback(null, answer, good);
       else
         console.log(answer);
     });

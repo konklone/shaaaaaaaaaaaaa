@@ -14,7 +14,16 @@ var run = function(domain) {
     process.exit(1);
   }
 
-  shaaa.from(domain);
+  shaaa.from(domain, function(err, algorithm, good) {
+    if (err) {
+      console.error(err);
+      process.exit(1);
+    }
+
+    console.log(algorithm);
+    if (err) process.exit(1);
+    else process.exit(0);
+  });
 }
 
 var options = require('minimist')(process.argv.slice(2));
