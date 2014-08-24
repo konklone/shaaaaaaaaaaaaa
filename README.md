@@ -25,7 +25,7 @@ Eventually, browsers and OSes will distrust SHA-1:
 * In 2013, [Microsoft deprecated SHA-1](http://blogs.technet.com/b/pki/archive/2013/11/12/sha1-deprecation-policy.aspx) for Windows and Internet Explorer.
 * In 2014, [the Chromium team deprecated SHA-1](https://groups.google.com/a/chromium.org/forum/#!msg/blink-dev/2-R4XziFc7A/YO0ZSrX_X4wJ) for Chrome.
 
-They've promised dire consequences in 2016 and 2017, but the only way they'll be able to follow through on their threat is if enough people update their certs ahead of time.
+They've promised dire consequences in 2016 and 2017, but they'll only be able to follow through on their threat if enough people update their certs before then.
 
 The last time this happened was with [MD5](http://en.wikipedia.org/wiki/MD5). MD5 was first shown to be weak in **1996**, and Chrome wasn't able to remove MD5 support until **[December 2011](https://code.google.com/p/chromium/issues/detail?id=101123#c15)**.
 
@@ -41,7 +41,7 @@ When you're generating your certificate request, include the `-sha256` parameter
 openssl req -new -sha256 -key my-private.key -out mydomain.csr
 ```
 
-That will instruct the certficate authority to use SHA-256 (a form of SHA-2) when generating your certificate.
+That will instruct the certificate authority to use SHA-256 (a form of SHA-2) when generating your certificate.
 
 For more information on generating and installing a certificate, see:
 

@@ -47,7 +47,47 @@
 
 <div id="main">
 
-  Okay.
+  <h1>SHAAAAAAAAAAAAA</h1>
+
+  <input type="text" name="domain" placeholder="your domain" />
+  <input type="submit" value="Go" />
+
+  <h3>Do you have the latest SHA??</h3>
+
+  <p>
+    Your SSL certificate was signed using a one-way hashing algorithm when it was created. It was probably SHA-1.
+  </p>
+  <p>
+    Which is too bad, because <strong>SHA-1 is dangerously weak</strong>, and <strong>SHA-2 is the replacement</strong>.
+  </p>
+
+  <h3>Do I have to care?</h3>
+
+  <p>
+    <strong>Yes.</strong> Be a part of the solution.
+  </p>
+
+  <p>
+    SHA-1 was <a href="https://www.schneier.com/blog/archives/2005/02/sha1_broken.html">broken in 2005</a>, and in 2014 <a href="https://www.schneier.com/blog/archives/2012/10/when_will_we_se.html">it's estimated to cost $1-2 million</a> to forge a SHA-1 certificate. That's nothing.
+  </p>
+
+  <p>
+    <a href="http://blogs.technet.com/b/pki/archive/2013/11/12/sha1-deprecation-policy.aspx">Microsoft</a> and <a href="https://groups.google.com/a/chromium.org/forum/#!msg/blink-dev/2-R4XziFc7A/YO0ZSrX_X4wJ">Chrome</a> have deprecated SHA-1. They've promised dire consequences in 2016 and 2017, but they'll only be able to follow through on their threat to distrust SHA-1 if enough people update their certs before then.
+  </p>
+
+  <p>
+    If you're using a SHA-1 cert, take a few minutes and generate a new one with SHA-2.
+  </p>
+
+  <p>
+    <code>openssl req -new -sha256 -key your-private.key -out your-domain.csr</code>
+  </p>
+
+  <h3>Credits</h3>
+
+  <p>
+    Made by <a href="https://twitter.com/konklone">Eric Mill</a>, released as <a href="https://github.com/konklone/shaaaaaaaaaaaaa">open source</a>. Thanks to <a href="https://twitter.com/mathias">Mathias Bynen</a> for inspiration and assistance.
+  </p>
 
 </div>
 
