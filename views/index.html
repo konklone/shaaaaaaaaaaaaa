@@ -176,7 +176,7 @@ var startOver = function() {
 $(".start-over").click(startOver);
 
 <% if (domain) { %>
-var domain = "<%= domain %>";
+var domain = "<%= helpers.escape_attribute(domain) %>";
 <% } else { %>
 var domain = null;
 <% } %>

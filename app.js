@@ -25,6 +25,11 @@ if (env == "development")
 else
   app.use(require('errorhandler')())
 
+app.locals.helpers = {
+  escape_attribute: function(text) {
+    return text.replace(/\"/g, "&quot;");
+  }
+};
 var routes = require("./routes")(app);
 
 // boot it up!
