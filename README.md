@@ -18,14 +18,18 @@ This repository contains the code for [shaaaaaaaaaaaaa.com](https://shaaaaaaaaaa
 
 **Yes.** Be a part of the solution.
 
+SHA-1 was [broken in 2005](https://www.schneier.com/blog/archives/2005/02/sha1_broken.html), and in 2014 [it's estimated to cost $1-2M](https://www.schneier.com/blog/archives/2012/10/when_will_we_se.html) to forge a SHA-1 certificate. That's a tiny amount of money.
+
 Eventually, browsers and OSes will distrust SHA-1:
 
 * In 2013, [Microsoft deprecated SHA-1](http://blogs.technet.com/b/pki/archive/2013/11/12/sha1-deprecation-policy.aspx) for Windows and Internet Explorer.
-* In 2014, [the Chromium team deprecated SHA-1](https://www.ssllabs.com/ssltest/analyze.html?d=konklone.com) for Chrome.
+* In 2014, [the Chromium team deprecated SHA-1](https://groups.google.com/a/chromium.org/forum/#!msg/blink-dev/2-R4XziFc7A/YO0ZSrX_X4wJ) for Chrome.
 
 They've promised dire consequences in 2016 and 2017, but the only way they'll be able to follow through on their threat is if enough people update their certs ahead of time.
 
 The last time this happened was with [MD5](http://en.wikipedia.org/wiki/MD5). MD5 was first shown to be weak in **1996**, and Chrome wasn't able to remove MD5 support until **[December 2011](https://code.google.com/p/chromium/issues/detail?id=101123#c15)**.
+
+It's 2014, and the overwhelming number of certificates in the wild today -- including those of leaders like Google -- are SHA-1.
 
 If you're using a SHA-1 cert, take a few minutes and generate a new one with SHA-2.
 
