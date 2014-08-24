@@ -49,16 +49,43 @@
 
 <div id="main">
 
-  <h1>Check your SHA!</h1>
+  <h1>SHAAAAAAAAAAAA</h1>
 
-  <form action="#" method="get">
-    <input type="text" id="domain" name="domain" placeholder="your domain name" />
-    <input type="submit" value="Go" />
-  </form>
+  <p>
+      Check if your site's SSL certificate is using SHA-1 or SHA-2.
+  </p>
+
+  <div id="results">
+    <div class="result form">
+      <form action="#" class="pure-form" method="get">
+        <input type="text" id="domain" name="domain" placeholder="your domain name" />
+        <input type="submit" class="pure-button pure-button-primary" value="Go" />
+      </form>
+    </div>
+
+    <div class="result good">
+      <p>
+        <strong>Nice.</strong> <span class="domain"></span> is using a certificate signed with <span class="algorithm"></span>. <a href="#" class="start-over">Start over.</a>
+      </p>
+    </div>
+
+    <div class="result bad">
+      <p>
+        <strong>Dang.</strong> <span class="domain"></span> is using a certificate signed with <span class="algorithm"></span>. Make a new cert using SHA-2. <a href="#" class="start-over">Start over.</a>
+      </p>
+    </div>
+
+    <div class="result error">
+      <p>
+        <strong>Argh.</strong> There was an error checking <span class="domain"></span>. <a href="#" class="start-over">Start over.</a>
+      </p>
+    </div>
+  </div>
 
   <p>
     Your SSL certificate was signed using a one-way hashing algorithm when it was created. It was probably SHA-1.
   </p>
+
   <p>
     Which is too bad, because <strong>SHA-1 is dangerously weak</strong>, and <strong>SHA-2 is the replacement</strong>.
   </p>
@@ -102,14 +129,51 @@ $("form").submit(function() {
   return false;
 });
 
+var display = {
+  "sha256": "SHA-256",
+  "sha512": "SHA-512",
+  "sha384": "SHA-384",
+  "sha224": "SHA-224",
+  "sha1": "SHA-1",
+  "md5": "MD5",
+  "md2": "MD2"
+};
+
 var checkDomain = function(domain) {
-  $.get("/api/check/" + domain, function(data) {
-    if (data)
-    good(data)
+  $.ajax({url: "/api/check/" + domain})
+  .done(function(data) {
+    console.log(data)
+
+    $("#results .result .algorithm").html(display[data.algorithm]);
+    $("#results .result .domain").html(domain);
+
+    if (data.good) {
+      $("#results .result").hide();
+      $("#results .result.good").show();
+    } else {
+      $("#results .result").hide();
+      $("#results .result.bad").show();
+    }
+
+  })
+  .fail(function(xhr) {
+    console.log(xhr.responseJSON.error);
+
+    $("#results .result .domain").html(domain);
+
+    $("#results .result").hide();
+    $("#results .result.error").show();
   })
 };
 
-var displayAnswer()
+var startOver = function() {
+  $("#results .result").hide();
+  $("#results .result.form").show();
+  $("#domain").select().focus();
+
+  return false;
+}
+$(".start-over").click(startOver);
 
 <% if (domain) { %>
 var domain = "<%= domain %>";
@@ -118,7 +182,10 @@ var domain = null;
 <% } %>
 
 $(function() {
-  if (domain) checkDomain(domain);
+  if (domain) {
+    $("#domain").val(domain);
+    checkDomain(domain);
+  }
 });
 
 </script>

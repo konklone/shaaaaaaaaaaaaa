@@ -17,9 +17,10 @@ module.exports = function(app) {
     var domain = req.params.domain;
 
     // TODO!! Sanitize domain param in the library
-    shaaa.from(domain, function(err, algorithm) {
-      if (err) res.send(500, {error: err});
-      else res.send({algorithm: algorithm});
+    shaaa.from(domain, function(err, algorithm, good) {
+      if (err) return res.status(400).send({error: err});
+
+      res.send({algorithm: algorithm, good: good});
     })
 
   });

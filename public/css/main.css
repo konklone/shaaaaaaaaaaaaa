@@ -8,4 +8,27 @@ body {
   margin: 0 auto;
 }
 
-input {}
+#results {
+  width: 100%;
+}
+
+#results .result {
+  background-color: #e5e5e5;
+  height: 54px;
+  padding: 10px;
+}
+#results form {margin-top: 8px;}
+#results .result.good,
+#results .result.bad,
+#results .result.error {display: none;}
+
+#results .result .domain {font-weight: bold;}
+#results .result .algorithm {font-weight: bold;}
+
+#results .result.good strong {color: #090;}
+#results .result.bad strong {color: #900;}
+#results .result.error strong {color: #900;}
+
+
+#domain {padding-top: 9px; padding-bottom: 9px}
+input[type=submit] {padding-left: 20px; padding-right: 20px; margin-left: 5px;}
