@@ -26,7 +26,9 @@
     "ejs": "*",
     "body-parser": "*",
     "method-override": "*",
-    "errorhandler": "*"
+    "errorhandler": "*",
+
+    "minimist": "*"
   },
   "keywords": [
     "sha",

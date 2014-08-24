@@ -27,7 +27,7 @@ else
 
 /* actual app */
 
-var Shaaa = require("shaaa");
+var shaaa = require("shaaa");
 
 app.get('/', function(req, res) {
   res.send("Hello world!");
@@ -37,7 +37,7 @@ app.get('/check/:domain', function(req, res) {
   var domain = req.params.domain;
 
   // TODO!! Sanitize domain param
-  Shaaa.from(domain, function(err, algorithm) {
+  shaaa.from(domain, function(err, algorithm) {
     res.send("Detected: " + algorithm + "\n\n" + raw);
   })
 

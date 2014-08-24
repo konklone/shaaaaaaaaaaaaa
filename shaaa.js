@@ -9,6 +9,17 @@
 var exec = require("child_process").exec;
 
 var Shaaa = {
+  algorithms: [
+    // new gold standards
+    "sha256", "sha224", "sha384", "sha512",
+
+    "sha1", // common, but deprecated
+    "md5", // old, broken
+    "md2" // so old, so broken
+  ],
+
+  // TODO: sanitize domain here.
+  // In the meantime, sanitize domain BEFORE inputting here.
   cmd: function(domain) {
     return "" +
       // piping into openssl tells it not to hold an open connection
@@ -31,16 +42,13 @@ var Shaaa = {
     var line = stdout.split("\n")[0].trim();
     var pieces = line.split(" ");
     var raw = pieces[pieces.length - 1];
-    var algorithm;
 
-    if (raw.indexOf("sha256") == 0)
-      algorithm = "sha256";
-    else if (raw.indexOf("sha1") == 0)
-      algorithm = "sha1";
-    else
-      algorithm = "unknown";
+    for (var i=0; i<Shaaa.algorithms.length; i++) {
+      var algorithm = Shaaa.algorithms[i];
+      if (raw.indexOf(algorithm) == 0) return algorithm;
+    }
 
-    return algorithm;
+    return "unknown";
   },
 
   from: function(domain, callback) {

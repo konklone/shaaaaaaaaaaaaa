@@ -1,0 +1,21 @@
+#!/usr/bin/env node
+
+/*
+* Check a domain name for what SHA algorithm it uses.
+*
+* Usage: shaaaaaaaaaaaaa domain.com
+*/
+
+var shaaa = require("shaaa");
+
+var run = function(domain) {
+  if (!domain) {
+    console.log("Usage: shaaaaaaaaaaaaa domain.com")
+    process.exit(1);
+  }
+
+  shaaa.from(domain);
+}
+
+var options = require('minimist')(process.argv.slice(2));
+run(options._[0], options);
