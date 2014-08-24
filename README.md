@@ -4,7 +4,7 @@ _**Do you have the latest SHA??**_
 
 Your SSL certificate was signed using a one-way hashing algorithm when it was created. It was probably SHA-1.
 
-Which is too bad, because **SHA-1 is considered weak**, and **SHA-2 is the replacement**.
+Which is too bad, because **SHA-1 is dangerously weak**, and **SHA-2 is the replacement**.
 
 Here are 3 ways to quickly test your site's cert:
 
