@@ -1,0 +1,41 @@
+{
+  "name": "shaaaaaaaaaaaaa",
+  "version": "0.0.1",
+  "description": "Do you have the latest SHA???",
+  "main": "app.js",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/konklone/shaaaaaaaaaaaaa"
+  },
+  "author": {
+    "name": "Eric Mill",
+    "email": "eric@konklone.com",
+    "url": "https://konklone.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/konklone/shaaaaaaaaaaaaa/issues"
+  },
+  "homepage": "https://github.com/konklone/shaaaaaaaaaaaaa",
+  "dependencies": {
+    "express": "4.x",
+    "ejs": "*",
+    "body-parser": "*",
+    "method-override": "*",
+    "errorhandler": "*"
+  },
+  "keywords": [
+    "sha",
+    "ssl",
+    "tls",
+    "certificate",
+    "crypto",
+    "cryptography",
+    "security",
+    "https"
+  ]
+}
