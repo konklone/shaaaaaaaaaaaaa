@@ -30,5 +30,9 @@ body {
 #results .result.error strong {color: #900;}
 
 
-#domain {padding-top: 9px; padding-bottom: 9px}
+#results .pure-form input#domain {
+  padding-top: 9px; padding-bottom: 9px;
+  display: inline-block;
+  width: 200px;
+}
 input[type=submit] {padding-left: 20px; padding-right: 20px; margin-left: 5px;}
