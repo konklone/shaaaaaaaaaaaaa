@@ -3,11 +3,14 @@ var shaaa = require("./shaaa");
 module.exports = function(app) {
 
   app.get('/', function(req, res) {
-    res.render("index.html");
+    res.render("index.html", {domain: null});
   });
 
   app.get('/check/:domain', function(req, res) {
-    res.render("index.html");
+    // TODO: sanitize domain for JS
+    var domain = req.params.domain;
+
+    res.render("index.html", {domain: domain});
   });
 
   app.get('/api/check/:domain', function(req, res) {

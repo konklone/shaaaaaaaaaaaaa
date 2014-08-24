@@ -42,17 +42,19 @@
 <link rel="stylesheet" type="text/css" href="/css/pure-min-0.5.0.css" />
 <link rel="stylesheet" type="text/css" href="/css/main.css?<%= (new Date()).getTime() %>" />
 
+<script src="/js/jquery-2.1.1.min.js"></script>
+
 </head>
 <body>
 
 <div id="main">
 
-  <h1>SHAAAAAAAAAAAAA</h1>
+  <h1>Check your SHA!</h1>
 
-  <input type="text" name="domain" placeholder="your domain" />
-  <input type="submit" value="Go" />
-
-  <h3>Do you have the latest SHA??</h3>
+  <form action="#" method="get">
+    <input type="text" id="domain" name="domain" placeholder="your domain name" />
+    <input type="submit" value="Go" />
+  </form>
 
   <p>
     Your SSL certificate was signed using a one-way hashing algorithm when it was created. It was probably SHA-1.
@@ -68,7 +70,7 @@
   </p>
 
   <p>
-    SHA-1 was <a href="https://www.schneier.com/blog/archives/2005/02/sha1_broken.html">broken in 2005</a>, and in 2014 <a href="https://www.schneier.com/blog/archives/2012/10/when_will_we_se.html">it's estimated to cost $1-2 million</a> to forge a SHA-1 certificate. That's nothing.
+    SHA-1 was <a href="https://www.schneier.com/blog/archives/2005/02/sha1_broken.html">broken in 2005</a>, and one estimate suggests that in 2014 <a href="https://www.schneier.com/blog/archives/2012/10/when_will_we_se.html">it costs $1-2 million</a> to forge a SHA-1 certificate. That's nothing.
   </p>
 
   <p>
@@ -90,6 +92,34 @@
   </p>
 
 </div>
+
+<script>
+
+$("form").submit(function() {
+  var domain = $("#domain").val();
+  if (domain)
+    checkDomain(domain);
+  return false;
+});
+
+var checkDomain = function(domain) {
+  $.get("/api/check/" + domain, function(data) {
+    console.log(data);
+    window.data = data;
+  })
+};
+
+<% if (domain) { %>
+var domain = "<%= domain %>";
+<% } else { %>
+var domain = null;
+<% } %>
+
+$(function() {
+  if (domain) checkDomain(domain);
+});
+
+</script>
 
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
