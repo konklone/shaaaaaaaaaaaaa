@@ -18,7 +18,7 @@ This repository contains the code for [shaaaaaaaaaaaaa.com](https://shaaaaaaaaaa
 
 **Yes.** Be a part of the solution.
 
-SHA-1 was [broken in 2005](https://www.schneier.com/blog/archives/2005/02/sha1_broken.html), and in 2014 [it's estimated to cost $1-2M](https://www.schneier.com/blog/archives/2012/10/when_will_we_se.html) to forge a SHA-1 certificate. That's a tiny amount of money.
+SHA-1 was [broken in 2005](https://www.schneier.com/blog/archives/2005/02/sha1_broken.html), and one estimate suggests that in 2014 [it costs $1-2 million](https://www.schneier.com/blog/archives/2012/10/when_will_we_se.html) to forge a SHA-1 certificate. That's nothing.
 
 Eventually, browsers and OSes will distrust SHA-1:
 
