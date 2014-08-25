@@ -94,26 +94,38 @@
     </div>
   </div>
 
+  <div class="lead">
+    <p>
+      Your SSL certificate was signed using a one-way hashing algorithm when it was created. It was probably SHA-1.
+    </p>
+
+    <p>
+      Which is too bad, because <strong>SHA-1 is dangerously weak</strong>, and <strong>SHA-2 is the replacement</strong>.
+    </p>
+  </div>
+
+  <h3>My bank uses SHA-1. Am I in danger?</h3>
+
   <p>
-    Your SSL certificate was signed using a one-way hashing algorithm when it was created. It was probably SHA-1.
+    Probably not. SHA-1 is getting weaker every year, but in the near term it's likely to be usable only against very high profile targets.
   </p>
 
   <p>
-    Which is too bad, because <strong>SHA-1 is dangerously weak</strong>, and <strong>SHA-2 is the replacement</strong>.
+    But the Internet upgrades very slowly, so what's more urgent is that we all begin the transition <strong>now</strong>.
   </p>
 
-  <h3>Do I have to care?</h3>
+  <h3>My site isn't that important. Do I have to care?</h3>
 
   <p>
     <strong>Yes.</strong> Be a part of the solution.
   </p>
 
   <p>
-    SHA-1 was <a href="https://www.schneier.com/blog/archives/2005/02/sha1_broken.html">broken in 2005</a>, and one estimate suggests that in 2014 <a href="https://www.schneier.com/blog/archives/2012/10/when_will_we_se.html">it costs $1-2 million</a> to forge a SHA-1 certificate. That's nothing.
+    SHA-1 was <a href="https://www.schneier.com/blog/archives/2005/02/sha1_broken.html">broken in 2005</a>, and one estimate suggests that in 2014 <a href="https://www.schneier.com/blog/archives/2012/10/when_will_we_se.html">it costs $1-2 million</a> to forge a SHA-1 certificate. For some actors, that's nothing.
   </p>
 
   <p>
-    <a href="http://blogs.technet.com/b/pki/archive/2013/11/12/sha1-deprecation-policy.aspx">Microsoft</a> and <a href="https://groups.google.com/a/chromium.org/forum/#!msg/blink-dev/2-R4XziFc7A/YO0ZSrX_X4wJ">Chrome</a> have deprecated SHA-1. They've promised dire consequences in 2016 and 2017, but they'll only be able to follow through on their threat to distrust SHA-1 if enough people update their certs before then.
+    <a href="http://blogs.technet.com/b/pki/archive/2013/11/12/sha1-deprecation-policy.aspx">Microsoft</a> and <a href="https://groups.google.com/a/chromium.org/forum/#!msg/blink-dev/2-R4XziFc7A/YO0ZSrX_X4wJ">Chrome</a> recently deprecated SHA-1. They've promised dire consequences in 2016 and 2017, but they'll only be able to follow through on their threat to distrust SHA-1 if enough people update their certs before then.
   </p>
 
   <p>

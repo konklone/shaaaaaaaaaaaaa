@@ -40,3 +40,8 @@ body {
   margin-bottom: 10px;
 }
 input[type=submit] {padding-left: 20px; padding-right: 20px; margin-left: 5px;}
+
+.lead {margin-bottom: 40px;}
+p {font-size: 12pt;}
+h3 {margin-top: 30px; font-size: 14pt;}
+.lead p {font-size: 16pt;}
