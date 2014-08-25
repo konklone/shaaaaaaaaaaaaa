@@ -18,22 +18,29 @@ var Shaaa = {
     "md2" // so old, so broken
   ],
 
-  // TODO: sanitize domain here.
-  // In the meantime, sanitize domain BEFORE inputting here.
   cmd: function(domain) {
-    return "" +
+
+    // I'm sure this is too strict, but it will at least be effective
+    // TODO: lighten up
+    var escaped = domain.replace(/[^\w\d\.]/g, '')
+
+    var command = "" +
       // piping into openssl tells it not to hold an open connection
       "echo -n" +
       // connect to given domain on port 443
-      " | openssl s_client -connect " + domain + ":443" +
+      " | openssl s_client -connect " + escaped + ":443" +
       // specify hostname in case server uses SNI
-      "   -servername " + domain +
+      "   -servername " + escaped +
       // yank out just the cert
       " | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p'" +
       // extract x509 details from the cert
       " | openssl x509 -text" +
       // look for just the signature algorithm
-      " | grep \"Signature Algorithm\""
+      " | grep \"Signature Algorithm\"";
+
+    console.error(command);
+
+    return command;
   },
 
   // output will look like:
