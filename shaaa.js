@@ -22,7 +22,7 @@ var Shaaa = {
 
     // I'm sure this is too strict, but it will at least be effective
     // TODO: lighten up
-    var escaped = domain.replace(/[^\w\d\.]/g, '')
+    var escaped = domain.replace(/[^\w\.\-]/g, '')
 
     // command adapted from http://askubuntu.com/a/201923/3096
     var command = "" +
