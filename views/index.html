@@ -126,13 +126,27 @@
 
 <script>
 
-$("form").submit(function() {
+var hasPushstate = Boolean(window.history && history.pushState);
+
+$("form").on("submit", function(event) {
   var domain = $("#domain").val();
   if (domain) {
-    var escaped = domain.replace(/^https?:\/\//i, '').replace(/[^\w\.\-]/g, '');
+    var escaped = domain.replace(/^https?:\/\//i, "").replace(/[^\w\.\-]/g, "");
     checkDomain(escaped);
+    if (hasPushstate) {
+      history.pushState(escaped, null, "/check/" + escaped);
+    }
   }
-  return false;
+  event.preventDefault();
+});
+
+$(window).on("popstate", function(event) {
+  var domain = event.originalEvent.state;
+  if (domain) {
+    checkDomain(domain);
+  } else {
+    startOver();
+  }
 });
 
 var display = {
@@ -181,7 +195,7 @@ var startOver = function() {
 
   return false;
 }
-$(".start-over").click(startOver);
+$(".start-over").on("click", startOver);
 
 <% if (domain) { %>
 var domain = "<%= helpers.escape_attribute(domain) %>";
