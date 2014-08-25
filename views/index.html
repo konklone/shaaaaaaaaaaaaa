@@ -3,7 +3,10 @@
 
   Built and maintained by Eric Mill. (@konklone, konklone.com)
 
-  A Node app, with Express for a web server. Open source, under a MIT license:
+  A Node app, with Express for a web server. Uses the openssl
+  command line tool to download and analyze SSL certificates.
+
+  Open source, under a MIT license:
   https://github.com/konklone/shaaaaaaaaaaaaa
 
   Thanks to Mathias Bynens for the inspiration.
@@ -56,7 +59,7 @@
   <h1>SHAAAAAAAAAAAA</h1>
 
   <p>
-      Check if your site's SSL certificate is using SHA-1 or SHA-2.
+    Check if your site's SSL certificate is using SHA-1 or SHA-2.
   </p>
 
   <div id="results">
@@ -164,7 +167,8 @@ var checkDomain = function(domain) {
 
   $.ajax({url: "/api/check/" + domain})
   .done(function(data) {
-    console.log(data)
+    console.log(data);
+    hideLoading();
 
     $("#results .result .algorithm").html(display[data.algorithm]);
     $("#results .result .domain").html(domain);
@@ -179,13 +183,29 @@ var checkDomain = function(domain) {
 
   })
   .fail(function(xhr) {
-    console.log(xhr.responseJSON.error);
+    hideLoading();
 
     $("#results .result .domain").html(domain);
 
     $("#results .result").hide();
     $("#results .result.error").show();
-  })
+  });
+
+  showLoading();
+};
+
+var showLoading = function() {
+  $("#domain").attr("disabled", true);
+  $("input[type=submit]")
+    .attr("disabled", true)
+    .val("Checking...")
+};
+
+var hideLoading = function() {
+  $("#domain").attr("disabled", false);
+  $("input[type=submit]")
+    .attr("disabled", false)
+    .val("Go...")
 };
 
 var startOver = function() {
