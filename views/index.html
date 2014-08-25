@@ -129,7 +129,7 @@
 $("form").submit(function() {
   var domain = $("#domain").val();
   if (domain) {
-    var escaped = domain.replace(/^https?:\/\//i, '');
+    var escaped = domain.replace(/^https?:\/\//i, '').replace(/[^\w\.\-]/g, '');
     checkDomain(escaped);
   }
   return false;
