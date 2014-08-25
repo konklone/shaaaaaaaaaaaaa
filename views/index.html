@@ -68,7 +68,7 @@
         <input type="text" id="domain" name="domain" placeholder="your domain name" />
         <input type="submit" class="pure-button pure-button-primary" value="Go" />
 
-        <span id="loading">
+        <span class="inline-block" id="loading">
           If it hangs, <a href="#" class="start-over">start over</a>.
         </span>
 
@@ -204,7 +204,7 @@ var showLoading = function() {
   $("input[type=submit]")
     .attr("disabled", true)
     .val("Checking...");
-  $("#loading").show();
+  $("#loading").css("display", "inline-block");
 };
 
 var hideLoading = function() {
