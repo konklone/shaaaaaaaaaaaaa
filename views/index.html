@@ -21,7 +21,7 @@
 <meta name="og:description" content="Is your SSL using SHA-2? Probably not, but it really should be. Check your site here." />
 
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta property="og:site_name" content="SHAAAAAAAAAAAAA.com">
 
@@ -42,9 +42,9 @@
 <link rel="shortcut icon" href="/favicon.png" />
 <link rel="canonical" href="https://shaaaaaaaaaaaaa.com<%= req.originalUrl %>" />
 
-<link href='https://fonts.googleapis.com/css?family=Open+Sans|Average' rel='stylesheet' type='text/css'>
-<link rel="stylesheet" type="text/css" href="/css/pure-min-0.5.0.css" />
-<link rel="stylesheet" type="text/css" href="/css/main.css?<%= (new Date()).getTime() %>" />
+<link href="https://fonts.googleapis.com/css?family=Open+Sans|Average" rel="stylesheet" />
+<link rel="stylesheet" href="/css/pure-min-0.5.0.css" />
+<link rel="stylesheet" href="/css/main.css?<%= Date.now() %>" />
 
 <script src="/js/jquery-2.1.1.min.js"></script>
 
@@ -119,20 +119,34 @@
   <h3>Credits</h3>
 
   <p>
-    Made by <a href="https://twitter.com/konklone">Eric Mill</a>, released as <a href="https://github.com/konklone/shaaaaaaaaaaaaa">open source</a>. Thanks to <a href="https://twitter.com/mathias">Mathias Bynen</a> for inspiration and assistance.
+    Made by <a href="https://twitter.com/konklone">Eric Mill</a>, released as <a href="https://github.com/konklone/shaaaaaaaaaaaaa">open source</a>. Thanks to <a href="https://twitter.com/mathias">Mathias Bynens</a> for inspiration and assistance.
   </p>
 
 </div>
 
 <script>
 
-$("form").submit(function() {
+var hasPushstate = Boolean(window.history && history.pushState);
+
+$("form").on("submit", function(event) {
   var domain = $("#domain").val();
   if (domain) {
-    var escaped = domain.replace(/^https?:\/\//i, '');
+    var escaped = domain.replace(/^https?:\/\//i, "").replace(/[^\w\.\-]/g, "");
     checkDomain(escaped);
+    if (hasPushstate) {
+      history.pushState(escaped, null, "/check/" + escaped);
+    }
   }
-  return false;
+  event.preventDefault();
+});
+
+$(window).on("popstate", function(event) {
+  var domain = event.originalEvent.state;
+  if (domain) {
+    checkDomain(domain);
+  } else {
+    startOver();
+  }
 });
 
 var display = {
@@ -181,7 +195,7 @@ var startOver = function() {
 
   return false;
 }
-$(".start-over").click(startOver);
+$(".start-over").on("click", startOver);
 
 <% if (domain) { %>
 var domain = "<%= helpers.escape_attribute(domain) %>";
