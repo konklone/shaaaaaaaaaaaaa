@@ -24,6 +24,7 @@ var Shaaa = {
     // TODO: lighten up
     var escaped = domain.replace(/[^\w\d\.]/g, '')
 
+    // command adapted from http://askubuntu.com/a/201923/3096
     var command = "" +
       // piping into openssl tells it not to hold an open connection
       "echo -n" +
