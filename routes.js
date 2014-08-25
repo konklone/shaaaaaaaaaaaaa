@@ -15,12 +15,19 @@ module.exports = function(app) {
 
   app.get('/api/check/:domain', function(req, res) {
     var domain = req.params.domain;
+    if (!domain) return res.status(500);
 
-    // TODO!! Sanitize domain param in the library
+    // domain gets strictly sanitized in the lib, but can do
+    // some stuff here too
+
+    var escaped = domain.replace(/^https?:\/\//i, '');
+
+    console.log("Checking domain: " + domain + ", " + escaped);
+
     shaaa.from(domain, function(err, algorithm, good) {
       if (err) return res.status(400).send({error: err});
 
-      res.send({algorithm: algorithm, good: good});
+      res.send({algorithm: algorithm, good: good, domain: escaped});
     })
 
   });
