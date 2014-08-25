@@ -38,7 +38,7 @@ var Shaaa = {
       // look for just the signature algorithm
       " | grep \"Signature Algorithm\"";
 
-    console.error(command);
+    // console.error(command);
 
     return command;
   },

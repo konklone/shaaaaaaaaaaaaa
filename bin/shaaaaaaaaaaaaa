@@ -6,7 +6,7 @@
 * Usage: shaaaaaaaaaaaaa domain.com
 */
 
-var shaaa = require("shaaa");
+var shaaa = require("../shaaa");
 
 var run = function(domain) {
   if (!domain) {
