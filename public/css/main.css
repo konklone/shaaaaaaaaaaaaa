@@ -8,6 +8,8 @@ body {
   margin: 0 auto;
 }
 
+#loading {display: inline-block; margin-left: 10px; font-size: 10pt;}
+
 #results {
   width: 100%;
 }

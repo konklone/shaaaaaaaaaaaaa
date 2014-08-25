@@ -67,6 +67,11 @@
       <form action="#" class="pure-form" method="get">
         <input type="text" id="domain" name="domain" placeholder="your domain name" />
         <input type="submit" class="pure-button pure-button-primary" value="Go" />
+
+        <span id="loading">
+          If it hangs, <a href="#" class="start-over">start over</a>.
+        </span>
+
       </form>
     </div>
 
@@ -198,17 +203,22 @@ var showLoading = function() {
   $("#domain").attr("disabled", true);
   $("input[type=submit]")
     .attr("disabled", true)
-    .val("Checking...")
+    .val("Checking...");
+  $("#loading").show();
 };
 
 var hideLoading = function() {
+  $("#loading").hide();
   $("#domain").attr("disabled", false);
   $("input[type=submit]")
     .attr("disabled", false)
-    .val("Go...")
+    .val("Go");
+
+  clearTimeout(loading);
 };
 
 var startOver = function() {
+  hideLoading();
   $("#results .result").hide();
   $("#results .result.form").show();
   $("#domain").select().focus();
