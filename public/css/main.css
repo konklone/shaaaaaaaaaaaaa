@@ -14,7 +14,6 @@ body {
 
 #results .result {
   background-color: #e5e5e5;
-  height: 54px;
   padding: 10px;
 }
 #results form {margin-top: 8px;}
@@ -34,5 +33,6 @@ body {
   padding-top: 9px; padding-bottom: 9px;
   display: inline-block;
   width: 200px;
+  margin-bottom: 10px;
 }
 input[type=submit] {padding-left: 20px; padding-right: 20px; margin-left: 5px;}
