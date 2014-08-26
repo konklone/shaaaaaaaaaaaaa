@@ -49,11 +49,12 @@ var Shaaa = {
   extract: function(stdout) {
     var line = stdout.split("\n")[0].trim();
     var pieces = line.split(" ");
-    var raw = pieces[pieces.length - 1];
+    var raw = pieces[pieces.length - 1].toLowerCase();
 
     for (var i=0; i<Shaaa.algorithms.length; i++) {
       var algorithm = Shaaa.algorithms[i];
       if (raw.indexOf(algorithm) == 0) return algorithm;
+      if (raw == ("ecdsa-with-" + algorithm)) return algorithm;
     }
 
     return "unknown";
