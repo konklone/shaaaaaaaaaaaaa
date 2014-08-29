@@ -1,5 +1,5 @@
 /**
-* shaaa.js
+* shaaaaa.js
 *
 * Checks a domain for its certificate algorithm.
 *

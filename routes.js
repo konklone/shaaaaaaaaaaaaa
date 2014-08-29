@@ -1,4 +1,4 @@
-var shaaa = require("./shaaa");
+var shaaaaa = require("./shaaaaa");
 
 module.exports = function(app) {
 
@@ -24,7 +24,7 @@ module.exports = function(app) {
 
     console.log("Checking domain: " + domain + ", " + escaped);
 
-    shaaa.from(domain, function(err, algorithm, good) {
+    shaaaaa.from(domain, function(err, algorithm, good) {
       if (err) return res.status(400).send({error: err});
 
       res.send({algorithm: algorithm, good: good, domain: escaped});

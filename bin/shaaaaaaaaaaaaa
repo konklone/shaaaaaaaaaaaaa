@@ -6,7 +6,7 @@
 * Usage: shaaaaaaaaaaaaa domain.com
 */
 
-var shaaa = require("../shaaa");
+var shaaaaa = require("../shaaaaa");
 
 var run = function(domain) {
   if (!domain) {
@@ -14,7 +14,7 @@ var run = function(domain) {
     process.exit(1);
   }
 
-  shaaa.from(domain, function(err, algorithm, good) {
+  shaaaaa.from(domain, function(err, algorithm, good) {
     if (err) {
       console.error(err);
       process.exit(1);
