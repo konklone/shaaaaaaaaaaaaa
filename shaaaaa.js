@@ -18,8 +18,7 @@ var Shaaa = {
     "md2" // so old, so broken
   ],
 
-  cmd: function(domain, options) {
-    if (!options) options = {};
+  cmd: function(domain) {
 
     // I'm sure this is too strict, but it will at least be effective
     // TODO: lighten up
@@ -47,9 +46,7 @@ var Shaaa = {
 
   // output will look like:
   // '    Signature Algorithm: sha256WithRSAEncryption\n    Signature Algorithm: sha256WithRSAEncryption\n'
-  extract: function(stdout, options) {
-    if (!options) options = {};
-
+  extract: function(stdout) {
     var line = stdout.split("\n")[0].trim();
     var pieces = line.split(" ");
 
@@ -77,7 +74,10 @@ var Shaaa = {
   from: function(domain, callback, options) {
     if (!options) options = {};
 
-    exec(Shaaa.cmd(domain, options), function(error, stdout, stderr) {
+    var cmd = Shaaa.cmd(domain);
+    if (options.verbose) console.log(cmd + "\n");
+
+    exec(cmd, function(error, stdout, stderr) {
       if (error) return callback(error);
 
       // extract data from output, add domain onto data

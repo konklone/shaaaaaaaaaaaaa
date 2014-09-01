@@ -8,7 +8,7 @@
 
 var shaaaaa = require("../shaaaaa");
 
-var run = function(domain) {
+var run = function(domain, options) {
   if (!domain) {
     console.log("Usage: shaaaaaaaaaaaaa domain.com")
     process.exit(1);
@@ -23,7 +23,7 @@ var run = function(domain) {
     console.log(algorithm);
     if (err) process.exit(1);
     else process.exit(0);
-  });
+  }, options);
 }
 
 var options = require('minimist')(process.argv.slice(2));
