@@ -25,7 +25,7 @@ header p, .lead p {font-size: 16pt; line-height: 30px;}
 /* spacing */
 h3 {margin-top: 30px;}
 header p {margin-top: 0;}
-.lead {margin-bottom: 40px;}
+.lead {margin-bottom: 30px;}
 
 #loading {display: none; margin-left: 10px; }
 

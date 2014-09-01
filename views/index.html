@@ -60,7 +60,7 @@
 
   <header>
     <p>
-      Check if your site's SSL certificate is using SHA-1 or SHA-2.
+      Check if your site's SSL certificate needs an update.
     </p>
   </header>
 
@@ -102,9 +102,17 @@
     </p>
 
     <p>
-      Which is too bad, because <strong>SHA-1 is becoming dangerously weak</strong>, and <strong>SHA-2 is the replacement</strong>.
+      Which is too bad, because <strong>SHA-1 is <a href="http://arstechnica.com/security/2012/10/sha1-crypto-algorithm-could-fall-by-2018/">becoming dangerously weak</a></strong>, and <strong>SHA-2 is the replacement</strong>.
     </p>
   </div>
+
+  <p>
+    SHA-1 was <a href="https://www.schneier.com/blog/archives/2005/02/sha1_broken.html">first shown to be broken in 2005</a>, and one estimate suggests that in 2014 <a href="https://www.schneier.com/blog/archives/2012/10/when_will_we_se.html">it costs $1-2 million</a> to forge a SHA-1 certificate. For some actors, that's nothing.
+  </p>
+
+  <p>
+    <a href="http://arstechnica.com/security/2013/11/hoping-to-avert-collision-with-disaster-microsoft-retires-sha1/">Microsoft</a>, <a href="https://groups.google.com/a/chromium.org/forum/#!msg/security-dev/2-R4XziFc7A/NDI8cOwMGRQJ">Chrome</a>, and <a href="https://wiki.mozilla.org/CA:Problematic_Practices#SHA-1_Certificates">Firefox</a> all recently deprecated SHA-1, and they've all promised dire consequences in 2016 and 2017. But they'll only be able to follow through on their threat to distrust SHA-1 if enough people update their certs before then.
+  </p>
 
   <h3>My bank uses SHA-1. Am I in danger?</h3>
 
@@ -113,21 +121,7 @@
   </p>
 
   <p>
-    But the Internet upgrades very slowly, so what's urgent is that we all begin the transition <strong>right now</strong>.
-  </p>
-
-  <h3>My site isn't that important. Do I have to care?</h3>
-
-  <p>
-    <strong>Yes.</strong> Be a part of the solution.
-  </p>
-
-  <p>
-    SHA-1 was <a href="https://www.schneier.com/blog/archives/2005/02/sha1_broken.html">broken in 2005</a>, and one estimate suggests that in 2014 <a href="https://www.schneier.com/blog/archives/2012/10/when_will_we_se.html">it costs $1-2 million</a> to forge a SHA-1 certificate. For some actors, that's nothing.
-  </p>
-
-  <p>
-    <a href="http://blogs.technet.com/b/pki/archive/2013/11/12/sha1-deprecation-policy.aspx">Microsoft</a>, <a href="https://groups.google.com/a/chromium.org/forum/#!msg/security-dev/2-R4XziFc7A/NDI8cOwMGRQJ">Chrome</a>, and <a href="https://wiki.mozilla.org/CA:Problematic_Practices#SHA-1_Certificates">Firefox</a> recently deprecated SHA-1. They've all promised dire consequences in 2016 and 2017, but they'll only be able to follow through on their threat to distrust SHA-1 if enough people update their certs before then.
+    But the Internet upgrades very slowly. So what's urgent is that we all begin the transition <strong>right now</strong>.
   </p>
 
   <h3>Getting a SHA-2 certificate</h3>
