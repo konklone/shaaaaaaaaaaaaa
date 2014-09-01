@@ -121,7 +121,7 @@
     The Internet upgrades very slowly, so we all need to begin the transition <strong>right now</strong>, before it becomes an emergency.
   </p>
 
-  <h3>Getting a SHA-2 certificate</h3>
+  <h3 id="sha2-certificate">Getting a SHA-2 certificate</h3>
 
   <p>
     It's usually very simple. You'll need to <a href="https://konklone.com/post/switch-to-https-now-for-free#generating-the-certificate">generate a new certificate request</a> that asks your CA to use SHA-2.
@@ -140,7 +140,11 @@
     </li>
   </ul>
 
-  <h3>Using SHA-2 intermediate certificates</h3>
+  <p>
+    If you find other problems, please <a href="https://github.com/konklone/shaaaaaaaaaaaaa/issues/24">report them here</a> and I'll update the list above.
+  </p>
+
+  <h3 id="sha2-intermediate">Using SHA-2 intermediate certificates</h3>
 
   <p>
     When you created your certificate chain, you included one or more <a href="http://www.whichssl.com/intermediate_certificates2.html">intermediate certificates</a> from wherever you bought your cert, which may need to be updated. Check <a href="https://www.ssllabs.com/ssltest/analyze.html">SSL Labs</a> to see if you need to update.
@@ -160,10 +164,10 @@
     </li>
   </ul>
 
-  <h3>Credits</h3>
+  <h3 id="credits">Credits</h3>
 
   <p>
-    Made by <a href="https://twitter.com/konklone">Eric Mill</a>, released as <a href="https://github.com/konklone/shaaaaaaaaaaaaa">open source</a>. Thanks to <a href="https://twitter.com/mathias">Mathias Bynens</a> for inspiration and assistance.
+    Made by <a href="https://twitter.com/konklone">Eric Mill</a>, released as <a href="https://github.com/konklone/shaaaaaaaaaaaaa">open source</a> &mdash; please <a href="https://github.com/konklone/shaaaaaaaaaaaaa/issues">fix and improve</a> this site! Thanks to <a href="https://twitter.com/mathias">Mathias Bynens</a>, <a href="https://twitter.com/jmayer">Justin Mayer</a>, and <a href="https://twitter.com/jonnybarnes">Jonny Barnes</a> for inspiration and assistance.
   </p>
 
 </div>
