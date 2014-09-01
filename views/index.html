@@ -58,9 +58,11 @@
 
   <h1>SHAAAAAAAAAAAAA</h1>
 
-  <p>
-    Check if your site's SSL certificate is using SHA-1 or SHA-2.
-  </p>
+  <header>
+    <p>
+      Check if your site's SSL certificate is using SHA-1 or SHA-2.
+    </p>
+  </header>
 
   <div id="results">
     <div class="result form">
@@ -96,7 +98,7 @@
 
   <div class="lead">
     <p>
-      Your SSL certificate was signed using a one-way hashing algorithm when it was created. It was probably SHA-1.
+      Your SSL certificate was signed with a hashing algorithm &mdash; probably SHA-1.
     </p>
 
     <p>
@@ -107,11 +109,11 @@
   <h3>My bank uses SHA-1. Am I in danger?</h3>
 
   <p>
-    Probably not, for now. SHA-1 is getting weaker every year, but in the near term it's likely to be breakable only against very high profile targets.
+    Probably not yet, but it's hard to say. SHA-1 is getting weaker every year, but for now it's likely to be broken only against high profile targets.
   </p>
 
   <p>
-    But the Internet upgrades very slowly, so what's more urgent is that we all begin the transition <strong>now</strong>.
+    But the Internet upgrades very slowly, so what's urgent is that we all begin the transition <strong>right now</strong>.
   </p>
 
   <h3>My site isn't that important. Do I have to care?</h3>
@@ -125,16 +127,47 @@
   </p>
 
   <p>
-    <a href="http://blogs.technet.com/b/pki/archive/2013/11/12/sha1-deprecation-policy.aspx">Microsoft</a>, <a href="https://groups.google.com/a/chromium.org/forum/#!msg/security-dev/2-R4XziFc7A/NDI8cOwMGRQJ">Chrome</a>, and <a href="https://wiki.mozilla.org/CA:Problematic_Practices#SHA-1_Certificates">Firefox</a> recently deprecated SHA-1. They've promised dire consequences in 2016 and 2017, but they'll only be able to follow through on their threat to distrust SHA-1 if enough people update their certs before then.
+    <a href="http://blogs.technet.com/b/pki/archive/2013/11/12/sha1-deprecation-policy.aspx">Microsoft</a>, <a href="https://groups.google.com/a/chromium.org/forum/#!msg/security-dev/2-R4XziFc7A/NDI8cOwMGRQJ">Chrome</a>, and <a href="https://wiki.mozilla.org/CA:Problematic_Practices#SHA-1_Certificates">Firefox</a> recently deprecated SHA-1. They've all promised dire consequences in 2016 and 2017, but they'll only be able to follow through on their threat to distrust SHA-1 if enough people update their certs before then.
+  </p>
+
+  <h3>Getting a SHA-2 certificate</h3>
+
+  <p>
+    It's usually very simple. You'll need to <a href="https://konklone.com/post/switch-to-https-now-for-free#generating-the-certificate">generate a new certificate request</a> that asks your CA to use SHA-2.
   </p>
 
   <p>
-    If you're using a SHA-1 cert, take a few minutes and <a href="https://konklone.com/post/switch-to-https-now-for-free#generating-the-certificate">generate a new one</a> with SHA-2.
+    <code>openssl req -new <strong>-sha256</strong> -key your-private.key -out your-domain.csr</code>
   </p>
 
+  <ul>
+    <li>
+      If you use <strong><a href="https://www.namecheap.com/security/ssl-certificates/domain-validation.aspx">Namecheap</a></strong>, choose a Comodo cert, because some of the others <a href="https://github.com/konklone/shaaaaaaaaaaaaa/issues/24#issuecomment-53441453">may not obey your SHA-2 request</a> unless you spend time with customer support.
+    </li>
+    <li>
+      If you use <strong><a href="https://www.startssl.com">StartSSL</a></strong> and have many certificates, you may find <a href="https://kuix.de/blog/index.php?entry=SSL/TLS-servers,-SHA-1/SHA-256-and-StartSSL.com-certificates">Kai Engert's trick</a> of using a fake subdomain to avoid revocation fees helpful. (Requires a paid class 2 identity verification.)
+    </li>
+  </ul>
+
+  <h3>Using SHA-2 intermediate certificates</h3>
+
   <p>
-    <code>openssl req -new -sha256 -key your-private.key -out your-domain.csr</code>
+    When you created your certificate chain, you included one or more <a href="http://www.whichssl.com/intermediate_certificates2.html">intermediate certificates</a> from wherever you bought your cert, which may need to be updated. Check <a href="https://www.ssllabs.com/ssltest/analyze.html">SSL Labs</a> to see if you need to update.
   </p>
+
+  <ul>
+    <li>
+      If you use <strong><a href="https://www.startssl.com">StartSSL</a></strong>, download their updated SHA-2 certificates for whatever level you've paid for: <a href="https://www.startssl.com/certs/class1/sha2/pem/sub.class1.server.sha2.ca.pem">Class 1</a>, <a href="https://www.startssl.com/certs/class2/sha2/pem/sub.class2.server.sha2.ca.pem">Class 2</a>, <a href="https://www.startssl.com/certs/class3/sha2/pem/sub.class3.server.sha2.ca.pem">Class 3</a>, or <a href="https://www.startssl.com/certs/class4/sha2/pem/sub.ev.server.sha2.ca.pem">Class 4</a>.
+    </li>
+
+    <li>
+      If you use <strong><a href="https://knowledge.verisign.com/support/ssl-certificates-support/index?page=content&id=AR657&actp=LIST&viewlocale=en_US">Verisign / Symantec</a></strong>, their SHA-2 intermediates are listed under <strong>RSA SHA-2</strong>, at "SHA-2 Intermediate CAs under SHA-2 Root".
+    </li>
+
+    <li>
+      If you use <strong><a href="https://knowledge.geotrust.com/support/knowledge-base/index?page=content&id=AR1421&actp=LIST&viewlocale=en_US">GlobalSign</a></strong>, their SHA-2 intermediates are listed under <strong>RSA SHA-2</strong>, at "SHA-2 Intermediate CAs under SHA-2 Root".
+    </li>
+  </ul>
 
   <h3>Credits</h3>
 

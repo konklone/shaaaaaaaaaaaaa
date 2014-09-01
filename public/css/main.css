@@ -1,20 +1,33 @@
+/** Main styles for shaaaaaaaaaaaaa.com. */
 
-body {
-  font-family: "Open Sans", "Arial", sans-serif;
-}
 
+/* layout */
 #main {
   padding: 0 20px; max-width: 768px;
   margin: 0 auto;
 }
+#results {width: 100%;}
 
-#loading {
-  display: none; margin-left: 10px; font-size: 10pt;
-}
+a {color: #036;}
 
-#results {
-  width: 100%;
+/* fonts */
+body {
+  font-family: "Open Sans", "Arial", sans-serif;
+  font-size: 11pt;
 }
+h1 {font-size: 5em; margin: 0;}
+p {line-height: 22px;}
+li {line-height: 23px; margin: 10px 0;}
+h3 {font-size: 12pt; font-weight: bold;}
+header p, .lead p {font-size: 16pt; line-height: 30px;}
+#loading {font-size: 10pt;}
+
+/* spacing */
+h3 {margin-top: 30px;}
+header p {margin-top: 0;}
+.lead {margin-bottom: 40px;}
+
+#loading {display: none; margin-left: 10px; }
 
 #results .result {
   background-color: #e5e5e5;
@@ -41,7 +54,14 @@ body {
 }
 input[type=submit] {padding-left: 20px; padding-right: 20px; margin-left: 5px;}
 
-.lead {margin-bottom: 40px;}
-p {font-size: 12pt;}
-h3 {margin-top: 30px; font-size: 14pt;}
-.lead p {font-size: 16pt;}
+
+p code {
+  display: block;
+  margin-top: 10px;
+  padding: 10px;
+  overflow: auto;
+  font-size: 85%;
+  line-height: 1.45;
+  background-color: #e5e5e5;
+  border-radius: 3px;
+}
