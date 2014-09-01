@@ -131,18 +131,25 @@
     <code>openssl req -new <strong>-sha256</strong> -key your-private.key -out your-domain.csr</code>
   </p>
 
+  <p>
+    If you use:
+  </p>
+
   <ul>
     <li>
-      If you use <strong><a href="https://www.namecheap.com/security/ssl-certificates/domain-validation.aspx">Namecheap</a></strong>, choose a Comodo cert, because some of the others <a href="https://github.com/konklone/shaaaaaaaaaaaaa/issues/24#issuecomment-53441453">may not obey your SHA-2 request</a> unless you spend time with customer support.
+      <strong><a href="https://www.namecheap.com/security/ssl-certificates/domain-validation.aspx">Namecheap</a></strong>, choose a Comodo cert, because some of the others <a href="https://github.com/konklone/shaaaaaaaaaaaaa/issues/24#issuecomment-53441453">may not obey your SHA-2 request</a> unless you spend time with customer support.
     </li>
     <li>
-      If you use <strong><a href="https://www.godaddy.com/ssl/ssl-certificates.aspx">GoDaddy</a></strong>, they <a href="https://github.com/konklone/shaaaaaaaaaaaaa/issues/24#issuecomment-53438159">may still issue you a SHA-1 cert</a> at first. If so, you need to <a href="http://support.godaddy.com/help/article/4976/re-keying-an-ssl-certificate?locale=en">"re-key" your certificate</a> to get one signed with SHA-2.
+      <strong><a href="https://www.godaddy.com/ssl/ssl-certificates.aspx">GoDaddy</a></strong>, they <a href="https://github.com/konklone/shaaaaaaaaaaaaa/issues/24#issuecomment-53438159">may still issue you a SHA-1 cert</a> at first. If so, you need to <a href="http://support.godaddy.com/help/article/4976/re-keying-an-ssl-certificate?locale=en">"re-key" your certificate</a> to get one signed with SHA-2.
     </li>
     <li>
-      If you use <strong><a href="https://www.startssl.com">StartSSL</a></strong> and have many certificates, you may find <a href="https://kuix.de/blog/index.php?entry=SSL/TLS-servers,-SHA-1/SHA-256-and-StartSSL.com-certificates">Kai Engert's trick</a> of using a fake subdomain to avoid revocation fees helpful. (Requires a paid class 2 identity verification.)
+      <strong><a href="https://www.startssl.com">StartSSL</a></strong> and have many certificates, you may find <a href="https://kuix.de/blog/index.php?entry=SSL/TLS-servers,-SHA-1/SHA-256-and-StartSSL.com-certificates">Kai Engert's trick</a> of using a fake subdomain to avoid revocation fees helpful. (Requires a paid class 2 identity verification.)
     </li>
     <li>
-      If you use <strong><a href="https://products.geotrust.com/orders/orderinformation/authentication.do">GeoTrust or RapidSSL</a></strong> and they mistakenly issue you a SHA-1 again, follow <a href="https://github.com/konklone/shaaaaaaaaaaaaa/issues/24#issuecomment-54021941">these instructions</a> to login to their portal and reissue your certificate.
+      <strong><a href="https://products.geotrust.com/orders/orderinformation/authentication.do">GeoTrust or RapidSSL</a></strong> and they mistakenly issue you a SHA-1 again, follow <a href="https://github.com/konklone/shaaaaaaaaaaaaa/issues/24#issuecomment-54021941">these instructions</a> to login to their portal and reissue your certificate.
+    </li>
+    <li>
+      <strong><a href="http://www.gandi.net/support/contact/mail/">Gandi</a></strong>, please <strong><a href="http://www.gandi.net/support/contact/mail/">complain</a> to <a href="https://twitter.com/gandibar">them</a></strong> about <a href="https://twitter.com/mikewest/status/506395174566907904">not supporting SHA-2 certificates at all</a>.
     </li>
   </ul>
 
@@ -156,17 +163,21 @@
     When you created your certificate chain, you included one or more <a href="http://www.whichssl.com/intermediate_certificates2.html">intermediate certificates</a> from wherever you bought your cert, which may need to be updated. Check <a href="https://www.ssllabs.com/ssltest/analyze.html">SSL Labs</a> to see if you need to update.
   </p>
 
+  <p>
+    If you use:
+  </p>
+
   <ul>
     <li>
-      If you use <strong><a href="https://www.startssl.com">StartSSL</a></strong>, download their updated SHA-2 certificates for whatever level you've paid for: <a href="https://www.startssl.com/certs/class1/sha2/pem/sub.class1.server.sha2.ca.pem">Class 1</a>, <a href="https://www.startssl.com/certs/class2/sha2/pem/sub.class2.server.sha2.ca.pem">Class 2</a>, <a href="https://www.startssl.com/certs/class3/sha2/pem/sub.class3.server.sha2.ca.pem">Class 3</a>, or <a href="https://www.startssl.com/certs/class4/sha2/pem/sub.ev.server.sha2.ca.pem">Class 4</a>.
+      <strong><a href="https://www.startssl.com">StartSSL</a></strong>, download their updated SHA-2 certificates for whatever level you've paid for: <a href="https://www.startssl.com/certs/class1/sha2/pem/sub.class1.server.sha2.ca.pem">Class 1</a>, <a href="https://www.startssl.com/certs/class2/sha2/pem/sub.class2.server.sha2.ca.pem">Class 2</a>, <a href="https://www.startssl.com/certs/class3/sha2/pem/sub.class3.server.sha2.ca.pem">Class 3</a>, or <a href="https://www.startssl.com/certs/class4/sha2/pem/sub.ev.server.sha2.ca.pem">Class 4</a>.
     </li>
 
     <li>
-      If you use <strong><a href="https://knowledge.verisign.com/support/ssl-certificates-support/index?page=content&id=AR657&actp=LIST&viewlocale=en_US">Verisign / Symantec</a></strong>, their SHA-2 intermediates are listed under <strong>RSA SHA-2</strong>, at "SHA-2 Intermediate CAs under SHA-2 Root".
+      <strong><a href="https://knowledge.verisign.com/support/ssl-certificates-support/index?page=content&id=AR657&actp=LIST&viewlocale=en_US">Verisign / Symantec</a></strong>, their SHA-2 intermediates are listed under <strong>RSA SHA-2</strong>, at "SHA-2 Intermediate CAs under SHA-2 Root".
     </li>
 
     <li>
-      If you use <strong><a href="https://knowledge.geotrust.com/support/knowledge-base/index?page=content&id=AR1421&actp=LIST&viewlocale=en_US">GeoTrust</a></strong>, their SHA-2 intermediates are listed under <strong>RSA SHA-2</strong>, at "SHA-2 Intermediate CAs under SHA-2 Root".
+      <strong><a href="https://knowledge.geotrust.com/support/knowledge-base/index?page=content&id=AR1421&actp=LIST&viewlocale=en_US">GeoTrust</a></strong>, their SHA-2 intermediates are listed under <strong>RSA SHA-2</strong>, at "SHA-2 Intermediate CAs under SHA-2 Root".
     </li>
   </ul>
 
