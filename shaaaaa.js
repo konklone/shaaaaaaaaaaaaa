@@ -18,7 +18,8 @@ var Shaaa = {
     "md2" // so old, so broken
   ],
 
-  cmd: function(domain) {
+  cmd: function(domain, options) {
+    if (!options) options = {};
 
     // I'm sure this is too strict, but it will at least be effective
     // TODO: lighten up
@@ -46,36 +47,47 @@ var Shaaa = {
 
   // output will look like:
   // '    Signature Algorithm: sha256WithRSAEncryption\n    Signature Algorithm: sha256WithRSAEncryption\n'
-  extract: function(stdout) {
+  extract: function(stdout, options) {
+    if (!options) options = {};
+
     var line = stdout.split("\n")[0].trim();
     var pieces = line.split(" ");
-    var raw = pieces[pieces.length - 1].toLowerCase();
 
+    var raw = pieces[pieces.length - 1];
+    var raw_compare = raw.toLowerCase();
+
+    var answer;
     for (var i=0; i<Shaaa.algorithms.length; i++) {
       var algorithm = Shaaa.algorithms[i];
-      if (raw.indexOf(algorithm) == 0) return algorithm;
-      if (raw == ("ecdsa-with-" + algorithm)) return algorithm;
+      if (raw_compare.indexOf(algorithm) == 0) answer = algorithm;
+      if (raw_compare == ("ecdsa-with-" + algorithm)) answer = algorithm;
     }
+    if (!answer) answer = "unknown";
 
-    return "unknown";
+    var good = (
+      (answer == "sha256") ||
+      (answer == "sha224") ||
+      (answer == "sha384") ||
+      (answer == "sha512")
+    );
+
+    return {algorithm: answer, raw: raw, good: good};
   },
 
-  from: function(domain, callback) {
-    exec(Shaaa.cmd(domain), function(error, stdout, stderr) {
+  from: function(domain, callback, options) {
+    if (!options) options = {};
+
+    exec(Shaaa.cmd(domain, options), function(error, stdout, stderr) {
       if (error) return callback(error);
 
-      var answer = Shaaa.extract(stdout);
-      var good = (
-        (answer == "sha256") ||
-        (answer == "sha224") ||
-        (answer == "sha384") ||
-        (answer == "sha512")
-      );
+      // extract data from output, add domain onto data
+      var data = Shaaa.extract(stdout, options);
+      data.domain = domain;
 
       if (callback)
-        callback(null, answer, good);
+        callback(null, data);
       else
-        console.log(answer);
+        console.log(data);
     });
   }
 }

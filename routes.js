@@ -19,10 +19,9 @@ module.exports = function(app) {
 
     console.log("Checking domain: " + domain + ", " + escaped);
 
-    shaaaaa.from(domain, function(err, algorithm, good) {
+    shaaaaa.from(domain, function(err, data) {
       if (err) return res.status(400).send({error: err});
-
-      res.send({algorithm: algorithm, good: good, domain: escaped});
+      res.send(data);
     })
 
   });
