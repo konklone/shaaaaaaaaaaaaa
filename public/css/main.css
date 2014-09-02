@@ -18,12 +18,12 @@ body {
 h1 {font-size: 5.5em; margin: 0;}
 p {line-height: 22px;}
 li {line-height: 23px; margin: 10px 0;}
-h3 {font-size: 12pt; font-weight: bold;}
+h2 {font-size: 1.5em;}
 header p, .lead p {font-size: 16pt; line-height: 30px;}
 #loading {font-size: 10pt;}
 
 /* spacing */
-h3 {margin-top: 30px;}
+h2 {margin-top: 30px;}
 header p {margin-top: 0;}
 .lead {margin-bottom: 30px;}
 
