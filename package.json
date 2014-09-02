@@ -28,6 +28,8 @@
     "method-override": "*",
     "errorhandler": "*",
 
+    "x509": "yorkie/node-x509",
+
     "minimist": "*"
   },
   "keywords": [

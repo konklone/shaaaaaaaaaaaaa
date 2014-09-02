@@ -6,7 +6,11 @@
 * Depends on openssl installed and accessible on the PATH.
 */
 
+// used to call out to openssl
 var exec = require("child_process").exec;
+
+// yorkie's fork, includes signatureAlgorithm
+var x509 = require("x.509");
 
 var Shaaa = {
   algorithms: [
@@ -18,39 +22,9 @@ var Shaaa = {
     "md2" // so old, so broken
   ],
 
-  cmd: function(domain) {
-
-    // I'm sure this is too strict, but it will at least be effective
-    // TODO: lighten up
-    var escaped = domain.replace(/[^\w\.\-]/g, '')
-
-    // command adapted from http://askubuntu.com/a/201923/3096
-    var command = "" +
-      // piping into openssl tells it not to hold an open connection
-      "echo -n" +
-      // connect to given domain on port 443
-      " | openssl s_client -connect " + escaped + ":443" +
-      // specify hostname in case server uses SNI
-      "   -servername " + escaped +
-      // yank out just the cert
-      " | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p'" +
-      // extract x509 details from the cert
-      " | openssl x509 -text" +
-      // look for just the signature algorithm
-      " | grep \"Signature Algorithm\"";
-
-    // console.error(command);
-
-    return command;
-  },
-
-  // output will look like:
-  // '    Signature Algorithm: sha256WithRSAEncryption\n    Signature Algorithm: sha256WithRSAEncryption\n'
-  extract: function(stdout) {
-    var line = stdout.split("\n")[0].trim();
-    var pieces = line.split(" ");
-
-    var raw = pieces[pieces.length - 1];
+  // given e.g. 'sha256WithRSAEncryption', return
+  // {algorithm: 'sha256', raw: 'sha256WithRSAEncryption', good: true}
+  algorithm: function(raw) {
     var raw_compare = raw.toLowerCase();
 
     var answer;
@@ -71,18 +45,87 @@ var Shaaa = {
     return {algorithm: answer, raw: raw, good: good};
   },
 
+  certs: function(domain, callback, options) {
+    if (!options) options = {};
+
+    var escaped = domain.replace(/[^\w\.\-]/g, '')
+
+    // adapted from http://askubuntu.com/a/201923/3096
+    var command = "" +
+      // piping into openssl tells it not to hold an open connection
+      "echo -n" +
+      // connect to given domain on port 443
+      " | openssl s_client -connect " + escaped + ":443" +
+      // specify hostname in case server uses SNI
+      "   -servername " + escaped +
+      // ask for the full cert chain
+      "   -showcerts";
+
+    if (options.verbose) console.log(command + "\n");
+
+    exec(command, function(error, stdout, stderr) {
+      if (error) return callback(error);
+
+      // stdout is a long block of openssl output - grab the certs
+      var certs = [];
+      // using multiline workaround: http://stackoverflow.com/a/1068308/16075
+      var regex = /(\-+BEGIN CERTIFICATE\-+[\s\S]*?\-+END CERTIFICATE\-+)/g
+
+      var match = regex.exec(stdout);
+      while (match != null) {
+        certs.push(match[1]);
+        match = regex.exec(stdout);
+      }
+
+      callback(null, certs);
+    });
+  },
+
+  cert: function(text) {
+    var cert = x509.parseCert(text);
+    var answer = Shaaa.algorithm(cert.signatureAlgorithm);
+
+    return {
+      algorithm: answer.algorithm,
+      raw: answer.raw,
+      good: answer.good,
+
+      expires: cert.notAfter,
+      name: cert.subject.commonName
+    };
+  },
+
+  /**
+  * Desired output:
+  * {
+  *   domain: shaaaaaaaaaaaaa.com,
+  *   cert: {
+  *     algorithm: 'sha256',
+  *     raw: 'sha256WithRSAEncryption',
+  *     good: true,
+  *     expires: Tue Aug 18 2015 19:59:59 GMT-0400 (EDT),
+  *     name: "www.konklone.com"
+  *   },
+  *   intermediates: [
+  *     { ... } // same form as above
+  *   ]
+  * }
+  */
+
   from: function(domain, callback, options) {
     if (!options) options = {};
 
-    var cmd = Shaaa.cmd(domain);
-    if (options.verbose) console.log(cmd + "\n");
+    var data = {domain: domain};
 
-    exec(cmd, function(error, stdout, stderr) {
+    Shaaa.certs(domain, function(error, certs) {
       if (error) return callback(error);
 
-      // extract data from output, add domain onto data
-      var data = Shaaa.extract(stdout, options);
-      data.domain = domain;
+      data.cert = Shaaa.cert(certs[0]);
+
+      data.intermediates = [];
+      certs.slice(1).forEach(function(cert) {
+        data.intermediates.push(Shaaa.cert(cert));
+      });
 
       if (callback)
         callback(null, data);

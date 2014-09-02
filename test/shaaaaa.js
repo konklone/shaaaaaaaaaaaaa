@@ -13,6 +13,9 @@
   They are here to be used during development and debugging,
   during which other production testing sites should be used
   if something seems to have changed, like SSL Labs.
+
+  TODO: Freeze test cases.
+  TODO: Test on Alexa top X for crashes.
 */
 
 var test = require("tape");
@@ -44,8 +47,8 @@ basics.forEach(function(basic) {
     shaaaaa.from(basic.domain, function(err, answer) {
       if (err) t.fail("Error checking domain: " + err);
 
-      t.equal(basic.algorithm, answer.algorithm, "Wrong algorithm.");
-      t.equal(basic.good, answer.good);
+      t.equal(basic.algorithm, answer.cert.algorithm, "Wrong algorithm.");
+      t.equal(basic.good, answer.cert.good);
       t.equal(basic.domain, answer.domain)
       t.end();
     });
