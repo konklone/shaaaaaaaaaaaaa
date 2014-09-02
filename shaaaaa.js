@@ -131,7 +131,7 @@ var Shaaa = {
         callback(null, data);
       else
         console.log(data);
-    });
+    }, options);
   }
 }
 
