@@ -240,15 +240,17 @@ var display = {
 var checkDomain = function(domain) {
   console.log("Checking domain: " + domain);
 
-  $.ajax({url: "/api/check/" + domain})
+  $.ajax(
+    {url: "/api/check/" + domain}
+  )
   .done(function(data) {
     console.log(data);
     hideLoading();
 
-    $("#results .result .algorithm").html(display[data.algorithm]);
+    $("#results .result .algorithm").html(display[data.cert.algorithm]);
     $("#results .result .domain").html(domain);
 
-    if (data.good) {
+    if (data.cert.good) {
       $("#results .result").hide();
       $("#results .result.good").show();
     } else {

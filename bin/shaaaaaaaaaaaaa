@@ -14,17 +14,21 @@ var run = function(domain, options) {
     process.exit(1);
   }
 
-  shaaaaa.from(domain, function(err, algorithm, good) {
+  shaaaaa.from(domain, function(err, data) {
     if (err) {
       console.error(err);
       process.exit(1);
     }
 
-    console.log(algorithm);
-    if (err) process.exit(1);
-    else process.exit(0);
+    var output = data;
+    if (options.json) output = JSON.stringify(data, null, 2);
+
+    console.log(output);
+    process.exit(0);
   }, options);
+
 }
 
 var options = require('minimist')(process.argv.slice(2));
+// console.log(options);
 run(options._[0], options);
