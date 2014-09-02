@@ -27,6 +27,29 @@ h2 {margin-top: 30px;}
 header p {margin-top: 0;}
 .lead {margin-bottom: 30px;}
 
+/* octicon link */
+h2 {position: relative;}
+h2 a {
+  background-image: url(/link-64.png);
+  background-repeat: no-repeat;
+  position: absolute;
+
+  xtop: 0;
+  xbottom: 0;
+  xleft: 0;
+  xpadding-right: 6px;
+  xpadding-left: 30px;
+
+  background-size: 16px;
+  width: 25px;
+  height: 25px;
+  margin-left: -25px;
+  margin-top: 7px;
+
+  visibility: hidden;
+}
+h2:hover a,a:hover {visibility: visible;}
+
 #loading {display: none; margin-left: 10px; }
 
 #results .result {
