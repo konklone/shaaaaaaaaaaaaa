@@ -3,7 +3,10 @@
 /*
 * Check a domain name for what SHA algorithm it uses.
 *
-* Usage: shaaaaaaaaaaaaa domain.com
+* Usage: shaaaaaaaaaaaaa domain [options]
+*
+* Options:
+*    --compact: Display in native Node toString() format, instead of JSON.
 */
 
 var shaaaaa = require("../shaaaaa");
