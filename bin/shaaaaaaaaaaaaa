@@ -21,7 +21,8 @@ var run = function(domain, options) {
     }
 
     var output = data;
-    if (options.json) output = JSON.stringify(data, null, 2);
+    if (!options.compact)
+      output = JSON.stringify(data, null, 2);
 
     console.log(output);
     process.exit(0);
