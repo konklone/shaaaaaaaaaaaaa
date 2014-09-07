@@ -10,6 +10,20 @@ Depends on `openssl` to download certificates. See below for a [command line ver
 
 Read the [instructions on shaaaaaaaaaaaaa.com](https://shaaaaaaaaaaaaa.com#sha2-certificate) for replacing your cert and any intermediates.
 
+### Running the website
+
+This app requires [Node](http://nodejs.org). Then, install dependencies:
+
+```bash
+npm install
+```
+
+And run the app:
+
+```
+node app.js
+```
+
 ### Command line version
 
 To check a domain's certificate on the command line, use this repository's command line tool:
