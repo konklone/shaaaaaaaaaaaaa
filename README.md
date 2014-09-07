@@ -1,12 +1,10 @@
 ## SHAAAAAAAAAAAAA
 
-This repository contains the code for:
+This repository contains the code for **[shaaaaaaaaaaaaa.com](https://shaaaaaaaaaaaaa.com)**, a tool to check whether your site's certificate is signed using **SHA-1** (common, bad) or **SHA-2** (rare, good).
 
-> **[shaaaaaaaaaaaaa.com](https://shaaaaaaaaaaaaa.com)**
+This tool does *not* validate certificates, or test anything besides SHA-1 vs SHA-2. For that, please visit the magnificent [SSL Labs](https://www.ssllabs.com/ssltest/analyze.html) for a far more comprehensive review of your SSL configuration.
 
-You can also use the `./bin/shaaaaaaaaaaaaa` script to get an answer on the command line, or visit the excellent [SSL Labs](https://www.ssllabs.com/ssltest/analyze.html) for a far more comprehensive review of your SSL configuration.
-
-Depends on `openssl` to do the cert download and verification.
+Depends on `openssl` to download certificates. See below for a [command line version](#command-line-version).
 
 ### How do I update to SHA-2?
 
