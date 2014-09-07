@@ -4,7 +4,7 @@
   Built and maintained by Eric Mill. (@konklone, konklone.com)
 
   A Node app, with Express for a web server. Uses the openssl
-  command line tool to download and analyze SSL certificates.
+  command line tool to download SSL certificates.
 
   Open source, under a MIT license:
   https://github.com/konklone/shaaaaaaaaaaaaa
@@ -45,7 +45,7 @@
 <link rel="shortcut icon" href="/favicon.png" />
 <link rel="canonical" href="https://shaaaaaaaaaaaaa.com<%= req.originalUrl %>" />
 
-<link href="https://fonts.googleapis.com/css?family=Open+Sans|Average" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700|Average" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" href="/css/pure-min-0.5.0.css" />
 <link rel="stylesheet" href="/css/main.css?<%= Date.now() %>" />
 
@@ -78,20 +78,33 @@
     </div>
 
     <div class="result good">
+      <strong class="word">Nice.</strong>
       <p>
-        <strong>Nice.</strong> <span class="domain"></span> is using a certificate signed with <span class="algorithm"></span>, a form of SHA-2. <a href="#" class="start-over">Start over.</a>
+        <span class="domain"></span> has a certificate signed with <span class="algorithm"></span>.
+      </p>
+
+      <p>
+        <a href="#" class="start-over">Start over.</a>
       </p>
     </div>
 
     <div class="result bad">
+      <strong class="word">Dang.</strong>
       <p>
-        <strong>Dang.</strong> <span class="domain"></span> is using a certificate signed with <span class="algorithm"></span>. Make a new cert using SHA-2. <a href="#" class="start-over">Start over.</a>
+        <span class="domain"></span> is using a certificate signed with <span class="algorithm"></span>. Make a new cert using SHA-2.
+      </p>
+      <p>
+        <a href="#" class="start-over">Start over.</a>
       </p>
     </div>
 
     <div class="result error">
+      <strong class="word">Argh.</strong>
       <p>
-        <strong>Argh.</strong> There was an error checking <span class="domain"></span>. <a href="#" class="start-over">Start over.</a>
+        There was an error checking <span class="domain"></span>.
+      </p>
+      <p>
+        <a href="#" class="start-over">Start over.</a>
       </p>
     </div>
   </div>
@@ -232,10 +245,10 @@ $(window).on("popstate", function(event) {
 });
 
 var display = {
-  "sha256": "SHA-256",
-  "sha512": "SHA-512",
-  "sha384": "SHA-384",
-  "sha224": "SHA-224",
+  "sha256": "SHA-2",
+  "sha512": "SHA-2",
+  "sha384": "SHA-2",
+  "sha224": "SHA-2",
   "sha1": "SHA-1",
   "md5": "MD5",
   "md2": "MD2"

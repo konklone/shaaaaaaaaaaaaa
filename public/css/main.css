@@ -15,7 +15,7 @@ body {
   font-family: "Open Sans", "Arial", sans-serif;
   font-size: 11pt;
 }
-h1 {font-size: 5.5em; margin: 0;}
+h1 {font-size: 5.1em; margin: 0;}
 p {line-height: 22px;}
 li {line-height: 23px; margin: 10px 0;}
 h2 {font-size: 1.5em;}
@@ -64,10 +64,19 @@ h2:hover a,a:hover {visibility: visible;}
 #results .result .domain {font-weight: bold;}
 #results .result .algorithm {font-weight: bold;}
 
+#results strong.word {
+  display: block; font-size: 5.1em;
+  margin-bottom: 5px;
+}
 #results .result.good strong {color: #090;}
 #results .result.bad strong {color: #900;}
 #results .result.error strong {color: #900;}
 
+#results .result p {
+  margin-left: 5px;
+  margin-top: 0; margin-bottom: 15px;
+  font-size: 14pt;
+}
 
 #results .pure-form input#domain {
   padding-top: 9px; padding-bottom: 9px;
