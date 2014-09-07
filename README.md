@@ -24,6 +24,8 @@ And run the app:
 node app.js
 ```
 
+For best results, make sure your system is using the latest version of `openssl`.
+
 ### Command line version
 
 To check a domain's certificate on the command line, use this repository's command line tool:
