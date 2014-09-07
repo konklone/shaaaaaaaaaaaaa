@@ -19,12 +19,32 @@ var run = function(domain, options) {
 
   shaaaaa.from(domain, function(err, data) {
     if (err) {
-      console.error(err);
+      var output;
+      if (options.compact)
+        output = err;
+      else {
+        var message = "Unexpected error";
+        if (err.message.indexOf("gethostbyname") > 0)
+          message = "Couldn't lookup hostname.";
+        else if (err.message.indexOf("Connection refused") > 0)
+          message = "Couldn't connect to that domain."
+
+        output = {
+          error: true,
+          domain: domain,
+          message: message
+        }
+        output = JSON.stringify(output, null, 2);
+      }
+
+      console.error(output);
       process.exit(1);
     }
 
-    var output = data;
-    if (!options.compact)
+    var output;
+    if (options.compact)
+      output = data;
+    else
       output = JSON.stringify(data, null, 2);
 
     console.log(output);
