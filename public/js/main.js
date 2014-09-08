@@ -89,6 +89,7 @@ var checkDomain = function(domain) {
     // show results
     $("#results .result").hide();
     $("#results .result.error").show();
+    $("#results .result.error .word").show();
   });
 
   showLoading();
