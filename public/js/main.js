@@ -17,7 +17,10 @@ $(window).on("popstate", function(event) {
   if (domain) {
     checkDomain(domain);
   } else {
-    startOver();
+    // don't let mere anchor clicks trigger the event
+    // console.log(event);
+    if (window.location.pathname == "/")
+      startOver();
   }
 });
 
@@ -39,6 +42,7 @@ var checkDomain = function(domain) {
   )
   .done(function(data) {
     hideLoading();
+    console.log("Done checking.");
 
     $("#results .result").hide();
     $("#results .result.answer").show();
@@ -70,6 +74,7 @@ var checkDomain = function(domain) {
   })
   .fail(function(xhr) {
     hideLoading();
+    console.log("Done checking.");
 
     // load domain
     $("#results .result .domain").html(domain);
@@ -83,6 +88,8 @@ var checkDomain = function(domain) {
 };
 
 var showLoading = function() {
+  console.log("Checking...");
+
   $("#domain").attr("disabled", true);
   $("input[type=submit]")
     .attr("disabled", true)
@@ -91,6 +98,7 @@ var showLoading = function() {
 };
 
 var hideLoading = function() {
+
   $("#loading").hide();
   $("#domain").attr("disabled", false);
   $("input[type=submit]")
@@ -101,6 +109,8 @@ var hideLoading = function() {
 };
 
 var startOver = function() {
+  console.log("Starting over.");
+
   hideLoading();
   $("#results .result").hide();
   $("#results .result.form").show();
