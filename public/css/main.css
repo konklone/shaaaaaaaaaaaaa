@@ -56,6 +56,7 @@ h2:hover a,a:hover {visibility: visible;}
 #results .result.answer,
 #results .result.error,
 #results .result.answer .word {display: none;}
+#results .result.answer #sha {display: none;}
 
 #results .result .domain {font-weight: bold;}
 #results .result .algorithm {font-weight: bold;}
@@ -72,7 +73,7 @@ h2:hover a,a:hover {visibility: visible;}
 #results .result p {
   margin-left: 5px;
   margin-top: 0; margin-bottom: 15px;
-  font-size: 14pt;
+  font-size: 14pt; line-height: 25px;
 }
 
 #results .result small {

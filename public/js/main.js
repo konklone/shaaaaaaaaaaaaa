@@ -55,13 +55,17 @@ var checkDomain = function(domain) {
     $("#results .result .domain").html(domain);
     $("a.ssllabs").attr("href", ssllabsUrl(domain));
 
+    if (domain == "shaaaaaaaaaaaaa.com")
+      $("#sha").show();
+    else
+      $("#sha").hide();
+
     // topline word: nice, almost, or dang?
     if (data.cert.good) {
       var intergood = true;
       for (var i=0; i<data.intermediates.length; i++) {
-        if (!data.intermediates[i].good) {
+        if (!data.intermediates[i].good)
           intergood = false;
-        }
         break;
       }
 
