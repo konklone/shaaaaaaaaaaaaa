@@ -19,7 +19,8 @@ h1 {font-size: 5.1em; margin: 0;}
 p {line-height: 22px;}
 li {line-height: 23px; margin: 10px 0;}
 h2 {font-size: 1.5em;}
-header p, .lead p {font-size: 16pt; line-height: 30px;}
+header p {font-size: 11pt; line-height: 25px;}
+.lead p {font-size: 16pt; line-height: 30px;}
 #loading {font-size: 10pt;}
 
 #results .result p.bottom {font-size: 12pt;}

@@ -3,6 +3,9 @@
 
   Built and maintained by Eric Mill. (@konklone, konklone.com)
 
+  More background:
+  https://konklone.com/post/why-google-is-hurrying-the-web-to-kill-sha-1
+
   A Node app, with Express for a web server. Uses the openssl
   command line tool to download SSL certificates.
 
@@ -60,7 +63,7 @@
 
   <header>
     <p>
-      Most of the web's SSL certificates need to be replaced. Check yours.
+      Check your site for weak SHA-1 certificates. <a href="https://github.com/konklone/shaaaaaaaaaaaaa">Open source</a>, by <a href="https://twitter.com/konklone">@konklone</a>.
     </p>
   </header>
 
@@ -130,11 +133,11 @@
 
   <div class="lead">
     <p>
-      Your SSL certificate was signed with a hashing algorithm &mdash; probably SHA-1.
+      Your SSL certificate was signed using a hashing function &mdash; probably SHA-1.
     </p>
 
     <p>
-      Which is too bad, because <strong>SHA-1 is <a href="http://arstechnica.com/security/2012/10/sha1-crypto-algorithm-could-fall-by-2018/">becoming dangerously weak</a></strong>, and <strong>SHA-2 is the replacement</strong>.
+      Which is too bad, because <strong>SHA-1 is <a href="http://arstechnica.com/security/2012/10/sha1-crypto-algorithm-could-fall-by-2018/">becoming dangerously weak</a></strong>. It's time to <strong>upgrade to SHA-2</strong>.
     </p>
   </div>
 
@@ -146,11 +149,19 @@
     The only way to solve this is for everyone to turn off support for SHA-1. <a href="http://news.netcraft.com/archives/2014/05/05/sha-2-very-cryptographic-so-secure-such-growth-wow.html">That curve is bending</a>, but there's a long way to go.
   </p>
   <p>
-    <a href="http://arstechnica.com/security/2013/11/hoping-to-avert-collision-with-disaster-microsoft-retires-sha1/">Microsoft</a>, <a href="http://googleonlinesecurity.blogspot.com/2014/09/gradually-sunsetting-sha-1.html">Chrome</a>, and <a href="https://wiki.mozilla.org/CA:Problematic_Practices#SHA-1_Certificates">Firefox</a> all recently deprecated SHA-1, and they've all promised dire consequences in 2016 and 2017. But they'll only be able to follow through on their threat to turn off SHA-1 if enough people update their certs by then.
+    <a href="http://arstechnica.com/security/2013/11/hoping-to-avert-collision-with-disaster-microsoft-retires-sha1/">Microsoft</a>, <a href="http://googleonlinesecurity.blogspot.com/2014/09/gradually-sunsetting-sha-1.html">Chrome</a>, and <a href="https://wiki.mozilla.org/CA:Problematic_Practices#SHA-1_Certificates">Firefox</a> all recently deprecated SHA-1, and plan to turn it off in 2017.
   </p>
 
   <p>
-    The Internet upgrades very slowly, so we all need to begin the transition <strong>right now</strong>, before it becomes an emergency.
+    In fact, Chrome will <a href="http://googleonlinesecurity.blogspot.com/2014/09/gradually-sunsetting-sha-1.html">start showing warnings</a> over the <strong>next few months</strong> for any site using a SHA-1 certificate that expires in 2017.
+  </p>
+
+  <p>
+    <img src="/chrome-warnings.png" style="display: block; border: 1px solid #eee; margin: 0 auto" />
+  </p>
+
+  <p>
+    It's worth taking the time to get off SHA-1. Read <a href="https://konklone.com/post/why-google-is-hurrying-the-web-to-kill-sha-1">more about how SHA-1 works and why this is happening</a>.
   </p>
 
   <h2>
@@ -229,7 +240,7 @@
   </h2>
 
   <p>
-    Made by <a href="https://twitter.com/konklone">Eric Mill</a>, released as <a href="https://github.com/konklone/shaaaaaaaaaaaaa">open source</a> &mdash; please <a href="https://github.com/konklone/shaaaaaaaaaaaaa/issues">fix and improve</a> this site!
+    This website is an <a href="https://github.com/konklone/shaaaaaaaaaaaaa">open source</a> project, and includes a <a href="https://github.com/konklone/shaaaaaaaaaaaaa#command-line-version">command line tool</a> &mdash; please <a href="https://github.com/konklone/shaaaaaaaaaaaaa/issues">lend a hand</a>!
   </p>
 
   <p>
