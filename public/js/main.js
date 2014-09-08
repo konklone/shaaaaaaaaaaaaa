@@ -44,9 +44,13 @@ var checkDomain = function(domain) {
     hideLoading();
     console.log("Done checking.");
 
+    // transition from loading to main aswer body
     $("#results .result").hide();
     $("#results .result.answer").show();
+    $("#results .result .word").hide();
+    $("#results .result p.details").hide();
 
+    // always fill in algorithm and domain
     $("#results .result .algorithm").html(display[data.cert.algorithm]);
     $("#results .result .domain").html(domain);
 
@@ -61,15 +65,17 @@ var checkDomain = function(domain) {
       }
 
       if (intergood)
-        $("#results .result .word.good").css("display", "block");
+        $("#results .result .good").css("display", "block");
       else
-        $("#results .result .word.almost").css("display", "block");
+        $("#results .result .almost").css("display", "block");
     }
 
     // bad endpoint cert: just focus on that
     else {
-      $("#results .result .word.bad").css("display", "block");
+      $("#results .result .bad").css("display", "block");
     }
+
+    // TODO: show details
 
   })
   .fail(function(xhr) {
