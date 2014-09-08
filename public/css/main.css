@@ -34,12 +34,6 @@ h2 a {
   background-repeat: no-repeat;
   position: absolute;
 
-  xtop: 0;
-  xbottom: 0;
-  xleft: 0;
-  xpadding-right: 6px;
-  xpadding-left: 30px;
-
   background-size: 16px;
   width: 25px;
   height: 25px;
@@ -57,9 +51,9 @@ h2:hover a,a:hover {visibility: visible;}
   padding: 10px;
 }
 #results form {margin-top: 8px;}
-#results .result.good,
-#results .result.bad,
-#results .result.error {display: none;}
+#results .result.answer,
+#results .result.error,
+#results .result.answer .word {display: none;}
 
 #results .result .domain {font-weight: bold;}
 #results .result .algorithm {font-weight: bold;}
@@ -68,9 +62,10 @@ h2:hover a,a:hover {visibility: visible;}
   display: block; font-size: 5.1em;
   margin-bottom: 5px;
 }
-#results .result.good strong {color: #090;}
-#results .result.bad strong {color: #900;}
-#results .result.error strong {color: #900;}
+#results .result strong.good {color: #090;}
+#results .result strong.bad {color: #900;}
+#results .result strong.error {color: #000;}
+#results .result strong.almost {color: #FA9008;}
 
 #results .result p {
   margin-left: 5px;
@@ -81,10 +76,18 @@ h2:hover a,a:hover {visibility: visible;}
 #results .pure-form input#domain {
   padding-top: 9px; padding-bottom: 9px;
   display: inline-block;
-  width: 200px;
+  width: 300px;
   margin-bottom: 10px;
+  font-size: 2.1em;
 }
-input[type=submit] {padding-left: 20px; padding-right: 20px; margin-left: 5px;}
+
+input[type=submit] {
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-left: 5px;
+  font-size: 1.5em;
+  height: 51px;
+}
 
 
 p code {
