@@ -12,6 +12,17 @@ Depends on `openssl` to download certificates. See below for a [command line ver
 
 Read the [instructions on shaaaaaaaaaaaaa.com](https://shaaaaaaaaaaaaa.com#sha2-certificate) for replacing your cert and any intermediates.
 
+### How can I help?
+
+Check out the [issue tracker](https://github.com/konklone/shaaaaaaaaaaaaa/issues). The biggest things are:
+
+* Some [annoying domain errors](https://github.com/konklone/shaaaaaaaaaaaaa/issues/34) on edge cases in Google's DNS.
+* Mapping out [common certificate issuers](https://github.com/konklone/shaaaaaaaaaaaaa/issues/31) so we can easily link people to replacements.
+* More [unit tests](https://github.com/konklone/shaaaaaaaaaaaaa/blob/master/test/shaaaaa.js), especially for intermediate certificates and chained root certificates.
+* Getting [some Internet SHA-1 stats](https://github.com/konklone/shaaaaaaaaaaaaa/issues/16) by running the [command line tool](#command-line-version) over a list of top sites, like Alexa's [[CSV download](http://s3.amazonaws.com/alexa-static/top-1m.csv.zip)].
+
+Really, just making the site better all around.
+
 ### Running the website
 
 This app requires [Node](http://nodejs.org). Then, install dependencies:
