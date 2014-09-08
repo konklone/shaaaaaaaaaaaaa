@@ -22,6 +22,8 @@ h2 {font-size: 1.5em;}
 header p, .lead p {font-size: 16pt; line-height: 30px;}
 #loading {font-size: 10pt;}
 
+#results .result p.bottom {font-size: 12pt;}
+
 /* spacing */
 h2 {margin-top: 30px;}
 header p {margin-top: 0;}
@@ -73,6 +75,10 @@ h2:hover a,a:hover {visibility: visible;}
   font-size: 14pt;
 }
 
+#results .result small {
+  margin-left: 7px;
+}
+
 #results .pure-form input#domain {
   padding-top: 9px; padding-bottom: 9px;
   display: inline-block;
@@ -100,3 +106,8 @@ p code {
   background-color: #e5e5e5;
   border-radius: 3px;
 }
+
+/*
+.result ul {padding-left: 0; margin-left: 7px;}
+.result ul, .result li {list-style-type: none;}
+*/

@@ -53,6 +53,7 @@ var checkDomain = function(domain) {
     // always fill in algorithm and domain
     $("#results .result .algorithm").html(display[data.cert.algorithm]);
     $("#results .result .domain").html(domain);
+    $("a.ssllabs").attr("href", ssllabsUrl(domain));
 
     // topline word: nice, almost, or dang?
     if (data.cert.good) {
@@ -91,6 +92,10 @@ var checkDomain = function(domain) {
   });
 
   showLoading();
+};
+
+var ssllabsUrl = function(domain) {
+  return "https://www.ssllabs.com/ssltest/analyze.html?d=" + encodeURIComponent(domain);
 };
 
 var showLoading = function() {
