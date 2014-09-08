@@ -70,7 +70,7 @@
   <div id="results">
     <div class="result form">
       <form action="#" class="pure-form" method="get">
-        <input pattern="[\w\-\.]+" id="domain" name="domain" placeholder="yourdomain.com" />
+        <input pattern="[\w\-\.]+" id="domain" name="domain" placeholder="yourdomain.com" autofocus />
         <input type="submit" class="pure-button pure-button-primary" value="Go" />
 
         <span class="inline-block" id="loading">
@@ -261,8 +261,6 @@
     if (domain) {
       $("#domain").val(domain);
       checkDomain(domain);
-    } else {
-      $("#domain").focus()
     }
   });
 </script>
