@@ -2,6 +2,8 @@
 
 This repository contains the code for **[shaaaaaaaaaaaaa.com](https://shaaaaaaaaaaaaa.com)**, a tool to check whether your site's certificate is signed using **SHA-1** (common, bad) or **SHA-2** (rare, good).
 
+Read [more about why I built this tool](https://konklone.com/post/why-google-is-hurrying-the-web-to-kill-sha-1), and why replacing SHA-1 is important.
+
 This tool does *not* validate certificates, or test anything besides SHA-1 vs SHA-2. For that, please visit the magnificent [SSL Labs](https://www.ssllabs.com/ssltest/analyze.html) for a far more comprehensive review of your SSL configuration.
 
 Depends on `openssl` to download certificates. See below for a [command line version](#command-line-version).
