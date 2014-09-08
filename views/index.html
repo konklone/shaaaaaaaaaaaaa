@@ -77,32 +77,31 @@
       </form>
     </div>
 
-    <div class="result good">
-      <strong class="word">Nice.</strong>
-      <p>
+    <div class="result answer">
+
+      <strong class="word good">Nice.</strong>
+      <strong class="word almost">Almost.</strong>
+      <strong class="word bad">Dang.</strong>
+
+      <p class="details">
         <span class="domain"></span> has a certificate signed with <span class="algorithm"></span>.
       </p>
 
-      <p>
-        <a href="#" class="start-over">Start over.</a>
+      <p class="details">
       </p>
-    </div>
 
-    <div class="result bad">
-      <strong class="word">Dang.</strong>
-      <p>
-        <span class="domain"></span> is using a certificate signed with <span class="algorithm"></span>. Make a new cert using SHA-2.
-      </p>
       <p>
         <a href="#" class="start-over">Start over.</a>
       </p>
     </div>
 
     <div class="result error">
-      <strong class="word">Argh.</strong>
-      <p>
+      <strong class="word error">Argh.</strong>
+
+      <p class="error">
         There was an error checking <span class="domain"></span>.
       </p>
+
       <p>
         <a href="#" class="start-over">Start over.</a>
       </p>
@@ -219,116 +218,20 @@
 
 </div>
 
+<script src="/js/main.js"></script>
 <script>
+  <% if (domain) { %>
+  var domain = "<%= helpers.escape_attribute(domain) %>";
+  <% } else { %>
+  var domain = null;
+  <% } %>
 
-var hasPushstate = Boolean(window.history && history.pushState);
-
-$("form").on("submit", function(event) {
-  var domain = $("#domain").val();
-  if (domain) {
-    var escaped = domain.replace(/^https?:\/\//i, "").replace(/[^\w\.\-]/g, "");
-    checkDomain(escaped);
-    if (hasPushstate) {
-      history.pushState(escaped, null, "/check/" + escaped);
+  $(function() {
+    if (domain) {
+      $("#domain").val(domain);
+      checkDomain(domain);
     }
-  }
-  event.preventDefault();
-});
-
-$(window).on("popstate", function(event) {
-  var domain = event.originalEvent.state;
-  if (domain) {
-    checkDomain(domain);
-  } else {
-    startOver();
-  }
-});
-
-var display = {
-  "sha256": "SHA-2",
-  "sha512": "SHA-2",
-  "sha384": "SHA-2",
-  "sha224": "SHA-2",
-  "sha1": "SHA-1",
-  "md5": "MD5",
-  "md2": "MD2"
-};
-
-var checkDomain = function(domain) {
-  console.log("Checking domain: " + domain);
-
-  $.ajax(
-    {url: "/api/check/" + domain}
-  )
-  .done(function(data) {
-    console.log(data);
-    hideLoading();
-
-    $("#results .result .algorithm").html(display[data.cert.algorithm]);
-    $("#results .result .domain").html(domain);
-
-    if (data.cert.good) {
-      $("#results .result").hide();
-      $("#results .result.good").show();
-    } else {
-      $("#results .result").hide();
-      $("#results .result.bad").show();
-    }
-
-  })
-  .fail(function(xhr) {
-    hideLoading();
-
-    $("#results .result .domain").html(domain);
-
-    $("#results .result").hide();
-    $("#results .result.error").show();
   });
-
-  showLoading();
-};
-
-var showLoading = function() {
-  $("#domain").attr("disabled", true);
-  $("input[type=submit]")
-    .attr("disabled", true)
-    .val("Checking...");
-  $("#loading").css("display", "inline-block");
-};
-
-var hideLoading = function() {
-  $("#loading").hide();
-  $("#domain").attr("disabled", false);
-  $("input[type=submit]")
-    .attr("disabled", false)
-    .val("Go");
-
-  clearTimeout(loading);
-};
-
-var startOver = function() {
-  hideLoading();
-  $("#results .result").hide();
-  $("#results .result.form").show();
-  $("#domain").select().focus();
-
-  return false;
-}
-$(".start-over").on("click", startOver);
-
-<% if (domain) { %>
-var domain = "<%= helpers.escape_attribute(domain) %>";
-<% } else { %>
-var domain = null;
-<% } %>
-
-$(function() {
-  if (domain) {
-    $("#domain").val(domain);
-    checkDomain(domain);
-  }
-});
-
 </script>
 
 <script>
