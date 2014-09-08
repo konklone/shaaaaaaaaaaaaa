@@ -76,10 +76,18 @@ h2:hover a,a:hover {visibility: visible;}
 #results .pure-form input#domain {
   padding-top: 9px; padding-bottom: 9px;
   display: inline-block;
-  width: 200px;
+  width: 300px;
   margin-bottom: 10px;
+  font-size: 2.1em;
 }
-input[type=submit] {padding-left: 20px; padding-right: 20px; margin-left: 5px;}
+
+input[type=submit] {
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-left: 5px;
+  font-size: 1.5em;
+  height: 51px;
+}
 
 
 p code {
