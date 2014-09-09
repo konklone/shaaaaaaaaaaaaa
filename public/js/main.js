@@ -67,9 +67,10 @@ var checkDomain = function(domain) {
     if (data.cert.good) {
       var intergood = true;
       for (var i=0; i<data.intermediates.length; i++) {
-        if (!data.intermediates[i].good)
+        if (!data.intermediates[i].good) {
           intergood = false;
-        break;
+          break;
+        }
       }
 
       if (intergood)
