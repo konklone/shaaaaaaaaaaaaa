@@ -55,10 +55,13 @@ var checkDomain = function(domain) {
     $("#results .result .domain").html(domain);
     $("a.ssllabs").attr("href", ssllabsUrl(domain));
 
-    if (domain == "shaaaaaaaaaaaaa.com")
-      $("#sha").show();
+    var test = domain.toLowerCase();
+    if (test == "shaaaaaaaaaaaaa.com")
+      $(".extra").html(" and is undoubtedly the most magnificent website in the world").show();
+    else if (test == "google.com")
+      $(".extra").html(", and plans to <a href=\"https://twitter.com/agl__/status/503694839481761792\">migrate to SHA-2 in 2015</a>").show();
     else
-      $("#sha").hide();
+      $(".extra").hide();
 
     // topline word: nice, almost, or dang?
     if (data.cert.good) {
