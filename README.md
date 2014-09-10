@@ -21,7 +21,7 @@ Check out the [issue tracker](https://github.com/konklone/shaaaaaaaaaaaaa/issues
 * Mapping out [common certificate issuers](https://github.com/konklone/shaaaaaaaaaaaaa/issues/31) so we can easily link people to replacements.
 * Hunting down [more SHA-2 intermediate locations](https://github.com/konklone/shaaaaaaaaaaaaa/issues/36) than we [currently have](https://shaaaaaaaaaaaaa.com/#sha2-intermediate) on the site.
 * More [unit tests](https://github.com/konklone/shaaaaaaaaaaaaa/blob/master/test/shaaaaa.js), especially for intermediate certificates and chained root certificates.
-* Getting [some Internet SHA-1 stats](https://github.com/konklone/shaaaaaaaaaaaaa/issues/16) by running the [command line tool](#command-line-version) over a list of top sites, like Alexa's [[CSV download](http://s3.amazonaws.com/alexa-static/top-1m.csv.zip)].
+* Getting [some Internet SHA-1 stats](https://github.com/konklone/shaaaaaaaaaaaaa/issues/16) by running the [command line tool](#command-line-version) over a list of top sites, like Alexa's [[CSV download](https://s3.amazonaws.com/alexa-static/top-1m.csv.zip)].
 
 Really, just making the site better all around.
 
