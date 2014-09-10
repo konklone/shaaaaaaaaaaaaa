@@ -48,16 +48,25 @@ var Shaaa = {
   certs: function(domain, callback, options) {
     if (!options) options = {};
 
-    var escaped = domain.replace(/[^\w\.\-]/g, '')
+    // This accounts for -servername/SNI, which cannot have a port
+    var server_name = domain.replace(/[^\w\.\-]|[$:\d+]/g, '');
+    
+    // This accounts for -connect, which can have a port
+    var server_connect = domain.replace(/[^\w\.\-:]/g, '');
+    
+    // If the address does not have a port defined, add default :443
+    if (server_connect.match(/[$:\d+]/g) === null) {
+      server_connect += ":443";
+    }
 
     // adapted from http://askubuntu.com/a/201923/3096
     var command = "" +
       // piping into openssl tells it not to hold an open connection
       "echo -n" +
       // connect to given domain on port 443
-      " | openssl s_client -connect " + escaped + ":443" +
+      " | openssl s_client -connect " + server_connect +
       // specify hostname in case server uses SNI
-      "   -servername " + escaped +
+      "   -servername " + server_name +
       // ask for the full cert chain
       "   -showcerts";
 
