@@ -16,6 +16,7 @@ Read the [instructions on shaaaaaaaaaaaaa.com](https://shaaaaaaaaaaaaa.com#sha2-
 
 Check out the [issue tracker](https://github.com/konklone/shaaaaaaaaaaaaa/issues). The biggest things are:
 
+* How about a bookmarklet, a Firefox extension, or a Chrome extension?
 * Some [annoying domain errors](https://github.com/konklone/shaaaaaaaaaaaaa/issues/34) on edge cases in Google's DNS.
 * Mapping out [common certificate issuers](https://github.com/konklone/shaaaaaaaaaaaaa/issues/31) so we can easily link people to replacements.
 * Hunting down [more SHA-2 intermediate locations](https://github.com/konklone/shaaaaaaaaaaaaa/issues/36) than we [currently have](https://shaaaaaaaaaaaaa.com/#sha2-intermediate) on the site.
