@@ -23,6 +23,9 @@ keep = 5
 def checkout():
   run('git clone -q -b %s %s %s' % (branch, repo, version_path))
 
+def dependencies():
+  run('cd %s && npm install' % version_path)
+
 # TODO: why did I do this? (cp instead of ln)
 def make_current():
   # run('rm -f %s && ln -s %s %s' % (current_path, version_path, current_path))
@@ -55,5 +58,6 @@ def restart():
 
 def deploy():
   execute(checkout)
+  execute(dependencies)
   execute(make_current)
   execute(restart)
