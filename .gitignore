@@ -3,3 +3,4 @@ config.js
 /node_modules
 /*.txt
 /data
+*.pyc
