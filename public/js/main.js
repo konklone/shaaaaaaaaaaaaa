@@ -63,29 +63,10 @@ var checkDomain = function(domain) {
     else
       $(".extra").hide();
 
-    // topline word: nice, almost, or dang?
-    if (data.cert.good) {
-      var intergood = true;
-      for (var i=0; i<data.intermediates.length; i++) {
-        if (!data.intermediates[i].good) {
-          intergood = false;
-          break;
-        }
-      }
-
-      if (intergood)
-        $("#results .result .good").css("display", "block");
-      else
-        $("#results .result .almost").css("display", "block");
-    }
-
-    // bad endpoint cert: just focus on that
-    else {
-      $("#results .result .bad").css("display", "block");
-    }
+    // diagnosis: "good", "bad", "almost"
+    $("#results .result ." + data.diagnosis).css("display", "block");
 
     // TODO: show details
-
   })
   .fail(function(xhr) {
     hideLoading();

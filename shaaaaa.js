@@ -127,6 +127,21 @@ var Shaaa = {
         data.intermediates.push(Shaaa.cert(cert));
       });
 
+      var intergood = true;
+      for (var i=0; i<data.intermediates.length; i++) {
+        if (!data.intermediates[i].good) {
+          intergood = false;
+          break;
+        }
+      }
+
+      if (data.cert.good && intergood)
+        data.diagnosis = "good";
+      else if (data.cert.good && !intergood)
+        data.diagnosis = "almost";
+      else
+        data.diagnosis = "bad";
+
       if (callback)
         callback(null, data);
       else
