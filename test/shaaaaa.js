@@ -105,6 +105,28 @@ var sites = [
     intermediates: [
       {good: false, algorithm: "sha1"}
     ]
+  },
+  {
+    name: "Internationalized Domain, domaintest.みんな",
+    domain: "domaintest.xn--q9jyb4c",
+    diagnosis: "bad",
+
+    cert: {good: false, algorithm: "sha1"},
+    intermediates: [
+      {good: false, algorithm: "sha1"},
+      {good: false, algorithm: "sha1"}
+    ]
+  },
+  {
+    name: "Internationalized Domain, اختبارنطاق.شبكة",
+    domain: "xn--mgbaacjxy2c4fqb.xn--ngbc5azd",
+    diagnosis: "bad",
+
+    cert: {good: false, algorithm: "sha1"},
+    intermediates: [
+      {good: false, algorithm: "sha1"},
+      {good: false, algorithm: "sha1"}
+    ]
   }
 ];
 
