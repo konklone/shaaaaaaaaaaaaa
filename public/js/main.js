@@ -70,7 +70,8 @@ var checkDomain = function(domain) {
   })
   .fail(function(xhr) {
     hideLoading();
-    console.log("Done checking.");
+    console.log("Error while checking domain:");
+    console.log(xhr.responseJSON.message);
 
     // load domain
     $("#results .result .domain").html(domain);
