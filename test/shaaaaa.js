@@ -74,6 +74,37 @@ var sites = [
       {good: false, algorithm: "sha1"},
       {good: false, algorithm: "sha1"}
     ]
+  },
+  {
+    name: "Domain with number, individual8.com",
+    domain: "individual8.com",
+
+    diagnosis: "almost",
+    cert: {good: true, algorithm: "sha256"},
+    intermediates: [
+      {good: false, algorithm: "sha1"}
+    ]
+  },
+  {
+    name: "Domain with port, google.com:443",
+    domain: "google.com:443",
+
+    diagnosis: "bad",
+    cert: {good: false, algorithm: "sha1"},
+    intermediates: [
+      {good: false, algorithm: "sha1"},
+      {good: false, algorithm: "sha1"}
+    ]
+  },
+  {
+    name: "Domain with number and port, individual8.com:443",
+    domain: "individual8.com:443",
+
+    diagnosis: "almost",
+    cert: {good: true, algorithm: "sha256"},
+    intermediates: [
+      {good: false, algorithm: "sha1"}
+    ]
   }
 ];
 

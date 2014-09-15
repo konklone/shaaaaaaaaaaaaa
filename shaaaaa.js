@@ -50,12 +50,12 @@ var Shaaa = {
 
     // This accounts for -servername/SNI, which cannot have a port
     var server_name = domain.replace(/[^\w\.\-]|[$:\d+]/g, '');
-    
+
     // This accounts for -connect, which can have a port
     var server_connect = domain.replace(/[^\w\.\-:]/g, '');
-    
+
     // If the address does not have a port defined, add default :443
-    if (server_connect.match(/[$:\d+]/g) === null) {
+    if (server_connect.match(/:\d+^/g) === null) {
       server_connect += ":443";
     }
 
@@ -66,11 +66,11 @@ var Shaaa = {
       // connect to given domain on port 443
       " | openssl s_client -connect " + server_connect +
       // specify hostname in case server uses SNI
-      "   -servername " + server_name +
+      " -servername " + server_name +
       // ask for the full cert chain
-      "   -showcerts";
+      " -showcerts";
 
-    if (options.verbose) console.log(command + "\n");
+    if (options.verbose || options.debug) console.log(command + "\n");
 
     exec(command, function(error, stdout, stderr) {
       if (error) return callback(error);
