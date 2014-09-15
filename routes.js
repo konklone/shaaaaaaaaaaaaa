@@ -20,7 +20,7 @@ module.exports = function(app) {
     console.log("Checking domain: " + domain + ", " + escaped);
 
     shaaaaa.from(domain, function(err, data) {
-      if (err) return res.status(400).send({error: err});
+      if (err) return res.status(400).send({error: err, message: err.message});
       res.send(data);
     })
 
