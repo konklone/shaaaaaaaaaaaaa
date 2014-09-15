@@ -170,11 +170,15 @@
   </h2>
 
   <p>
-    It's usually very simple. You'll need to <a href="https://konklone.com/post/switch-to-https-now-for-free#generating-the-certificate">generate a new certificate request</a> that asks your CA to use SHA-2. To reuse your existing private key:
+    You'll need to <a href="https://konklone.com/post/switch-to-https-now-for-free#generating-the-certificate">generate a new certificate request</a>, and get your CA to issue you a new certificate using SHA-2. Using your existing private key:
   </p>
 
   <p>
     <code>openssl req -new <strong>-sha256</strong> -key your-private.key -out your-domain.csr</code>
+  </p>
+
+  <p>
+    Some CAs now default to SHA-2, some need you to "request" it, either in writing or even by signing your CSR with SHA-2. Some CAs don't support SHA-2 at all yet.
   </p>
 
   <p>
