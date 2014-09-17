@@ -3,7 +3,7 @@ var hasPushstate = Boolean(window.history && history.pushState);
 $("form").on("submit", function(event) {
   var domain = $("#domain").val();
   if (domain) {
-    var escaped = domain.replace(/^https?:\/\//i, "").replace(/[^\w\.\-]/g, "");
+    var escaped = domain.replace(/^https?:\/\//i, "").replace(/[^\w\.\-:]/g, "");
     checkDomain(escaped);
     if (hasPushstate) {
       history.pushState(escaped, null, "/check/" + escaped);
