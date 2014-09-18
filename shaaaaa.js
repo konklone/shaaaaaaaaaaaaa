@@ -90,8 +90,7 @@ var Shaaa = {
     });
   },
 
-  cert: function(text, keep) {
-    var keep = typeof keep !== 'undefined' ? keep : false;
+  cert: function(text) {
     var cert = x509.parseCert(text);
     var answer = Shaaa.algorithm(cert.signatureAlgorithm);
 
@@ -102,7 +101,6 @@ var Shaaa = {
 
       expires: cert.notAfter,
       name: cert.subject.commonName,
-      certificate: text,
     };
   },
 
@@ -135,17 +133,17 @@ var Shaaa = {
 
       data.intermediates = [];
       certs.slice(1).forEach(function(cert) {
-        data.intermediates.push(Shaaa.cert(cert, true));
+        data.intermediates.push(Shaaa.cert(cert));
       });
 
       var intergood = true;
       for (var i=0; i<data.intermediates.length; i++) {
         if (!data.intermediates[i].good) {
           if (i == 0) {
-            // this is the final "intermediate" cert, it's SHA-1 so
+            // this is the first "intermediate" cert, it's SHA-1 so
             // we check if its  actually a root cert which can be
             // ignored for our purposes
-            var rawcertificate = data.intermediates[i].certificate;
+            var rawcertificate = certs[1]; //certs[0] is the actual sites cert
             var fs = require('fs');
             fs.readFile("./ca-bundle.crt", "utf-8", function(error, rootcerts) {
               if(rootcerts.indexOf(rawcertificate) == -1) {
