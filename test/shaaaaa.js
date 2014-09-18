@@ -127,6 +127,17 @@ var sites = [
       {good: false, algorithm: "sha1"},
       {good: false, algorithm: "sha1"}
     ]
+  },
+  {
+    name: "SHA-1 root, sha1.jonnybarnes.uk",
+    domain: "sha1.jonnybarnes.uk",
+    diagnosis: "good",
+
+    cert: {good: true, algorithm: "sha256"},
+    intermediates: [
+      {good: true, algorithm: "sha256"},
+      {good: true, algorithm: "sha1", root: true}
+    ]
   }
 ];
 
@@ -140,11 +151,14 @@ sites.forEach(function(site) {
       t.equal(site.cert.algorithm, answer.cert.algorithm, "Wrong client algorithm.");
       t.equal(site.cert.good, answer.cert.good, "Wrong client diagnosis.");
 
-      // only test intermediates if test case cares about it
+      if (site.cert.root) t.ok(answer.cert.root);
+
       if (site.intermediates) {
         for (var i=0; i<answer.intermediates.length; i++) {
           t.equal(site.intermediates[i].good, answer.intermediates[i].good, "Intermediate " + i + ": wrong diagnosis.")
           t.equal(site.intermediates[i].algorithm, answer.intermediates[i].algorithm, "Intermediate " + i + ": wrong algorithm.")
+
+          if (site.intermediates[i].root) t.ok(answer.intermediates[i].root);
         }
       }
 

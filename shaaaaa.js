@@ -8,11 +8,31 @@
 
 // used to call out to openssl
 var exec = require("child_process").exec;
+var fs = require('fs'); // loads root certs
 
 // yorkie's fork, includes signatureAlgorithm
 var x509 = require("x.509");
 
 var Shaaa = {
+
+  // root cert bundle, loaded when this file is required
+  roots: null,
+
+  // load root bundle, parse each cert
+  loadRoots: function() {
+    Shaaa.roots = [];
+
+    // store a fingerprint of each one
+    var certs = fs.readFileSync("./ca-bundle.crt", "utf-8").split("\n\n");
+    for (var i=0; i<certs.length; i++)
+      Shaaa.roots.push(x509.parseCert(certs[i]).fingerPrint);
+  },
+
+  // takes x509-parsed cert, compares fingerprint
+  isRoot: function(cert) {
+    return (Shaaa.roots.indexOf(cert.fingerPrint) > -1);
+  },
+
   algorithms: [
     // new gold standards
     "sha256", "sha224", "sha384", "sha512",
@@ -93,11 +113,13 @@ var Shaaa = {
   cert: function(text) {
     var cert = x509.parseCert(text);
     var answer = Shaaa.algorithm(cert.signatureAlgorithm);
+    var root = Shaaa.isRoot(cert);
 
     return {
       algorithm: answer.algorithm,
       raw: answer.raw,
-      good: answer.good,
+      good: (root || answer.good),
+      root: root,
 
       expires: cert.notAfter,
       name: cert.subject.commonName
@@ -139,8 +161,10 @@ var Shaaa = {
       var intergood = true;
       for (var i=0; i<data.intermediates.length; i++) {
         if (!data.intermediates[i].good) {
-          intergood = false;
-          break;
+          if (i == 0) {
+            intergood = false;
+            break;
+          }
         }
       }
 
@@ -158,5 +182,8 @@ var Shaaa = {
     }, options);
   }
 }
+
+// load roots on first require
+Shaaa.loadRoots();
 
 module.exports = Shaaa;
