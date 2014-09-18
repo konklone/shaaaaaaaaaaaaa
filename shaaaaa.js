@@ -15,17 +15,22 @@ var x509 = require("x.509");
 
 var Shaaa = {
 
-  // root cert bundle, loaded from disk
+  // root cert bundle, loaded when this file is required
   roots: null,
 
+  // load root bundle, parse each cert
   loadRoots: function() {
-    Shaaa.roots = fs.readFileSync("./ca-bundle.crt", "utf-8");
+    Shaaa.roots = [];
+
+    // store a fingerprint of each one
+    var certs = fs.readFileSync("./ca-bundle.crt", "utf-8").split("\n\n");
+    for (var i=0; i<certs.length; i++)
+      Shaaa.roots.push(x509.parseCert(certs[i]).fingerPrint);
   },
 
-  // simple yet effective, h/t @jonnybarnes
+  // takes x509-parsed cert, compares fingerprint
   isRoot: function(cert) {
-    console.log(cert);
-    return (Shaaa.roots.indexOf(cert) > -1);
+    return (Shaaa.roots.indexOf(cert.fingerPrint) > -1);
   },
 
   algorithms: [
@@ -108,7 +113,7 @@ var Shaaa = {
   cert: function(text) {
     var cert = x509.parseCert(text);
     var answer = Shaaa.algorithm(cert.signatureAlgorithm);
-    var root = Shaaa.isRoot(text);
+    var root = Shaaa.isRoot(cert);
 
     return {
       algorithm: answer.algorithm,
