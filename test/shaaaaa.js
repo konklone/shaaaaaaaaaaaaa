@@ -129,8 +129,8 @@ var sites = [
     ]
   },
   {
-    name: "SHA-1 root, sha1.jonnybarnes.uk",
-    domain: "sha1.jonnybarnes.uk",
+    name: "SHA-1 root, sha1-root.jonnybarnes.uk",
+    domain: "sha1-root.jonnybarnes.uk",
     diagnosis: "good",
 
     cert: {good: true, algorithm: "sha256"},
