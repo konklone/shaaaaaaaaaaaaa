@@ -8,11 +8,26 @@
 
 // used to call out to openssl
 var exec = require("child_process").exec;
+var fs = require('fs'); // loads root certs
 
 // yorkie's fork, includes signatureAlgorithm
 var x509 = require("x.509");
 
 var Shaaa = {
+
+  // root cert bundle, loaded from disk
+  roots: null,
+
+  loadRoots: function() {
+    Shaaa.roots = fs.readFileSync("./ca-bundle.crt", "utf-8");
+  },
+
+  // simple yet effective, h/t @jonnybarnes
+  isRoot: function(cert) {
+    console.log(cert);
+    return (Shaaa.roots.indexOf(cert) > -1);
+  },
+
   algorithms: [
     // new gold standards
     "sha256", "sha224", "sha384", "sha512",
@@ -93,14 +108,16 @@ var Shaaa = {
   cert: function(text) {
     var cert = x509.parseCert(text);
     var answer = Shaaa.algorithm(cert.signatureAlgorithm);
+    var root = Shaaa.isRoot(text);
 
     return {
       algorithm: answer.algorithm,
       raw: answer.raw,
-      good: answer.good,
+      good: (root || answer.good),
+      root: root,
 
       expires: cert.notAfter,
-      name: cert.subject.commonName,
+      name: cert.subject.commonName
     };
   },
 
@@ -140,20 +157,6 @@ var Shaaa = {
       for (var i=0; i<data.intermediates.length; i++) {
         if (!data.intermediates[i].good) {
           if (i == 0) {
-            // this is the first "intermediate" cert, it's SHA-1 so
-            // we check if its  actually a root cert which can be
-            // ignored for our purposes
-            var rawcertificate = certs[1]; //certs[0] is the actual sites cert
-            var fs = require('fs');
-            fs.readFile("./ca-bundle.crt", "utf-8", function(error, rootcerts) {
-              if(rootcerts.indexOf(rawcertificate) == -1) {
-                // it's not in our list of root certs
-                intergood = false;
-              }
-            });
-          } else {
-            // this wasn't the last intermediate cert, so it can't be
-            // the root cert, and it's sha-1, bad
             intergood = false;
             break;
           }
@@ -174,5 +177,8 @@ var Shaaa = {
     }, options);
   }
 }
+
+// load roots on first require
+Shaaa.loadRoots();
 
 module.exports = Shaaa;
