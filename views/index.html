@@ -193,6 +193,9 @@
       <strong><a href="https://www.godaddy.com/ssl/ssl-certificates.aspx">GoDaddy</a></strong>, they <a href="https://github.com/konklone/shaaaaaaaaaaaaa/issues/24#issuecomment-53438159">may still issue you a SHA-1 cert</a> at first. If so, you need to <a href="http://support.godaddy.com/help/article/4976/re-keying-an-ssl-certificate?locale=en">"re-key" your certificate</a> to get one signed with SHA-2.
     </li>
     <li>
+      <strong><a href="https://www.digicert.com/ssl-certificate.htm">Digicert</a>, they issue SHA-2 certificates by default. However, if "re-key" an existing SHA-1 certificate, you need to select SHA-2 as an "advanced option" on the cerificate request page.
+    </li>
+    <li>
       <strong><a href="https://www.startssl.com">StartSSL</a></strong> and have many certificates, you may find <a href="https://kuix.de/blog/index.php?entry=SSL/TLS-servers,-SHA-1/SHA-256-and-StartSSL.com-certificates">Kai Engert's trick</a> of using a fake subdomain to avoid revocation fees helpful. (Requires a paid class 2 identity verification.)
     </li>
     <li>
