@@ -61,3 +61,4 @@ def deploy():
   execute(dependencies)
   execute(make_current)
   execute(restart)
+  execute(cleanup)
