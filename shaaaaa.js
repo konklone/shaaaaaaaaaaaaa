@@ -18,17 +18,6 @@ var Shaaa = {
   // root cert bundle, loaded when this file is required
   roots: null,
 
-  // fingerprint of SHA-1 intermediate certs with known SHA-2 equivalents
-  var fingerprintFile = __dirname + '/fingerprints,json';
-  fs.readFileSync(fingerprintFile, 'utf-8', function(error, data) {
-    if (err) {
-      console.log('Error: ' + err);
-      return;
-    }
-
-    fingerprints = JSON.parse(data);
-  });
-
   // load root bundle, parse each cert
   loadRoots: function() {
     Shaaa.roots = [];
@@ -121,7 +110,17 @@ var Shaaa = {
     });
   },
 
-  sha2url: function(fingerprint) {
+  sha2URL: function(fingerprint) {
+    // fingerprint of SHA-1 intermediate certs with known SHA-2 equivalents
+    var fingerprintsFile = __dirname + '/fingerprints.json';
+    fs.readFileSync(fingerprintsFile, 'utf-8', function(error, data) {
+      if (err) {
+        console.log('Error: ' + err);
+        return;
+      }
+
+      fingerprints = JSON.parse(data);
+    });
     return null;
   },
 
