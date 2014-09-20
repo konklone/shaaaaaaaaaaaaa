@@ -18,6 +18,17 @@ var Shaaa = {
   // root cert bundle, loaded when this file is required
   roots: null,
 
+  // fingerprint of SHA-1 intermediate certs with known SHA-2 equivalents
+  var fingerprintFile = __dirname + '/fingerprints,json';
+  fs.readFileSync(fingerprintFile, 'utf-8', function(error, data) {
+    if (err) {
+      console.log('Error: ' + err);
+      return;
+    }
+
+    fingerprints = JSON.parse(data);
+  });
+
   // load root bundle, parse each cert
   loadRoots: function() {
     Shaaa.roots = [];
@@ -110,16 +121,22 @@ var Shaaa = {
     });
   },
 
+  sha2url: function(fingerprint) {
+    return null;
+  },
+
   cert: function(text) {
     var cert = x509.parseCert(text);
     var answer = Shaaa.algorithm(cert.signatureAlgorithm);
     var root = Shaaa.isRoot(cert);
+    var sha2url = Shaaa.sha2URL(cert.fingerprint);
 
     return {
       algorithm: answer.algorithm,
       raw: answer.raw,
       good: (root || answer.good),
       root: root,
+      sha2url: sha2url,
 
       expires: cert.notAfter,
       name: cert.subject.commonName
@@ -134,6 +151,8 @@ var Shaaa = {
   *     algorithm: 'sha256',
   *     raw: 'sha256WithRSAEncryption',
   *     good: true,
+  *     root: false,
+  *     sha2url: null,
   *     expires: Tue Aug 18 2015 19:59:59 GMT-0400 (EDT),
   *     name: "www.konklone.com"
   *   },
