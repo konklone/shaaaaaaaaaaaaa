@@ -135,7 +135,11 @@ var Shaaa = {
     var cert = x509.parseCert(text);
     var answer = Shaaa.algorithm(cert.signatureAlgorithm);
     var root = Shaaa.isRoot(cert);
-    var sha2url = Shaaa.sha2URL(cert.fingerPrint);
+    if(root == false) { // we only want to check this on non-root intermediate certificates
+      var sha2url = Shaaa.sha2URL(cert.fingerPrint);
+    } else {
+      var sha2url = null;
+    }
 
     return {
       algorithm: answer.algorithm,
