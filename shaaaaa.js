@@ -33,6 +33,15 @@ var Shaaa = {
     return (Shaaa.roots.indexOf(cert.fingerPrint) > -1);
   },
 
+  // fingerrints of SHA-1 intermediate certs with known SHA-2 certs
+  fingerprints: null,
+  loadFingerprintsJSON: function() {
+    Shaaa.fingerprints = [];
+    var fingerprintsFile = __dirname + '/fingerprints.json';
+    var fingerprintsJSON = fs.readFileSync(fingerprintsFile, 'utf-8');
+    Shaaa.fingerprints = JSON.parse(fingerprintsJSON);
+  },
+
   algorithms: [
     // new gold standards
     "sha256", "sha224", "sha384", "sha512",
@@ -111,24 +120,22 @@ var Shaaa = {
   },
 
   sha2URL: function(fingerprint) {
-    // fingerprint of SHA-1 intermediate certs with known SHA-2 equivalents
-    var fingerprintsFile = __dirname + '/fingerprints.json';
-    fs.readFileSync(fingerprintsFile, 'utf-8', function(error, data) {
-      if (err) {
-        console.log('Error: ' + err);
-        return;
+    var url = null;
+    var fingerprintsLength = Shaaa.fingerprints.certificates.length;
+    for (var i=0; i<fingerprintsLength; i++) {
+      if(Shaaa.fingerprints.certificates[i].fingerprints['sha-1'] == fingerprint) {
+        url = Shaaa.fingerprints.certificates[i]['SHA-2 URL'];
+        break;
       }
-
-      fingerprints = JSON.parse(data);
-    });
-    return null;
+    }
+    return url;
   },
 
   cert: function(text) {
     var cert = x509.parseCert(text);
     var answer = Shaaa.algorithm(cert.signatureAlgorithm);
     var root = Shaaa.isRoot(cert);
-    var sha2url = Shaaa.sha2URL(cert.fingerprint);
+    var sha2url = Shaaa.sha2URL(cert.fingerPrint);
 
     return {
       algorithm: answer.algorithm,
@@ -203,5 +210,7 @@ var Shaaa = {
 
 // load roots on first require
 Shaaa.loadRoots();
+// load fingerprints
+Shaaa.loadFingerprintsJSON();
 
 module.exports = Shaaa;
