@@ -181,10 +181,6 @@
     Some CAs now default to SHA-2, some need you to "request" it, either in writing or even by signing your CSR with SHA-2. Some CAs don't support SHA-2 at all yet.
   </p>
 
-  <p>
-    If you use:
-  </p>
-
   <ul>
     <li>
       <strong><a href="https://www.namecheap.com/security/ssl-certificates/domain-validation.aspx">Namecheap</a></strong>, choose a Comodo cert, because some of the others <a href="https://github.com/konklone/shaaaaaaaaaaaaa/issues/24#issuecomment-53441453">may not obey your SHA-2 request</a> unless you spend time with customer support.
@@ -202,7 +198,7 @@
       <strong><a href="https://products.geotrust.com/orders/orderinformation/authentication.do">GeoTrust or RapidSSL</a></strong> mistakenly issue you a SHA-1 again, follow <a href="https://github.com/konklone/shaaaaaaaaaaaaa/issues/24#issuecomment-54021941">these instructions</a> to login to their portal and reissue your certificate.
     </li>
     <li>
-      <strong><a href="https://dnsimple.com/ssl-certificate">DNSimple</a></strong> have <a href="http://support.dnsimple.com/articles/sha-2-ssl-certificates/">now switched to SHA-2 certs by default</a>, so re-issue if you need to.
+      <strong><a href="https://dnsimple.com/ssl-certificate">DNSimple</a></strong> has <a href="http://support.dnsimple.com/articles/sha-2-ssl-certificates/">now switched to SHA-2 certs by default</a>, so re-issue if you need to.
     </li>
     <li>
       <strong><a href="http://www.gandi.net/support/contact/mail/">Gandi</a></strong>, they <a href="https://twitter.com/gandibar/status/508001036653826049">don't support SHA-2 yet</a>, but say <a href="https://twitter.com/gandibar/status/509116131173748736">they're working on it</a>.
@@ -220,10 +216,6 @@
 
   <p>
     When you created your certificate chain, you included one or more <a href="http://www.whichssl.com/intermediate_certificates2.html">intermediate certificates</a> from wherever you bought your cert, which may need to be updated. Check <a class="ssllabs" href="https://www.ssllabs.com/ssltest/analyze.html">SSL Labs</a> to see if you need to update.
-  </p>
-
-  <p>
-    If you use:
   </p>
 
   <ul>
