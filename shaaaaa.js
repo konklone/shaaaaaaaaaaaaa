@@ -117,6 +117,7 @@ var Shaaa = {
   },
 
   sha2URL: function(fingerprint) {
+    console.log(fingerprint);
     for (var i=0; i<Shaaa.fingerprints.length; i++) {
       if (Shaaa.fingerprints[i].sha1 == fingerprint)
         return Shaaa.fingerprints[i].url;
@@ -127,7 +128,7 @@ var Shaaa = {
     var cert = x509.parseCert(text);
     var answer = Shaaa.algorithm(cert.signatureAlgorithm);
     var root = Shaaa.isRoot(cert);
-    var replacement = (root ? Shaaa.sha2URL(cert.fingerPrint) : null);
+    var replacement = (root ? null : Shaaa.sha2URL(cert.fingerPrint));
 
     return {
       algorithm: answer.algorithm,
