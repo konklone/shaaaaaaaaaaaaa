@@ -44,7 +44,7 @@ var checkDomain = function(domain) {
     hideLoading();
     console.log("Done checking.");
 
-    // transition from loading to main aswer body
+    // transition from loading to main answer body
     $("#results .result").hide();
     $("#results .result.answer").show();
     $("#results .result .word").hide();
