@@ -43,16 +43,17 @@ var sites = [
       {good: true, algorithm: "sha256"}
     ]
   },
-  {
-    name: "SHA-2 with bad IM, twitter.com",
-    domain: "twitter.com",
-    diagnosis: "almost",
+  // need to replace this soon
+  // {
+  //   name: "SHA-2 with bad IM, twitter.com",
+  //   domain: "twitter.com",
+  //   diagnosis: "almost",
 
-    cert: {good: true, algorithm: "sha256"},
-    intermediates: [
-      {good: false, algorithm: "sha1"}
-    ]
-  },
+  //   cert: {good: true, algorithm: "sha256"},
+  //   intermediates: [
+  //     {good: false, algorithm: "sha1"}
+  //   ]
+  // },
   {
     name: "SHA-1 with bad IM, facebook.com",
     domain: "facebook.com",

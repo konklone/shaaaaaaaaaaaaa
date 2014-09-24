@@ -27,9 +27,7 @@
     "body-parser": "*",
     "method-override": "*",
     "errorhandler": "*",
-
-    "x509": "yorkie/node-x509",
-
+    "x509": "*",
     "minimist": "*"
   },
   "keywords": [
