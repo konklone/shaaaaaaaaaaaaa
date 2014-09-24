@@ -33,6 +33,12 @@ var Shaaa = {
     return (Shaaa.roots.indexOf(cert.fingerPrint) > -1);
   },
 
+  // fingerprints of SHA-1 intermediate certs with known SHA-2 replacements
+  fingerprints: null,
+  loadFingerprints: function() {
+    Shaaa.fingerprints = JSON.parse(fs.readFileSync('./fingerprints.json', 'utf-8')).certificates;
+  },
+
   algorithms: [
     // new gold standards
     "sha256", "sha224", "sha384", "sha512",
@@ -110,16 +116,26 @@ var Shaaa = {
     });
   },
 
+  sha2URL: function(fingerprint) {
+    console.log(fingerprint);
+    for (var i=0; i<Shaaa.fingerprints.length; i++) {
+      if (Shaaa.fingerprints[i].sha1 == fingerprint)
+        return Shaaa.fingerprints[i].url;
+    }
+  },
+
   cert: function(text) {
     var cert = x509.parseCert(text);
     var answer = Shaaa.algorithm(cert.signatureAlgorithm);
     var root = Shaaa.isRoot(cert);
+    var replacement = (root ? null : Shaaa.sha2URL(cert.fingerPrint));
 
     return {
       algorithm: answer.algorithm,
       raw: answer.raw,
       good: (root || answer.good),
       root: root,
+      replacement: replacement,
 
       expires: cert.notAfter,
       name: cert.subject.commonName
@@ -134,6 +150,8 @@ var Shaaa = {
   *     algorithm: 'sha256',
   *     raw: 'sha256WithRSAEncryption',
   *     good: true,
+  *     root: false,
+  *     replacement: null,
   *     expires: Tue Aug 18 2015 19:59:59 GMT-0400 (EDT),
   *     name: "www.konklone.com"
   *   },
@@ -183,7 +201,8 @@ var Shaaa = {
   }
 }
 
-// load roots on first require
+// load roots and fingerprints on first require
 Shaaa.loadRoots();
+Shaaa.loadFingerprints();
 
 module.exports = Shaaa;

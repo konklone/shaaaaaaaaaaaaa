@@ -1,0 +1,44 @@
+{
+	"certificates": [
+		{
+			"name": "StartSSL Class1 Intermediate CA",
+			"sha1": "F6:91:FC:87:EF:B3:13:53:54:22:5A:10:E1:27:E9:11:D1:C7:F8:CF",
+			"url": "https://www.startssl.com/certs/class1/sha2/pem/sub.class1.server.sha2.ca.pem"
+		},
+		{
+			"name": "StartSSL Class2 Intermediate CA",
+			"sha1": "A1:AC:E4:04:6B:6E:33:22:32:B8:7E:CF:B6:F3:7A:07:63:72:01:47",
+			"url": "https://www.startssl.com/certs/class2/sha2/pem/sub.class2.server.sha2.ca.pem"
+		},
+		{
+			"name": "StartSSL Class3 Intermediate CA",
+			"sha1": "48:35:1C:D3:E4:36:6F:C3:0F:37:1E:1E:EB:43:37:1A:27:BC:1B:24",
+			"url": "https://www.startssl.com/certs/class3/sha2/pem/sub.class3.server.sha2.ca.pem"
+		},
+		{
+			"name": "StartSSL Class4 Intermediate CA",
+			"sha1": "98:50:46:3B:55:04:9F:83:6C:D6:3F:69:B3:0B:D9:E2:C6:4D:42:74",
+			"url": "https://www.startssl.com/certs/class4/sha2/pem/sub.ev.server.sha2.ca.pem"
+		},
+		{
+			"name": "DigiCert Secure Server CA",
+			"sha1": "F9:AE:40:CC:BB:DA:47:95:E5:8A:C5:D2:03:BF:B7:BD:33:1B:81:E8",
+			"url": "http://cacerts.digicert.com/DigiCertSHA2SecureServerCA.crt"
+		},
+		{
+			"name": "VeriSign Standard SSL RSA Secondary SSL Intermediate CA Certificate",
+			"sha1": "5D:EB:8F:33:9E:26:4C:19:F6:68:6F:5F:8F:32:B5:4A:4C:46:B4:76",
+			"url": "https://knowledge.verisign.com/support/ssl-certificates-support/index?page=content&amp;actp=CROSSLINK&amp;id=AR2064"
+		},
+		{
+			"name": "VeriSign Standard SSL RSA Primary Intermediate CA Certificate",
+			"sha1": "32:F3:08:82:62:2B:87:CF:88:56:C6:3D:B8:73:DF:08:53:B4:DD:27",
+			"url": "https://knowledge.verisign.com/support/ssl-certificates-support/index?page=content&amp;actp=CROSSLINK&amp;id=AR2064"
+		},
+		{
+			"name": "VeriSign Premium SSL RSA Secondary SSL Intermediate CA Certificate",
+			"sha1": "B1:8D:9D:19:56:69:BA:0F:78:29:51:75:66:C2:5F:42:2A:27:71:04",
+			"url": "https://knowledge.verisign.com/support/ssl-certificates-support/index?page=content&amp;actp=CROSSLINK&amp;id=AR2064"
+		}
+	]
+}

@@ -139,6 +139,16 @@ var sites = [
       {good: true, algorithm: "sha256"},
       {good: true, algorithm: "sha1", root: true}
     ]
+  },
+  {
+    name: "SHA-1 intermediate with known replacement, penflip.com",
+    domain: "penflip.com",
+    diagnosis: "bad",
+
+    cert: {good: false, algorithm: "sha1"},
+    intermediates: [
+      {good: false, algorithm: "sha1", replacement: "https://www.startssl.com/certs/class1/sha2/pem/sub.class1.server.sha2.ca.pem"}
+    ]
   }
 ];
 
@@ -160,6 +170,8 @@ sites.forEach(function(site) {
           t.equal(site.intermediates[i].algorithm, answer.intermediates[i].algorithm, "Intermediate " + i + ": wrong algorithm.")
 
           if (site.intermediates[i].root) t.ok(answer.intermediates[i].root);
+          if (site.intermediates[i].replacement)
+            t.equal(site.intermediates[i].replacement, answer.intermediates[i].replacement);
         }
       }
 
