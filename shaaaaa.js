@@ -33,13 +33,10 @@ var Shaaa = {
     return (Shaaa.roots.indexOf(cert.fingerPrint) > -1);
   },
 
-  // fingerrints of SHA-1 intermediate certs with known SHA-2 certs
+  // fingerprints of SHA-1 intermediate certs with known SHA-2 replacements
   fingerprints: null,
-  loadFingerprintsJSON: function() {
-    Shaaa.fingerprints = [];
-    var fingerprintsFile = __dirname + '/fingerprints.json';
-    var fingerprintsJSON = fs.readFileSync(fingerprintsFile, 'utf-8');
-    Shaaa.fingerprints = JSON.parse(fingerprintsJSON);
+  loadFingerprints: function() {
+    Shaaa.fingerprints = JSON.parse(fs.readFileSync('./fingerprints.json', 'utf-8')).certificates;
   },
 
   algorithms: [
@@ -120,33 +117,24 @@ var Shaaa = {
   },
 
   sha2URL: function(fingerprint) {
-    var url = null;
-    var fingerprintsLength = Shaaa.fingerprints.certificates.length;
-    for (var i=0; i<fingerprintsLength; i++) {
-      if(Shaaa.fingerprints.certificates[i].fingerprints['sha-1'] == fingerprint) {
-        url = Shaaa.fingerprints.certificates[i]['SHA-2 URL'];
-        break;
-      }
+    for (var i=0; i<Shaaa.fingerprints.length; i++) {
+      if (Shaaa.fingerprints[i].sha1 == fingerprint)
+        return Shaaa.fingerprints[i].url;
     }
-    return url;
   },
 
   cert: function(text) {
     var cert = x509.parseCert(text);
     var answer = Shaaa.algorithm(cert.signatureAlgorithm);
     var root = Shaaa.isRoot(cert);
-    if(root == false) { // we only want to check this on non-root intermediate certificates
-      var sha2url = Shaaa.sha2URL(cert.fingerPrint);
-    } else {
-      var sha2url = null;
-    }
+    var replacement = (root ? Shaaa.sha2URL(cert.fingerPrint) : null);
 
     return {
       algorithm: answer.algorithm,
       raw: answer.raw,
       good: (root || answer.good),
       root: root,
-      sha2url: sha2url,
+      replacement: replacement,
 
       expires: cert.notAfter,
       name: cert.subject.commonName
@@ -162,7 +150,7 @@ var Shaaa = {
   *     raw: 'sha256WithRSAEncryption',
   *     good: true,
   *     root: false,
-  *     sha2url: null,
+  *     replacement: null,
   *     expires: Tue Aug 18 2015 19:59:59 GMT-0400 (EDT),
   *     name: "www.konklone.com"
   *   },
@@ -212,9 +200,8 @@ var Shaaa = {
   }
 }
 
-// load roots on first require
+// load roots and fingerprints on first require
 Shaaa.loadRoots();
-// load fingerprints
-Shaaa.loadFingerprintsJSON();
+Shaaa.loadFingerprints();
 
 module.exports = Shaaa;
