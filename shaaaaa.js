@@ -11,7 +11,7 @@ var exec = require("child_process").exec;
 var fs = require('fs'); // loads root certs
 
 // yorkie's fork, includes signatureAlgorithm
-var x509 = require("x.509");
+var x509 = require("x509");
 
 var Shaaa = {
 
