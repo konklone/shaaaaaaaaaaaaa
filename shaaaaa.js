@@ -117,7 +117,6 @@ var Shaaa = {
   },
 
   sha2URL: function(fingerprint) {
-    console.log(fingerprint);
     for (var i=0; i<Shaaa.fingerprints.length; i++) {
       if (Shaaa.fingerprints[i].sha1 == fingerprint)
         return Shaaa.fingerprints[i].url;
