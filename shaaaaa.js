@@ -75,7 +75,7 @@ var Shaaa = {
     if (!options) options = {};
 
     // This accounts for -servername/SNI, which cannot have a port
-    var server_name = domain.replace(/[^\w\.\-]|[$:\d+]/g, '');
+    var server_name = domain.replace(/[^\w\.\-]+(:\d+])/, '');
 
     // This accounts for -connect, which can have a port
     var server_connect = domain.replace(/[^\w\.\-:]/g, '');
