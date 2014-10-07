@@ -87,6 +87,16 @@ var sites = [
     ]
   },
   {
+    name: "Domain with number and SNI, teacup.p3k.io",
+    domain: "teacup.p3k.io",
+
+    diagnosis: "good",
+    cert: {good: true, algorithm: "sha256"},
+    intermediates: [
+      {good: true, algorithm: "sha256"}
+    ]
+  },
+  {
     name: "Domain with port, google.com:443",
     domain: "google.com:443",
 
