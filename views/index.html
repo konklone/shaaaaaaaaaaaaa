@@ -192,7 +192,7 @@
       <strong><a href="https://www.digicert.com/ssl-certificate.htm">Digicert</a></strong> issues SHA-2 certificates by default. However, if you "re-key" an existing SHA-1 certificate, you need to select SHA-2 as an "advanced option" on the cerificate request page.
     </li>
     <li>
-      <strong><a href="https://www.startssl.com">StartSSL</a></strong> uses SHA-2 by default for new certificates. If you need to reissue an old one, you may find <a href="https://kuix.de/blog/index.php?entry=SSL/TLS-servers,-SHA-1/SHA-256-and-StartSSL.com-certificates">Kai Engert's trick</a> of using a fake subdomain to avoid revocation fees helpful. (Requires a paid class 2 identity verification.)
+      <strong><a href="https://www.startssl.com">StartSSL</a></strong> uses SHA-2 new certificates, as long as you <strong>use the -sha256 flag above</strong> when creating the CSR. If you need to reissue an old one, you may find <a href="https://kuix.de/blog/index.php?entry=SSL/TLS-servers,-SHA-1/SHA-256-and-StartSSL.com-certificates">Kai Engert's trick</a> of using a fake subdomain to avoid revocation fees helpful. (Requires a paid class 2 identity verification.)
     </li>
     <li>
       <strong>If <a href="https://products.geotrust.com/orders/orderinformation/authentication.do">GeoTrust or RapidSSL</a></strong> mistakenly issue you a SHA-1 again, follow <a href="https://github.com/konklone/shaaaaaaaaaaaaa/issues/24#issuecomment-54021941">these instructions</a> to login to their portal and reissue your certificate.
