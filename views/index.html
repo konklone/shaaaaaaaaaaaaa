@@ -195,7 +195,7 @@
       <strong><a href="https://www.startssl.com">StartSSL</a></strong> uses SHA-2 new certificates, as long as you <strong>use the -sha256 flag above</strong> when creating the CSR. If you need to reissue an old one, you may find <a href="https://kuix.de/blog/index.php?entry=SSL/TLS-servers,-SHA-1/SHA-256-and-StartSSL.com-certificates">Kai Engert's trick</a> of using a fake subdomain to avoid revocation fees helpful. (Requires a paid class 2 identity verification.)
     </li>
     <li>
-      <strong>If <a href="https://products.geotrust.com/orders/orderinformation/authentication.do">GeoTrust or RapidSSL</a></strong> mistakenly issue you a SHA-1 again, follow <a href="https://github.com/konklone/shaaaaaaaaaaaaa/issues/24#issuecomment-54021941">these instructions</a> to login to their portal and reissue your certificate.
+      If <strong><a href="https://products.geotrust.com/orders/orderinformation/authentication.do">GeoTrust or RapidSSL</a></strong> mistakenly issue you a SHA-1 again, follow <a href="https://github.com/konklone/shaaaaaaaaaaaaa/issues/24#issuecomment-54021941">these instructions</a> to login to their portal and reissue your certificate.
     </li>
     <li>
       <strong><a href="https://dnsimple.com/ssl-certificate">DNSimple</a></strong> has <a href="http://support.dnsimple.com/articles/sha-2-ssl-certificates/">now switched to SHA-2 certs by default</a>, so re-issue if you need to.
@@ -220,7 +220,7 @@
 
   <ul>
     <li>
-      <strong>If using <a href="https://www.dreamhost.com/">Dreamhost</a></strong>, someone kindly documented <a href="https://discussion.dreamhost.com/thread-143863.html">where to get the appropriate SHA-2 intermediates</a>.
+      If using <strong><a href="https://www.dreamhost.com/">Dreamhost</a></strong>, someone kindly documented <a href="https://discussion.dreamhost.com/thread-143863.html">where to get the appropriate SHA-2 intermediates</a>.
     </li>
     <li>
       <strong><a href="https://www.rapidssl.com/">RapidSSL</a></strong> has <a href="https://knowledge.rapidssl.com/support/ssl-certificate-support/index?page=content&actp=CROSSLINK&id=SO26459">SHA-2 intermediates</a>. Because these were issued recently, you <strong>may need to reissue your client cert</strong> from RapidSSL as well (even a SHA-2 cert) to ensure you get a client cert that was signed by these intermediates.
@@ -246,7 +246,7 @@
     </li>
 
     <li>
-      <strong><a href="https://www.digicert.com/ssl-certificate.htm">Digicert</a></strong>has <a href="https://www.digicert.com/digicert-root-certificates.htm#intermediates">SHA-2 intermediates</a> for everything.
+      <strong><a href="https://www.digicert.com/ssl-certificate.htm">Digicert</a></strong> has <a href="https://www.digicert.com/digicert-root-certificates.htm#intermediates">SHA-2 intermediates</a> for everything.
     </li>
   </ul>
 
