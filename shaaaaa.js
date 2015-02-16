@@ -98,7 +98,7 @@ var Shaaa = {
 
     if (options.verbose || options.debug) console.log(command + "\n");
 
-    exec(command, function(error, stdout, stderr) {
+    exec(command, {timeout: options.timeout || 5000}, function(error, stdout, stderr) {
       if (error) return callback(error);
 
       // stdout is a long block of openssl output - grab the certs
