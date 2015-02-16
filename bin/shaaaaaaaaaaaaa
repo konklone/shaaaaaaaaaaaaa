@@ -21,10 +21,12 @@ var run = function(domain, options) {
     if (err) {
 
       var message = "Unexpected error";
-      if (err.message.indexOf("gethostbyname") > 0)
+      if (err.message.indexOf("gethostbyname") >= 0)
         message = "Couldn't lookup hostname.";
-      else if (err.message.indexOf("Connection refused") > 0)
-        message = "Couldn't connect to that domain."
+      else if (err.message.indexOf("Connection refused") >= 0)
+        message = "Couldn't connect to that domain.";
+      else if (err.message.indexOf("Command failed") >= 0)
+        message = "Couldn't connect to that domain.";
 
       var error = {
         error: true,
