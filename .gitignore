@@ -5,3 +5,4 @@ config.js
 /data
 *.pyc
 .python-version
+npm-debug.log
