@@ -80,20 +80,20 @@ var sites = [
     name: "Domain with number, individual8.com",
     domain: "individual8.com",
 
-    diagnosis: "almost",
+    diagnosis: "good",
     cert: {good: true, algorithm: "sha256"},
     intermediates: [
-      {good: false, algorithm: "sha1"}
+      {good: true, algorithm: "sha256"}
     ]
   },
   {
     name: "Domain with number and SNI, teacup.p3k.io",
     domain: "teacup.p3k.io",
 
-    diagnosis: "good",
+    diagnosis: "almost",
     cert: {good: true, algorithm: "sha256"},
     intermediates: [
-      {good: true, algorithm: "sha256"}
+      {good: false, algorithm: "sha1"}
     ]
   },
   {
@@ -111,10 +111,10 @@ var sites = [
     name: "Domain with number and port, individual8.com:443",
     domain: "individual8.com:443",
 
-    diagnosis: "almost",
+    diagnosis: "good",
     cert: {good: true, algorithm: "sha256"},
     intermediates: [
-      {good: false, algorithm: "sha1"}
+      {good: true, algorithm: "sha256"}
     ]
   },
   {
@@ -149,17 +149,17 @@ var sites = [
       {good: true, algorithm: "sha256"},
       {good: true, algorithm: "sha1", root: true}
     ]
-  },
-  {
-    name: "SHA-1 intermediate with known replacement, penflip.com",
-    domain: "penflip.com",
-    diagnosis: "bad",
-
-    cert: {good: false, algorithm: "sha1"},
-    intermediates: [
-      {good: false, algorithm: "sha1", replacement: "https://www.startssl.com/certs/class1/sha2/pem/sub.class1.server.sha2.ca.pem"}
-    ]
   }
+  // {
+  //   name: "SHA-1 intermediate with known replacement, penflip.com",
+  //   domain: "penflip.com",
+  //   diagnosis: "bad",
+
+  //   cert: {good: false, algorithm: "sha1"},
+  //   intermediates: [
+  //     {good: false, algorithm: "sha1", replacement: "https://www.startssl.com/certs/class1/sha2/pem/sub.class1.server.sha2.ca.pem"}
+  //   ]
+  // }
 ];
 
 sites.forEach(function(site) {
@@ -167,25 +167,25 @@ sites.forEach(function(site) {
     shaaaaa.from(site.domain, function(err, answer) {
       if (err) t.fail("Error checking domain: " + err);
 
-      t.equal(site.domain, answer.domain, "Domain mismatch.");
+      t.equal(answer.domain, site.domain, "Domain mismatch.");
 
-      t.equal(site.cert.algorithm, answer.cert.algorithm, "Wrong client algorithm.");
-      t.equal(site.cert.good, answer.cert.good, "Wrong client diagnosis.");
+      t.equal(answer.cert.algorithm, site.cert.algorithm, "Wrong client algorithm.");
+      t.equal(answer.cert.good, site.cert.good, "Wrong client diagnosis.");
 
       if (site.cert.root) t.ok(answer.cert.root);
 
       if (site.intermediates) {
         for (var i=0; i<answer.intermediates.length; i++) {
-          t.equal(site.intermediates[i].good, answer.intermediates[i].good, "Intermediate " + i + ": wrong diagnosis.")
-          t.equal(site.intermediates[i].algorithm, answer.intermediates[i].algorithm, "Intermediate " + i + ": wrong algorithm.")
+          t.equal(answer.intermediates[i].good, site.intermediates[i].good, "Intermediate " + i + ": wrong diagnosis.")
+          t.equal(answer.intermediates[i].algorithm, site.intermediates[i].algorithm, "Intermediate " + i + ": wrong algorithm.")
 
           if (site.intermediates[i].root) t.ok(answer.intermediates[i].root);
           if (site.intermediates[i].replacement)
-            t.equal(site.intermediates[i].replacement, answer.intermediates[i].replacement);
+            t.equal(answer.intermediates[i].replacement, site.intermediates[i].replacement);
         }
       }
 
-      t.equal(site.diagnosis, answer.diagnosis, "Wrong diagnosis: " + answer.diagnosis);
+      t.equal(answer.diagnosis, site.diagnosis, "Wrong diagnosis: " + answer.diagnosis);
 
       t.end();
     });
