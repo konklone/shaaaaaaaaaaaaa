@@ -23,7 +23,7 @@ var Shaaa = {
     Shaaa.roots = [];
 
     // store a fingerprint of each one
-    var certs = fs.readFileSync("./ca-bundle.crt", "utf-8").split("\n\n");
+    var certs = fs.readFileSync(__dirname + "/ca-bundle.crt", "utf-8").split("\n\n");
     for (var i=0; i<certs.length; i++)
       Shaaa.roots.push(x509.parseCert(certs[i]).fingerPrint);
   },
@@ -36,7 +36,7 @@ var Shaaa = {
   // fingerprints of SHA-1 intermediate certs with known SHA-2 replacements
   fingerprints: null,
   loadFingerprints: function() {
-    Shaaa.fingerprints = JSON.parse(fs.readFileSync('./fingerprints.json', 'utf-8')).certificates;
+    Shaaa.fingerprints = JSON.parse(fs.readFileSync(__dirname + '/fingerprints.json', 'utf-8')).certificates;
   },
 
   algorithms: [
@@ -107,6 +107,10 @@ var Shaaa = {
       var regex = /(\-+BEGIN CERTIFICATE\-+[\s\S]*?\-+END CERTIFICATE\-+)/g
 
       var match = regex.exec(stdout);
+      if(match == null) {
+        callback({message: "No certs returned"});
+        return;
+      }
       while (match != null) {
         certs.push(match[1]);
         match = regex.exec(stdout);
