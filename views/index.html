@@ -40,7 +40,7 @@
 <meta name="twitter:site:id" content="5232171" />
 <meta name="twitter:url" content="https://shaaaaaaaaaaaaa.com" />
 
-<meta name="og:image" content="https://konklone.com/assets/images/blog/sha-1/shaaaaa-site.png" />
+<meta name="og:image" content="https://konklone.com/assets/images/blog/sha-1/shaaaaa-site-2.png" />
 <meta name="twitter:card" content="summary_large_image" />
 
 <link rel="vcs-git" href="https://github.com/konklone/shaaaaaaaaaaaaa" title="code for shaaaaaaaaaaaaa.com" />
@@ -48,7 +48,7 @@
 <link rel="shortcut icon" href="/favicon.png" />
 <link rel="canonical" href="https://shaaaaaaaaaaaaa.com<%= req.originalUrl %>" />
 
-<link href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700|Average" rel="stylesheet" type="text/css" />
+<link href="/css/google-fonts.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" href="/css/pure-min-0.5.0.css" />
 <link rel="stylesheet" href="/css/main.css?<%= Date.now() %>" />
 
@@ -88,6 +88,8 @@
 
       <p class="details good">
         <span class="domain"></span> has a verifiable certificate chain signed with <span class="algorithm"></span><span class="extra"></span>.
+        <br/><br/>
+        If Chrome still says the site uses SHA-1, it's probably <a href="https://sslmate.com/blog/post/chrome_cached_sha1_chains">a chain caching bug on your computer</a>.
       </p>
 
       <p class="details almost">
@@ -133,7 +135,7 @@
 
   <div class="lead">
     <p>
-      SSL certificates are signed using a one-way hash &mdash; usually SHA-1.
+      HTTPS certificates are signed using a one-way hash &mdash; often SHA-1.
     </p>
 
     <p>
@@ -147,15 +149,7 @@
   </h2>
 
   <p>
-    You'll need to <a href="https://konklone.com/post/switch-to-https-now-for-free#generating-the-certificate">generate a new certificate request</a>, and get your CA to issue you a new certificate using SHA-2. Using your existing private key:
-  </p>
-
-  <p>
-    <code>openssl req -new <strong>-sha256</strong> -key your-private.key -out your-domain.csr</code>
-  </p>
-
-  <p>
-    Some CAs now default to SHA-2, some need you to "request" it, either in writing or even by signing your CSR with SHA-2. Some CAs don't support SHA-2 at all yet.
+    You'll need to get your CA to issue you a new certificate using SHA-2. Most CAs now default to SHA-2, but you may need to select an option.
   </p>
 
   <ul>
@@ -166,13 +160,10 @@
       <strong><a href="https://www.digicert.com/ssl-certificate.htm">Digicert</a></strong> issues SHA-2 certificates by default. However, if you "re-key" an existing SHA-1 certificate, you need to select SHA-2 as an "advanced option" on the certificate request page.
     </li>
     <li>
-      <strong><a href="https://www.startssl.com">StartSSL</a></strong> uses SHA-2 new certificates, as long as you <strong>use the -sha256 flag above</strong> when creating the CSR. If you need to reissue an old one, you may find <a href="https://kuix.de/blog/index.php?entry=SSL/TLS-servers,-SHA-1/SHA-256-and-StartSSL.com-certificates">Kai Engert's trick</a> of using a fake subdomain to avoid revocation fees helpful. (Requires a paid class 2 identity verification.)
-    </li>
-    <li>
       If <strong><a href="https://products.geotrust.com/orders/orderinformation/authentication.do">GeoTrust or RapidSSL</a></strong> mistakenly issue you a SHA-1 again, follow <a href="https://github.com/konklone/shaaaaaaaaaaaaa/issues/24#issuecomment-54021941">these instructions</a> to login to their portal and reissue your certificate.
     </li>
     <li>
-      <strong><a href="http://www.gandi.net/support/contact/mail/">Gandi</a></strong> now <a href="https://www.gandi.net/news/en/2014-10-21/2460-sha-2_certificates_are_now_available/">uses SHA-2</a> for certificates expiring after January 1 2017. For certificates expiring before that, you have to generate a CSR with SHA-2 (using the command above).
+      <strong><a href="http://www.gandi.net/support/contact/mail/">Gandi</a></strong> now <a href="https://www.gandi.net/news/en/2014-10-21/2460-sha-2_certificates_are_now_available/">uses SHA-2</a> for certificates expiring after January 1 2017. For certificates expiring before that, you have to generate a CSR yourself with SHA-2.
     </li>
   </ul>
 
@@ -186,7 +177,7 @@
   </h2>
 
   <p>
-    When you created your certificate chain, you included one or more <a href="http://www.whichssl.com/intermediate_certificates2.html">intermediate certificates</a> from wherever you bought your cert, which may need to be updated. Check <a class="ssllabs" href="https://www.ssllabs.com/ssltest/analyze.html">SSL Labs</a> to see if you need to update.
+    When you created your certificate chain, you included one or more <a href="http://www.whichssl.com/intermediate_certificates2.html">intermediate certificates</a> from wherever you obtained your cert, which may need to be updated. Check <a class="ssllabs" href="https://www.ssllabs.com/ssltest/analyze.html">SSL Labs</a> to see if you need to update.
   </p>
 
   <ul>
@@ -258,11 +249,12 @@
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-  ga('create', 'UA-252618-19', 'shaaaaaaaaaaaaa.com');
-  ga('send', 'pageview');
-
   // Anonymize user IPs (cut off the last triplet).
   ga('set', 'anonymizeIp', true);
+  ga('set', 'forceSSL', true);
+
+  ga('create', 'UA-252618-19', 'shaaaaaaaaaaaaa.com');
+  ga('send', 'pageview');
 </script>
 
 </body>
