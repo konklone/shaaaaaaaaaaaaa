@@ -46,30 +46,34 @@ For best results, make sure your system is using the latest version of `openssl`
 To check a domain's certificate on the command line, use this repository's command line tool:
 
 ```bash
-./bin/shaaaaaaaaaaaaa isitchristmas.com
+./bin/shaaaaaaaaaaaaa sha1-2017.badssl.com
 ```
 
 This will exit with code `0`, and output formatted JSON to STDOUT:
 
 ```json
 {
-  "domain": "isitchristmas.com",
+  "domain": "sha1-2017.badssl.com",
   "cert": {
     "algorithm": "sha1",
     "raw": "sha1WithRSAEncryption",
     "good": false,
-    "expires": "2016-04-08T11:47:28.000Z",
-    "name": "www.isitchristmas.com"
+    "root": false,
+    "expires": "2017-01-05T12:00:00.000Z",
+    "name": "*.badssl.com"
   },
   "intermediates": [
     {
-      "algorithm": "sha256",
-      "raw": "sha256WithRSAEncryption",
-      "good": true,
-      "expires": "2017-10-24T20:57:09.000Z",
-      "name": "StartCom Class 2 Primary Intermediate Server CA"
+      "algorithm": "sha1",
+      "raw": "sha1WithRSAEncryption",
+      "good": false,
+      "root": false,
+      "replacement": "http://cacerts.digicert.com/DigiCertSHA2SecureServerCA.crt",
+      "expires": "2023-03-08T12:00:00.000Z",
+      "name": "DigiCert Secure Server CA"
     }
-  ]
+  ],
+  "diagnosis": "bad"
 }
 ```
 
