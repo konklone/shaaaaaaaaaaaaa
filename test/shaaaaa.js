@@ -43,17 +43,6 @@ var sites = [
       {good: true, algorithm: "sha256"}
     ]
   },
-  // need to replace this soon
-  // {
-  //   name: "SHA-2 with bad IM, twitter.com",
-  //   domain: "twitter.com",
-  //   diagnosis: "almost",
-
-  //   cert: {good: true, algorithm: "sha256"},
-  //   intermediates: [
-  //     {good: false, algorithm: "sha1"}
-  //   ]
-  // },
   {
     name: "SHA-1 with bad IM, facebook.com",
     domain: "facebook.com",
@@ -68,11 +57,11 @@ var sites = [
   {
     name: "SHA-1 with bad IM, google.com",
     domain: "google.com",
-    diagnosis: "bad",
+    diagnosis: "good",
 
-    cert: {good: false, algorithm: "sha1"},
+    cert: {good: true, algorithm: "sha256"},
     intermediates: [
-      {good: false, algorithm: "sha1"},
+      {good: true, algorithm: "sha256"},
       {good: false, algorithm: "sha1"}
     ]
   },
@@ -90,20 +79,20 @@ var sites = [
     name: "Domain with number and SNI, teacup.p3k.io",
     domain: "teacup.p3k.io",
 
-    diagnosis: "almost",
+    diagnosis: "good",
     cert: {good: true, algorithm: "sha256"},
     intermediates: [
-      {good: false, algorithm: "sha1"}
+      {good: true, algorithm: "sha256"}
     ]
   },
   {
     name: "Domain with port, google.com:443",
     domain: "google.com:443",
 
-    diagnosis: "bad",
-    cert: {good: false, algorithm: "sha1"},
+    diagnosis: "good",
+    cert: {good: true, algorithm: "sha256"},
     intermediates: [
-      {good: false, algorithm: "sha1"},
+      {good: true, algorithm: "sha256"},
       {good: false, algorithm: "sha1"}
     ]
   },
@@ -120,22 +109,22 @@ var sites = [
   {
     name: "Internationalized Domain, domaintest.みんな",
     domain: "domaintest.xn--q9jyb4c",
-    diagnosis: "bad",
+    diagnosis: "good",
 
-    cert: {good: false, algorithm: "sha1"},
+    cert: {good: true, algorithm: "sha256"},
     intermediates: [
-      {good: false, algorithm: "sha1"},
+      {good: true, algorithm: "sha256"},
       {good: false, algorithm: "sha1"}
     ]
   },
   {
     name: "Internationalized Domain, اختبارنطاق.شبكة",
     domain: "xn--mgbaacjxy2c4fqb.xn--ngbc5azd",
-    diagnosis: "bad",
+    diagnosis: "good",
 
-    cert: {good: false, algorithm: "sha1"},
+    cert: {good: true, algorithm: "sha256"},
     intermediates: [
-      {good: false, algorithm: "sha1"},
+      {good: true, algorithm: "sha256"},
       {good: false, algorithm: "sha1"}
     ]
   },
