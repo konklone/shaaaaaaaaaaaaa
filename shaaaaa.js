@@ -13,6 +13,9 @@ var fs = require('fs'); // loads root certs
 // yorkie's fork, includes signatureAlgorithm
 var x509 = require("x509");
 
+var net = require('net');
+var forge = require('node-forge');
+
 var Shaaa = {
 
   // root cert bundle, loaded when this file is required
@@ -74,30 +77,97 @@ var Shaaa = {
   certs: function(domain, callback, options) {
     if (!options) options = {};
 
-    // This accounts for -servername/SNI, which cannot have a port
-    var server_name = domain.replace(/[^\w\.\-]+(:\d+])/, '');
+    options = { verbose: true};
 
-    // This accounts for -connect, which can have a port
-    var server_connect = domain.replace(/[^\w\.\-:]/g, '');
+    var defaultport = 443;
+    var matchport = domain.match(/:(\d+)$/);
+    var port = (matchport) ? matchport[1] : defaultport;
 
-    // If the address does not have a port defined, add default :443
-    if (server_connect.match(/:\d+^/g) === null) {
-      server_connect += ":443";
-    }
+    var certsarray = [];
 
-    // adapted from http://askubuntu.com/a/201923/3096
-    var command = "" +
-      // piping into openssl tells it not to hold an open connection
-      "echo -n" +
-      // connect to given domain on port 443
-      " | openssl s_client -connect " + server_connect +
-      // specify hostname in case server uses SNI
-      " -servername " + server_name +
-      // ask for the full cert chain
-      " -showcerts";
+    var socket = new net.Socket();
+    var client = forge.tls.createConnection({
+        server: false,
 
-    if (options.verbose || options.debug) console.log(command + "\n");
+        verify: function(connection, verified, depth, certs) {
+            if (options.verbose || options.debug) console.log('[tls] parsing a cert');
 
+            var signatureAlgorithm = forge.pki.oids[certs[0].signatureOid];
+
+            var asn1 = forge.pki.certificateToAsn1(certs[0]);
+            var der = forge.asn1.toDer(asn1);
+            var sha1 = forge.md.sha1.create();
+            var sha256 = forge.md.sha256.create();
+            sha1.update(der.bytes());
+            sha256.update(der.bytes());
+
+            var fingerprintSHA1 = sha1.digest().toHex();
+            var fingerprintSHA256 = sha256.digest().toHex();
+
+            certsarray.push({
+                signatureAlgorithm: signatureAlgorithm,
+                fingerPrint: {
+                    sha1: fingerprintSHA1,
+                    sha256: fingerprintSHA256
+                }
+            });
+            return true;
+        },
+
+        connected: function(connection) {
+            // prepare data to be sent TLS encrypted
+            if (options.verbose || options.debug) console.log('[tls] connected');
+            client.prepare('HEAD / HTTP/1.0\r\n\r\n'); // TODO: get certs without having to send this
+        },
+
+        tlsDataReady: function(connection) {
+            // send TLS encrypted data
+            var data = connection.tlsData.getBytes();
+            socket.write(data, 'binary');
+        },
+
+        dataReady: function(connection) {
+            // retrieve response from server
+            var data = connection.data.getBytes();
+            if (options.verbose || options.debug) console.log('[tls] data received: '+data);
+        },
+
+        closed: function() {
+            if (options.verbose || options.debug) console.log('[tls] disconnected');
+        },
+
+        error: function(connection, error) {
+            if (options.verbose || options.debug) console.log('[tls] error ', error);
+            callback(error);
+        }
+    });
+
+    socket.on('connect', function() {
+        if (options.verbose || options.debug) console.log('[socket] connected');
+        client.handshake();
+    });
+
+    socket.on('data', function(data) {
+        client.process(data.toString('binary'));
+    });
+
+    socket.on('end', function() {
+        if (options.verbose || options.debug) console.log('[socket] disconnected');
+
+        console.log('[certs] certsarray');
+        console.log(certsarray);
+
+        if (certsarray.length == 0) {
+            callback({message: "No certs returned"});
+            return;
+        } else
+            callback(null, certsarray);
+    });
+
+    // connect to domain.  get the certificate(s).
+    socket.connect(port, domain);
+
+/*
     exec(command, {timeout: options.timeout || 5000}, function(error, stdout, stderr) {
       if (error) return callback(error);
 
@@ -118,6 +188,8 @@ var Shaaa = {
 
       callback(null, certs);
     });
+*/
+
   },
 
   sha2URL: function(fingerprint) {
@@ -127,21 +199,27 @@ var Shaaa = {
     }
   },
 
-  cert: function(text) {
-    var cert = x509.parseCert(text);
+  cert: function(cert) {
+    // var cert = x509.parseCert(text);
     var answer = Shaaa.algorithm(cert.signatureAlgorithm);
+
+/* skip this isRoot() thing for a minute...
     var root = Shaaa.isRoot(cert);
     var replacement = (root ? null : Shaaa.sha2URL(cert.fingerPrint));
+*/
+
+    var root = null;
+    var replacement = null;
 
     return {
       algorithm: answer.algorithm,
       raw: answer.raw,
       good: (root || answer.good),
-      root: root,
-      replacement: replacement,
+//      root: root,
+//      replacement: replacement,
 
-      expires: cert.notAfter,
-      name: cert.subject.commonName
+//      expires: cert.notAfter,
+//      name: cert.subject.commonName
     };
   },
 
@@ -173,6 +251,9 @@ var Shaaa = {
       if (error) return callback(error);
 
       data.cert = Shaaa.cert(certs[0]);
+
+      console.log('data.cert');
+      console.log(data.cert);
 
       data.intermediates = [];
       certs.slice(1).forEach(function(cert) {

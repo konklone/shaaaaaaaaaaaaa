@@ -28,7 +28,9 @@
     "method-override": "*",
     "errorhandler": "*",
     "x509": "*",
-    "minimist": "*"
+    "minimist": "*",
+    "net": "*",
+    "node-forge": "*"
   },
   "keywords": [
     "sha",
