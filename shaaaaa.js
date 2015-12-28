@@ -77,118 +77,124 @@ var Shaaa = {
   certs: function(domain, callback, options) {
     if (!options) options = {};
 
-    options = { verbose: true};
-
     var defaultport = 443;
-    var matchport = domain.match(/:(\d+)$/);
-    var port = (matchport) ? matchport[1] : defaultport;
+    var matchdomain = domain.match(/^[\w\.\-\:]+$/);
+    // make sure domain looks valid, look for a port otherwise use defaultport
+    if (matchdomain) {
+      var matchport = domain.match(/([^:]+):(\d+)$/);
+      if (matchport) {
+        domain = matchport[1];
+        port = matchport[2];
+      } else {
+        port = defaultport;
+      }
+    } else {
+      callback({message: "Invalid domain"});
+      return;
+    }
 
     var certsarray = [];
 
     var socket = new net.Socket();
     var client = forge.tls.createConnection({
-        server: false,
+      server: false,
 
-        verify: function(connection, verified, depth, certs) {
-            if (options.verbose || options.debug) console.log('[tls] parsing a cert');
+      verify: function(connection, verified, depth, certs) {
+        if (options.verbose || options.debug) console.log('[tls] parsing cert at depth '+depth);
 
-            var signatureAlgorithm = forge.pki.oids[certs[0].signatureOid];
+        // pick out a few fields we want from the cert
+        var signatureAlgorithm = forge.pki.oids[certs[depth].signatureOid]; // looks up the sig in OID table
+        var commonName = certs[depth].subject.getField('CN').value;
+        var notAfter = certs[depth].validity.notAfter;
 
-            var asn1 = forge.pki.certificateToAsn1(certs[0]);
-            var der = forge.asn1.toDer(asn1);
-            var sha1 = forge.md.sha1.create();
-            var sha256 = forge.md.sha256.create();
-            sha1.update(der.bytes());
-            sha256.update(der.bytes());
+        // determine SHA1 and SHA256 fingerprints of the cert
+        var asn1 = forge.pki.certificateToAsn1(certs[depth]);
+        var der = forge.asn1.toDer(asn1);
+        var sha1 = forge.md.sha1.create();
+        var sha256 = forge.md.sha256.create();
+        sha1.update(der.bytes());
+        sha256.update(der.bytes());
 
-            var fingerprintSHA1 = sha1.digest().toHex();
-            var fingerprintSHA256 = sha256.digest().toHex();
+        var fingerprintSHA1 = sha1.digest().toHex();
+        var fingerprintSHA256 = sha256.digest().toHex();
 
-            certsarray.push({
-                signatureAlgorithm: signatureAlgorithm,
-                fingerPrint: {
-                    sha1: fingerprintSHA1,
-                    sha256: fingerprintSHA256
-                }
-            });
-            return true;
-        },
+        // push our simplified cert object into certsarray
+        certsarray.push({
+          signatureAlgorithm: signatureAlgorithm,
+          commonName: commonName,
+          notAfter: notAfter,
+          fingerPrint: {
+            sha1: fingerprintSHA1,
+            sha256: fingerprintSHA256
+          }
+        });
+        return true;
+      },
 
-        connected: function(connection) {
-            // prepare data to be sent TLS encrypted
-            if (options.verbose || options.debug) console.log('[tls] connected');
-            client.prepare('HEAD / HTTP/1.0\r\n\r\n'); // TODO: get certs without having to send this
-        },
+      connected: function(connection) {
+        // prepare data to be sent TLS encrypted
+        if (options.verbose || options.debug) console.log('[tls] connected');
+        client.prepare('HEAD / HTTP/1.0\r\n\r\n'); // TODO: can we get certs without having to send this?
+      },
 
-        tlsDataReady: function(connection) {
-            // send TLS encrypted data
-            var data = connection.tlsData.getBytes();
-            socket.write(data, 'binary');
-        },
+      tlsDataReady: function(connection) {
+        // send TLS encrypted data
+        var data = connection.tlsData.getBytes();
+        socket.write(data, 'binary');
+      },
 
-        dataReady: function(connection) {
-            // retrieve response from server
-            var data = connection.data.getBytes();
-            if (options.verbose || options.debug) console.log('[tls] data received: '+data);
-        },
+      dataReady: function(connection) {
+        // retrieve response from server
+        var data = connection.data.getBytes();
+        if (options.verbose || options.debug) console.log('[tls] data received: '+data);
+      },
 
-        closed: function() {
-            if (options.verbose || options.debug) console.log('[tls] disconnected');
-        },
+      closed: function() {
+        if (options.verbose || options.debug) console.log('[tls] disconnected');
+      },
 
-        error: function(connection, error) {
-            if (options.verbose || options.debug) console.log('[tls] error ', error);
-            callback(error);
-        }
+      error: function(connection, error) {
+        if (options.verbose || options.debug) console.log('[tls] error ', error);
+        if (error.send == true)
+          socket.destroy();
+      }
     });
 
     socket.on('connect', function() {
-        if (options.verbose || options.debug) console.log('[socket] connected');
-        client.handshake();
+      if (options.verbose || options.debug) console.log('[socket] connected');
+      client.handshake();
     });
 
     socket.on('data', function(data) {
-        client.process(data.toString('binary'));
+      client.process(data.toString('binary'));
+    });
+
+    socket.on('error', function(error) {
+      if (options.verbose || options.debug) console.log('[socket] error ', error);
+      callback({message: error});
+      return;
     });
 
     socket.on('end', function() {
-        if (options.verbose || options.debug) console.log('[socket] disconnected');
+      if (options.verbose || options.debug) console.log('[socket] disconnected');
 
-        console.log('[certs] certsarray');
-        console.log(certsarray);
-
-        if (certsarray.length == 0) {
-            callback({message: "No certs returned"});
-            return;
-        } else
-            callback(null, certsarray);
+      if (certsarray.length == 0) {
+        callback({message: "No certs returned"});
+        return;
+      } else
+        callback(null, certsarray);
     });
 
     // connect to domain.  get the certificate(s).
     socket.connect(port, domain);
 
-/*
-    exec(command, {timeout: options.timeout || 5000}, function(error, stdout, stderr) {
-      if (error) return callback(error);
-
-      // stdout is a long block of openssl output - grab the certs
-      var certs = [];
-      // using multiline workaround: http://stackoverflow.com/a/1068308/16075
-      var regex = /(\-+BEGIN CERTIFICATE\-+[\s\S]*?\-+END CERTIFICATE\-+)/g
-
-      var match = regex.exec(stdout);
-      if(match == null) {
-        callback({message: "No certs returned"});
-        return;
-      }
-      while (match != null) {
-        certs.push(match[1]);
-        match = regex.exec(stdout);
-      }
-
-      callback(null, certs);
+    // this is to catch-all for any hangs.
+    socket.setTimeout(3000, function() {
+      socket.destroy();
+      if (options.verbose || options.debug) console.log('[socket] timeout');
+      callback({message: "Could not establish any connection to "+domain});
+      return;
     });
-*/
 
   },
 
@@ -218,8 +224,8 @@ var Shaaa = {
 //      root: root,
 //      replacement: replacement,
 
-//      expires: cert.notAfter,
-//      name: cert.subject.commonName
+      expires: cert.notAfter,
+      name: cert.commonName
     };
   },
 
@@ -251,9 +257,6 @@ var Shaaa = {
       if (error) return callback(error);
 
       data.cert = Shaaa.cert(certs[0]);
-
-      console.log('data.cert');
-      console.log(data.cert);
 
       data.intermediates = [];
       certs.slice(1).forEach(function(cert) {
