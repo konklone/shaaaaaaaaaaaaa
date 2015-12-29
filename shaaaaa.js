@@ -3,15 +3,12 @@
 *
 * Checks a domain for its certificate algorithm.
 *
-* Depends on openssl installed and accessible on the PATH.
 */
 
-// used to call out to openssl
-var exec = require("child_process").exec;
 var fs = require('fs'); // loads root certs
 
 // yorkie's fork, includes signatureAlgorithm
-var x509 = require("x509");
+// var x509 = require("x509");
 
 var net = require('net');
 var forge = require('node-forge');
@@ -25,15 +22,19 @@ var Shaaa = {
   loadRoots: function() {
     Shaaa.roots = [];
 
-    // store a fingerprint of each one
+    // store a fingerprint of each one.  converted to use forge to read the Pem format.
     var certs = fs.readFileSync(__dirname + "/ca-bundle.crt", "utf-8").split("\n\n");
-    for (var i=0; i<certs.length; i++)
-      Shaaa.roots.push(x509.parseCert(certs[i]).fingerPrint);
+    for (var i=0; i<certs.length; i++) {
+      console.log('cert: '+certs[i].substring(0, 100));
+      var forgeCert = forge.pki.certificateFromPem(certs[i]);
+      console.log("PARSED!");
+      Shaaa.roots.push(Shaaa.simplifyCert(forgeCert).fingerPrint.sha1);
+    }
   },
 
-  // takes x509-parsed cert, compares fingerprint
+  // takes forge-parsed, simplified cert, compares SHA1 fingerprint
   isRoot: function(cert) {
-    return (Shaaa.roots.indexOf(cert.fingerPrint) > -1);
+    return (Shaaa.roots.indexOf(cert.fingerPrint.sha1) > -1);
   },
 
   // fingerprints of SHA-1 intermediate certs with known SHA-2 replacements
@@ -74,8 +75,56 @@ var Shaaa = {
     return {algorithm: answer, raw: raw, good: good};
   },
 
+  // sticks colons into the fingerprint and uppercases it
+  colonizeFingerPrint: function(fp) {
+    var fpWithColons = ''; var ch1 = ''; var ch2 = '';
+    for(var i = 0;i < fp.length; i += 2) {
+      ch1 = fp.charAt(i); ch2 = fp.charAt(i+1);
+      if (fpWithColons) fpWithColons += ':';
+      fpWithColons += ch1+ch2;
+    }
+    return (fpWithColons) ? fpWithColons.toUpperCase() : fp;
+  },
+
+  // takes a forge cert and returns a simple version used within the Shaaa obj
+  simplifyCert: function(fCert) {
+    // pick out a few fields important to the app
+    var signatureAlgorithm = forge.pki.oids[fCert.signatureOid]; // looks up the sig in OID table
+    var commonName = '';
+    // commonName might not exist
+    if (fCert.subject.getField('CN'))
+      commonName = fCert.subject.getField('CN').value;
+    var notAfter = fCert.validity.notAfter;
+
+    // determine SHA1 and SHA256 fingerprints
+    var asn1 = forge.pki.certificateToAsn1(fCert);
+    var der = forge.asn1.toDer(asn1);
+    var sha1 = forge.md.sha1.create();
+    var sha256 = forge.md.sha256.create();
+    sha1.update(der.bytes());
+    sha256.update(der.bytes());
+
+    // format the fingerprints
+    var fingerprintSHA1 = Shaaa.colonizeFingerPrint(sha1.digest().toHex());
+    var fingerprintSHA256 = Shaaa.colonizeFingerPrint(sha256.digest().toHex());
+
+    var simpleCert = {
+      signatureAlgorithm: signatureAlgorithm,
+      commonName: commonName,
+      notAfter: notAfter,
+      fingerPrint: {
+        sha1: fingerprintSHA1,
+        sha256: fingerprintSHA256
+      }
+    };
+
+    return simpleCert;
+  },
+
   certs: function(domain, callback, options) {
     if (!options) options = {};
+
+    options = { verbose: true };
 
     var defaultport = 443;
     var matchdomain = domain.match(/^[\w\.\-\:]+$/);
@@ -102,39 +151,16 @@ var Shaaa = {
       verify: function(connection, verified, depth, certs) {
         if (options.verbose || options.debug) console.log('[tls] parsing cert at depth '+depth);
 
-        // pick out a few fields we want from the cert
-        var signatureAlgorithm = forge.pki.oids[certs[depth].signatureOid]; // looks up the sig in OID table
-        var commonName = certs[depth].subject.getField('CN').value;
-        var notAfter = certs[depth].validity.notAfter;
-
-        // determine SHA1 and SHA256 fingerprints of the cert
-        var asn1 = forge.pki.certificateToAsn1(certs[depth]);
-        var der = forge.asn1.toDer(asn1);
-        var sha1 = forge.md.sha1.create();
-        var sha256 = forge.md.sha256.create();
-        sha1.update(der.bytes());
-        sha256.update(der.bytes());
-
-        var fingerprintSHA1 = sha1.digest().toHex();
-        var fingerprintSHA256 = sha256.digest().toHex();
-
-        // push our simplified cert object into certsarray
-        certsarray.push({
-          signatureAlgorithm: signatureAlgorithm,
-          commonName: commonName,
-          notAfter: notAfter,
-          fingerPrint: {
-            sha1: fingerprintSHA1,
-            sha256: fingerprintSHA256
-          }
-        });
+        // parse cert and push onto certsarray
+        var simpleCert = Shaaa.simplifyCert(certs[depth]);
+        certsarray.push(simpleCert);
         return true;
       },
 
       connected: function(connection) {
         // prepare data to be sent TLS encrypted
         if (options.verbose || options.debug) console.log('[tls] connected');
-        client.prepare('HEAD / HTTP/1.0\r\n\r\n'); // TODO: can we get certs without having to send this?
+        client.prepare('HEAD / HTTP/1.0\r\n\r\n'); // TODO: how do we get certs w/o doing this?
       },
 
       tlsDataReady: function(connection) {
@@ -206,13 +232,10 @@ var Shaaa = {
   },
 
   cert: function(cert) {
-    // var cert = x509.parseCert(text);
     var answer = Shaaa.algorithm(cert.signatureAlgorithm);
 
-/* skip this isRoot() thing for a minute...
-    var root = Shaaa.isRoot(cert);
-    var replacement = (root ? null : Shaaa.sha2URL(cert.fingerPrint));
-*/
+    // var root = Shaaa.isRoot(cert);
+    // var replacement = (root ? null : Shaaa.sha2URL(cert.fingerPrint.sha1));
 
     var root = null;
     var replacement = null;
@@ -289,7 +312,7 @@ var Shaaa = {
 }
 
 // load roots and fingerprints on first require
-Shaaa.loadRoots();
+// Shaaa.loadRoots();
 Shaaa.loadFingerprints();
 
 module.exports = Shaaa;
