@@ -29,8 +29,8 @@
     "errorhandler": "*",
     "x509": "*",
     "minimist": "*",
-    "net": "*",
-    "node-forge": "*"
+    "tls": "*",
+    "openssl-wrapper": "*"
   },
   "keywords": [
     "sha",

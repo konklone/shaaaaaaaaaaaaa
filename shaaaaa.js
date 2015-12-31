@@ -8,10 +8,10 @@
 var fs = require('fs'); // loads root certs
 
 // yorkie's fork, includes signatureAlgorithm
-// var x509 = require("x509");
+var x509 = require("x509");
 
-var net = require('net');
-var forge = require('node-forge');
+var tls = require('tls');
+var openssl = require('openssl-wrapper');
 
 var Shaaa = {
 
@@ -22,19 +22,15 @@ var Shaaa = {
   loadRoots: function() {
     Shaaa.roots = [];
 
-    // store a fingerprint of each one.  converted to use forge to read the Pem format.
+    // store a fingerprint of each one
     var certs = fs.readFileSync(__dirname + "/ca-bundle.crt", "utf-8").split("\n\n");
-    for (var i=0; i<certs.length; i++) {
-      console.log('cert: '+certs[i].substring(0, 100));
-      var forgeCert = forge.pki.certificateFromPem(certs[i]);
-      console.log("PARSED!");
-      Shaaa.roots.push(Shaaa.simplifyCert(forgeCert).fingerPrint.sha1);
-    }
+    for (var i=0; i<certs.length; i++)
+      Shaaa.roots.push(x509.parseCert(certs[i]).fingerPrint);
   },
 
-  // takes forge-parsed, simplified cert, compares SHA1 fingerprint
+  // takes x509-parsed cert, compares fingerprint
   isRoot: function(cert) {
-    return (Shaaa.roots.indexOf(cert.fingerPrint.sha1) > -1);
+    return (Shaaa.roots.indexOf(cert.fingerPrint) > -1);
   },
 
   // fingerprints of SHA-1 intermediate certs with known SHA-2 replacements
@@ -75,50 +71,14 @@ var Shaaa = {
     return {algorithm: answer, raw: raw, good: good};
   },
 
-  // sticks colons into the fingerprint and uppercases it
-  colonizeFingerPrint: function(fp) {
-    var fpWithColons = ''; var ch1 = ''; var ch2 = '';
-    for(var i = 0;i < fp.length; i += 2) {
-      ch1 = fp.charAt(i); ch2 = fp.charAt(i+1);
-      if (fpWithColons) fpWithColons += ':';
-      fpWithColons += ch1+ch2;
-    }
-    return (fpWithColons) ? fpWithColons.toUpperCase() : fp;
-  },
-
-  // takes a forge cert and returns a simple version used within the Shaaa obj
-  simplifyCert: function(fCert) {
-    // pick out a few fields important to the app
-    var signatureAlgorithm = forge.pki.oids[fCert.signatureOid]; // looks up the sig in OID table
-    var commonName = '';
-    // commonName might not exist
-    if (fCert.subject.getField('CN'))
-      commonName = fCert.subject.getField('CN').value;
-    var notAfter = fCert.validity.notAfter;
-
-    // determine SHA1 and SHA256 fingerprints
-    var asn1 = forge.pki.certificateToAsn1(fCert);
-    var der = forge.asn1.toDer(asn1);
-    var sha1 = forge.md.sha1.create();
-    var sha256 = forge.md.sha256.create();
-    sha1.update(der.bytes());
-    sha256.update(der.bytes());
-
-    // format the fingerprints
-    var fingerprintSHA1 = Shaaa.colonizeFingerPrint(sha1.digest().toHex());
-    var fingerprintSHA256 = Shaaa.colonizeFingerPrint(sha256.digest().toHex());
-
-    var simpleCert = {
-      signatureAlgorithm: signatureAlgorithm,
-      commonName: commonName,
-      notAfter: notAfter,
-      fingerPrint: {
-        sha1: fingerprintSHA1,
-        sha256: fingerprintSHA256
-      }
-    };
-
-    return simpleCert;
+  // using openssl to convert DER encoded cert to PEM format
+  derToPem: function(derBuffer, callback) {
+    openssl.exec('x509', derBuffer, { inform: 'der', outform: 'pem' }, function(error, pemBuffer) {
+      if (error)
+        callback(error);
+      else
+        callback(null, pemBuffer);
+    });
   },
 
   certs: function(domain, callback, options) {
@@ -142,86 +102,111 @@ var Shaaa = {
       return;
     }
 
-    var certsarray = [];
+    var peerCert = {};
 
-    var socket = new net.Socket();
-    var client = forge.tls.createConnection({
-      server: false,
+    var tlsOptions = {
+      host: domain,
+      port: port,
+      rejectUnauthorized: false
+    };
 
-      verify: function(connection, verified, depth, certs) {
-        if (options.verbose || options.debug) console.log('[tls] parsing cert at depth '+depth);
+/*
+[tlsSocket] connected
+{ subject: 
+   { C: 'US',
+     ST: 'NY',
+     L: 'Rochester',
+     O: 'Netsville, Inc.',
+     OU: 'Wildcard Division',
+     CN: '*.netsville.com' },
+  issuer: 
+   { C: 'US',
+     O: 'DigiCert Inc',
+     OU: 'www.digicert.com',
+     CN: 'DigiCert SHA2 High Assurance Server CA' },
+  subjectaltname: 'DNS:*.netsville.com, DNS:netsville.com',
+  infoAccess: 
+   { 'OCSP - URI': [ 'http://ocsp.digicert.com' ],
+     'CA Issuers - URI': [ 'http://cacerts.digicert.com/DigiCertSHA2HighAssuranceServerCA.crt' ] },
+  modulus: 'C7013C205D7..........B3C8765DE4AD9D39',
+  exponent: '10001',
+  valid_from: 'Jun 28 00:00:00 2015 GMT',
+  valid_to: 'Jul 11 12:00:00 2016 GMT',
+  fingerprint: '74:9F:95:D7:A5:4B:3B:06:59:32:2A:97:D1:A0:37:7D:93:A6:F3:02',
+  ext_key_usage: [ '1.3.6.1.5.5.7.3.1', '1.3.6.1.5.5.7.3.2' ],
+  serialNumber: '03CB385EB2961C88233799B4C7439548',
+  raw: <Buffer>,
+  issuerCertificate: 
+   { subject: 
+      { C: 'US',
+        O: 'DigiCert Inc',
+        OU: 'www.digicert.com',
+        CN: 'DigiCert SHA2 High Assurance Server CA' },
+     issuer: 
+      { C: 'US',
+        O: 'DigiCert Inc',
+        OU: 'www.digicert.com',
+        CN: 'DigiCert High Assurance EV Root CA' },
+     infoAccess: { 'OCSP - URI': [Object] },
+     modulus: 'B6E02FC22406C8..................6892532F5EE3',
+     exponent: '10001',
+     valid_from: 'Oct 22 12:00:00 2013 GMT',
+     valid_to: 'Oct 22 12:00:00 2028 GMT',
+     fingerprint: 'A0:31:C4:67:82:E6:E6:C6:62:C2:C8:7C:76:DA:9A:A6:2C:CA:BD:8E',
+     ext_key_usage: [ '1.3.6.1.5.5.7.3.1', '1.3.6.1.5.5.7.3.2' ],
+     serialNumber: '04E1E7A4DC5CF2F36DC02B42B85D159F',
+     raw: <Buffer>,
+     issuerCertificate: 
+      { subject: [Object],
+        issuer: [Object],
+        modulus: 'C6CCE573E6FBD87................5D1A500B2012CC41BB6E0B5138B84BCB',
+        exponent: '10001',
+        valid_from: 'Nov 10 00:00:00 2006 GMT',
+        valid_to: 'Nov 10 00:00:00 2031 GMT',
+        fingerprint: '5F:B7:EE:06:33:E2:59:DB:AD:0C:4C:9A:E6:D3:8F:1A:61:C7:DC:25',
+        serialNumber: '02AC5C266A0B409B8F0B79F2AE462577',
+        raw: <Buffer>,
+        issuerCertificate: [Circular] } } }
+*/
 
-        // parse cert and push onto certsarray
-        var simpleCert = Shaaa.simplifyCert(certs[depth]);
-        certsarray.push(simpleCert);
-        return true;
-      },
-
-      connected: function(connection) {
-        // prepare data to be sent TLS encrypted
-        if (options.verbose || options.debug) console.log('[tls] connected');
-        client.prepare('HEAD / HTTP/1.0\r\n\r\n'); // TODO: how do we get certs w/o doing this?
-      },
-
-      tlsDataReady: function(connection) {
-        // send TLS encrypted data
-        var data = connection.tlsData.getBytes();
-        socket.write(data, 'binary');
-      },
-
-      dataReady: function(connection) {
-        // retrieve response from server
-        var data = connection.data.getBytes();
-        if (options.verbose || options.debug) console.log('[tls] data received: '+data);
-      },
-
-      closed: function() {
-        if (options.verbose || options.debug) console.log('[tls] disconnected');
-      },
-
-      error: function(connection, error) {
-        if (options.verbose || options.debug) console.log('[tls] error ', error);
-        if (error.send == true)
-          socket.destroy();
-      }
+    var socket = tls.connect(tlsOptions, function() {
+      if (options.verbose || options.debug) console.log('[tlsSocket] connected');
+      peerCert = socket.getPeerCertificate(true);
+      socket.end();
     });
 
-    socket.on('connect', function() {
-      if (options.verbose || options.debug) console.log('[socket] connected');
-      client.handshake();
-    });
+    socket.setEncoding('utf8');
+    socket.on('end', function() {
+      if (options.verbose || options.debug) console.log('[tlsSocket] disconnected');
 
-    socket.on('data', function(data) {
-      client.process(data.toString('binary'));
+      // process peerCert and all the issuer certs inside it
+      // console.log(peerCert);
+      var certsarray = [];
+
+      Shaaa.derToPem(peerCert.raw, function(err, pem) {
+        var pemCert = x509.parseCert(pem.toString());
+        // console.log(pemCert);
+        certsarray.push(pemCert);
+        if (certsarray.length == 0)
+          callback({message: "No certs returned"});
+        else
+          callback(null, certsarray);
+      });
     });
 
     socket.on('error', function(error) {
-      if (options.verbose || options.debug) console.log('[socket] error ', error);
+      if (options.verbose || options.debug) console.log('[tlsSocket] error ', error);
       callback({message: error});
       return;
     });
 
-    socket.on('end', function() {
-      if (options.verbose || options.debug) console.log('[socket] disconnected');
-
-      if (certsarray.length == 0) {
-        callback({message: "No certs returned"});
-        return;
-      } else
-        callback(null, certsarray);
-    });
-
-    // connect to domain.  get the certificate(s).
-    socket.connect(port, domain);
-
     // this is to catch-all for any hangs.
     socket.setTimeout(3000, function() {
       socket.destroy();
-      if (options.verbose || options.debug) console.log('[socket] timeout');
-      callback({message: "Could not establish any connection to "+domain});
+      if (options.verbose || options.debug) console.log('[tlsSocket] timeout');
+      callback({message: "Could not establish a connection to "+domain});
       return;
     });
-
   },
 
   sha2URL: function(fingerprint) {
@@ -235,7 +220,7 @@ var Shaaa = {
     var answer = Shaaa.algorithm(cert.signatureAlgorithm);
 
     // var root = Shaaa.isRoot(cert);
-    // var replacement = (root ? null : Shaaa.sha2URL(cert.fingerPrint.sha1));
+    // var replacement = (root ? null : Shaaa.sha2URL(cert.fingerPrint));
 
     var root = null;
     var replacement = null;
@@ -248,7 +233,7 @@ var Shaaa = {
 //      replacement: replacement,
 
       expires: cert.notAfter,
-      name: cert.commonName
+      name: cert.subject.commonName
     };
   },
 
