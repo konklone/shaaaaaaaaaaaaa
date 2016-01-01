@@ -29,8 +29,7 @@
     "errorhandler": "*",
     "x509": "*",
     "minimist": "*",
-    "tls": "*",
-    "openssl-wrapper": "*"
+    "tls": "*"
   },
   "keywords": [
     "sha",
