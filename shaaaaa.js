@@ -155,12 +155,8 @@ var Shaaa = {
 
   cert: function(cert) {
     var answer = Shaaa.algorithm(cert.signatureAlgorithm);
-
     var root = Shaaa.isRoot(cert);
     var replacement = (root ? null : Shaaa.sha2URL(cert.fingerPrint));
-
-    var root = null;
-    var replacement = null;
 
     return {
       algorithm: answer.algorithm,
