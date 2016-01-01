@@ -81,8 +81,6 @@ var Shaaa = {
   certs: function(domain, callback, options) {
     if (!options) options = {};
 
-    options = { verbose: true };
-
     var defaultport = 443;
     var matchdomain = domain.match(/^[\w\.\-\:]+$/);
     // make sure domain looks valid, look for a port otherwise use defaultport
@@ -122,7 +120,7 @@ var Shaaa = {
       function eachDer(cert) {
         var pem = Shaaa.derToPem(cert.raw);
         certsArray.push(x509.parseCert(pem));
-        if (cert.issuerCertificate !== cert)
+        if (cert.issuerCertificate !== cert) // peerCert contains circular obj ref.  This stops us.
           eachDer(cert.issuerCertificate);
       }
       eachDer(peerCert);
