@@ -120,11 +120,13 @@ var Shaaa = {
       // Walk through peerCert object.  Grab DER-encoded certs.  Convert to PEM and push to certsArray.
       var certsArray = [];
       function eachDer(cert) {
-        var pem = Shaaa.derToPem(cert.raw);
-        if (pem) {
-          certsArray.push(x509.parseCert(pem));
-          if (cert.issuerCertificate !== cert) // peerCert contains circular obj ref.  This stops us.
-            eachDer(cert.issuerCertificate);
+        if (cert) {
+          var pem = Shaaa.derToPem(cert.raw);
+          if (pem) {
+            certsArray.push(x509.parseCert(pem));
+            if (cert.issuerCertificate !== cert) // peerCert contains circular obj ref.  This stops us.
+              eachDer(cert.issuerCertificate);
+          }
         }
       }
       eachDer(peerCert);
