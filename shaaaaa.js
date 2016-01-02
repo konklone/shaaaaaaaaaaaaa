@@ -143,9 +143,8 @@ var Shaaa = {
     // this is to catch-all for any hangs.
     socket.setTimeout(3000, function() {
       socket.destroy();
-      if (options.verbose || options.debug) console.log('[tlsSocket] timeout');
-      callback({message: "Could not establish a connection to "+domain});
-      return;
+      if (options.verbose || options.debug) console.log('[tlsSocket] timeout to '+domain);
+      // callback({message: "Could not establish a connection to "+domain});
     });
   },
 
