@@ -84,8 +84,6 @@ var Shaaa = {
   certs: function(domain, callback, options) {
     if (!options) options = {};
 
-    var options = { verbose: true };
-
     var defaultport = 443;
     var matchdomain = domain.match(/^[\w\.\-\:]+$/);
     // make sure domain looks valid, look for a port otherwise use defaultport
