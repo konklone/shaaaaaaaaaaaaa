@@ -73,13 +73,18 @@ var Shaaa = {
 
   // Convert DER certificate to PEM
   derToPem: function(derBuffer) {
-    var b64Der = derBuffer.toString('base64');
-    var b64DerLines = b64Der.match(/.{1,64}/g);
-    return "-----BEGIN CERTIFICATE-----\n" + b64DerLines.join('\n') + "\n-----END CERTIFICATE-----\n";
+    if (derBuffer) {
+      var b64Der = derBuffer.toString('base64');
+      var b64DerLines = b64Der.match(/.{1,64}/g);
+      return "-----BEGIN CERTIFICATE-----\n" + b64DerLines.join('\n') + "\n-----END CERTIFICATE-----\n";
+    }
+    return null;
   },
 
   certs: function(domain, callback, options) {
     if (!options) options = {};
+
+    var options = { verbose: true };
 
     var defaultport = 443;
     var matchdomain = domain.match(/^[\w\.\-\:]+$/);
@@ -111,17 +116,18 @@ var Shaaa = {
       socket.end();
     });
 
-    socket.setEncoding('utf8');
-    socket.on('end', function() {
+    socket.on('close', function() {
       if (options.verbose || options.debug) console.log('[tlsSocket] disconnected');
 
       // Walk through peerCert object.  Grab DER-encoded certs.  Convert to PEM and push to certsArray.
       var certsArray = [];
       function eachDer(cert) {
         var pem = Shaaa.derToPem(cert.raw);
-        certsArray.push(x509.parseCert(pem));
-        if (cert.issuerCertificate !== cert) // peerCert contains circular obj ref.  This stops us.
-          eachDer(cert.issuerCertificate);
+        if (pem) {
+          certsArray.push(x509.parseCert(pem));
+          if (cert.issuerCertificate !== cert) // peerCert contains circular obj ref.  This stops us.
+            eachDer(cert.issuerCertificate);
+        }
       }
       eachDer(peerCert);
 
@@ -133,8 +139,7 @@ var Shaaa = {
 
     socket.on('error', function(error) {
       if (options.verbose || options.debug) console.log('[tlsSocket] error ', error);
-      callback({message: error});
-      return;
+      // callback({message: error});
     });
 
     // this is to catch-all for any hangs.
