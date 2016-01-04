@@ -13,9 +13,6 @@
   They are here to be used during development and debugging,
   during which other production testing sites should be used
   if something seems to have changed, like SSL Labs.
-
-  TODO: Freeze test cases.
-  TODO: Test on Alexa top X for crashes.
 */
 
 var test = require("tape");
@@ -132,12 +129,17 @@ sites.forEach(function(site) {
 
       if (site.intermediates) {
         for (var i=0; i<answer.intermediates.length; i++) {
-          t.equal(answer.intermediates[i].good, site.intermediates[i].good, "Intermediate " + i + ": wrong diagnosis.")
-          t.equal(answer.intermediates[i].algorithm, site.intermediates[i].algorithm, "Intermediate " + i + ": wrong algorithm.")
+          if (!site.intermediates[i])
+            t.fail("More certificates returned in server chain than expected.")
 
-          if (site.intermediates[i].root) t.ok(answer.intermediates[i].root);
-          if (site.intermediates[i].replacement)
-            t.equal(answer.intermediates[i].replacement, site.intermediates[i].replacement);
+          else {
+            t.equal(answer.intermediates[i].good, site.intermediates[i].good, "Intermediate " + i + ": wrong diagnosis.")
+            t.equal(answer.intermediates[i].algorithm, site.intermediates[i].algorithm, "Intermediate " + i + ": wrong algorithm.")
+
+            if (site.intermediates[i].root) t.ok(answer.intermediates[i].root);
+            if (site.intermediates[i].replacement)
+              t.equal(answer.intermediates[i].replacement, site.intermediates[i].replacement);
+          }
         }
       }
 
