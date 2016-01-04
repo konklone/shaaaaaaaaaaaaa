@@ -6,7 +6,7 @@ This repository contains the code for **[shaaaaaaaaaaaaa.com](https://shaaaaaaaa
 
 This tool does *not* validate certificates, or test anything besides SHA-1 vs SHA-2. For that, please visit the magnificent [SSL Labs](https://www.ssllabs.com/ssltest/analyze.html) for a far more comprehensive review of your SSL configuration.
 
-Depends on `openssl` to download certificates. See below for a [command line version](#command-line-version).
+*No Longer* depends on `openssl` to download certificates. See below for a [command line version](#command-line-version).
 
 ### How do I update to SHA-2?
 
