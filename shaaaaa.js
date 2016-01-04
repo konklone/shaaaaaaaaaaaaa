@@ -104,6 +104,8 @@ var Shaaa = {
 
     var tlsOptions = {
       host: domain,
+      servername: domain,
+      ca: 'x', // prevents adding known roots to response
       port: port,
       rejectUnauthorized: false
     };
