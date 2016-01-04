@@ -104,7 +104,6 @@ var Shaaa = {
 
     var tlsOptions = {
       host: domain,
-      servername: domain,
       port: port,
       rejectUnauthorized: false
     };
