@@ -154,7 +154,7 @@
 
   <ul>
     <li>
-      <strong><a href="https://www.godaddy.com/ssl/ssl-certificates.aspx">GoDaddy</a></strong> <a href="https://github.com/konklone/shaaaaaaaaaaaaa/issues/24#issuecomment-53438159">may still issue you a SHA-1 cert</a> at first. If so, you need to <a href="http://support.godaddy.com/help/article/4976/re-keying-an-ssl-certificate?locale=en">"re-key" your certificate</a> to get one signed with SHA-2.
+      <strong><a href="https://www.godaddy.com/web-security/ssl-certificate">GoDaddy</a></strong> <a href="https://github.com/konklone/shaaaaaaaaaaaaa/issues/24#issuecomment-53438159">may still issue you a SHA-1 cert</a> at first. If so, you need to <a href="https://www.godaddy.com/help/rekey-certificate-4976">"re-key" your certificate</a> to get one signed with SHA-2.
     </li>
     <li>
       <strong><a href="https://www.digicert.com/ssl-certificate.htm">Digicert</a></strong> issues SHA-2 certificates by default. However, if you "re-key" an existing SHA-1 certificate, you need to select SHA-2 as an "advanced option" on the certificate request page.
@@ -163,7 +163,7 @@
       If <strong><a href="https://products.geotrust.com/orders/orderinformation/authentication.do">GeoTrust or RapidSSL</a></strong> mistakenly issue you a SHA-1 again, follow <a href="https://github.com/konklone/shaaaaaaaaaaaaa/issues/24#issuecomment-54021941">these instructions</a> to login to their portal and reissue your certificate.
     </li>
     <li>
-      <strong><a href="http://www.gandi.net/support/contact/mail/">Gandi</a></strong> now <a href="https://www.gandi.net/news/en/2014-10-21/2460-sha-2_certificates_are_now_available/">uses SHA-2</a> for certificates expiring after January 1 2017. For certificates expiring before that, you have to generate a CSR yourself with SHA-2.
+      <strong><a href="https://www.gandi.net/support/contact/mail/">Gandi</a></strong> now <a href="https://www.gandi.net/news/en/2014-10-21/2460-sha-2_certificates_are_now_available/">uses SHA-2</a> for certificates expiring after January 1 2017. For certificates expiring before that, you have to generate a CSR yourself with SHA-2.
     </li>
   </ul>
 
@@ -177,7 +177,7 @@
   </h2>
 
   <p>
-    When you created your certificate chain, you included one or more <a href="http://www.whichssl.com/intermediate_certificates2.html">intermediate certificates</a> from wherever you obtained your cert, which may need to be updated. Check <a class="ssllabs" href="https://www.ssllabs.com/ssltest/analyze.html">SSL Labs</a> to see if you need to update.
+    When you created your certificate chain, you included one or more <a href="http://www.whichssl.com/intermediate-certificates.html">intermediate certificates</a> from wherever you obtained your cert, which may need to be updated. Check <a class="ssllabs" href="https://www.ssllabs.com/ssltest/analyze.html">SSL Labs</a> to see if you need to update.
   </p>
 
   <ul>
@@ -192,7 +192,7 @@
     </li>
 
     <li>
-      If you're using <strong><a href="http://ssl.comodo.com/">Comodo</a></strong> (possibly through <strong><a href="https://www.namecheap.com/security/ssl-certificates/domain-validation.aspx">Namecheap</a></strong>), download the <a href="https://support.comodo.com/index.php?/Default/Knowledgebase/List/Index/106/downloads">SHA-2 intermediate</a> that corresponds to your certificate level.
+      If you're using <strong><a href="https://ssl.comodo.com/">Comodo</a></strong> (possibly through <strong><a href="https://www.namecheap.com/security/ssl-certificates/domain-validation.aspx">Namecheap</a></strong>), download the <a href="https://support.comodo.com/index.php?/Default/Knowledgebase/List/Index/106/downloads">SHA-2 intermediate</a> that corresponds to your certificate level.
     </li>
 
     <li>
@@ -200,11 +200,11 @@
     </li>
 
     <li>
-      For <strong><a href="https://www.geotrust.com/">GeoTrust</a></strong>, check out <a href="https://ssl-tools.net/certificates/nakw2x-rapidssl-sha256-ca-g3">this intermediate</a> or <a href="https://knowledge.geotrust.com/support/knowledge-base/index?page=content&id=AR1421&actp=LIST&viewlocale=en_US">dig through their list</a>. If you're using their "Geotrust True Business ID Wildcard" product, you will need to email support to get them to send you the right intermediate(!).
+      For <strong><a href="https://www.geotrust.com/">GeoTrust</a></strong>, check out <a href="https://ssl-tools.net/subjects/400b467af1e6b2d30983ba0d607e7e59374824c4">this intermediate</a> or <a href="https://knowledge.geotrust.com/support/knowledge-base/index?page=content&id=AR1421&actp=LIST&viewlocale=en_US">dig through their list</a>. If you're using their "Geotrust True Business ID Wildcard" product, you will need to email support to get them to send you the right intermediate(!).
     </li>
 
     <li>
-      If you're using <strong><a href="https://www.globalsign.com/ssl/">GlobalSign or AlphaSSL</a></strong>, get their SHA-2 <a href="https://www.globalsign.com/repository/ca-certificates/">intermediate certificates</a>.
+      If you're using <strong><a href="https://www.globalsign.com/en/ssl/">GlobalSign or AlphaSSL</a></strong>, get their SHA-2 <a href="https://support.globalsign.com/customer/portal/articles/1426602-globalsign-root-certificates">intermediate certificates</a>.
     </li>
 
     <li>
