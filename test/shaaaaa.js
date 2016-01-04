@@ -23,46 +23,23 @@ var shaaaaa = require("../shaaaaa");
 
 var sites = [
   {
-    name: "SHA-2, Comodo 3-chain, konklone.com",
-    domain: "konklone.com",
-    diagnosis: "good",
+    name: "SHA-1 leaf, sha1-2017.badssl.com",
+    domain: "sha1-2017.badssl.com",
 
-    cert: {good: true, algorithm: "sha256"},
+    diagnosis: "bad",
+    cert: {good: false, algorithm: "sha1"},
     intermediates: [
-      {good: true, algorithm: "sha384"},
-      {good: true, algorithm: "sha384"}
+      {good: false, algorithm: "sha1"}
     ]
   },
   {
-    name: "SHA-2, StartSSL 2-chain, oversight.io",
-    domain: "oversight.io",
-    diagnosis: "good",
+    name: "SHA-2, konklone.com",
+    domain: "konklone.com",
 
+    diagnosis: "good",
     cert: {good: true, algorithm: "sha256"},
     intermediates: [
       {good: true, algorithm: "sha256"}
-    ]
-  },
-  {
-    name: "SHA-1 with bad IM, facebook.com",
-    domain: "facebook.com",
-    diagnosis: "bad",
-
-    cert: {good: false, algorithm: "sha1"},
-    intermediates: [
-      {good: false, algorithm: "sha1"},
-      {good: false, algorithm: "sha1"}
-    ]
-  },
-  {
-    name: "SHA-1 with bad IM, google.com",
-    domain: "google.com",
-    diagnosis: "good",
-
-    cert: {good: true, algorithm: "sha256"},
-    intermediates: [
-      {good: true, algorithm: "sha256"},
-      {good: false, algorithm: "sha1"}
     ]
   },
   {
@@ -86,14 +63,13 @@ var sites = [
     ]
   },
   {
-    name: "Domain with port, google.com:443",
-    domain: "google.com:443",
+    name: "Domain with port, konklone.com:443",
+    domain: "konklone.com:443",
 
     diagnosis: "good",
     cert: {good: true, algorithm: "sha256"},
     intermediates: [
-      {good: true, algorithm: "sha256"},
-      {good: false, algorithm: "sha1"}
+      {good: true, algorithm: "sha256"}
     ]
   },
   {
@@ -109,8 +85,8 @@ var sites = [
   {
     name: "Internationalized Domain, domaintest.みんな",
     domain: "domaintest.xn--q9jyb4c",
-    diagnosis: "good",
 
+    diagnosis: "good",
     cert: {good: true, algorithm: "sha256"},
     intermediates: [
       {good: true, algorithm: "sha256"},
@@ -129,26 +105,17 @@ var sites = [
     ]
   },
   {
-    name: "SHA-1 root, sha1-root.jonnybarnes.uk",
-    domain: "sha1-root.jonnybarnes.uk",
+    name: "SHA-1 root, acus.gov",
+    domain: "acus.gov",
     diagnosis: "good",
 
     cert: {good: true, algorithm: "sha256"},
     intermediates: [
       {good: true, algorithm: "sha256"},
+      {good: true, algorithm: "sha256"},
       {good: true, algorithm: "sha1", root: true}
     ]
   }
-  // {
-  //   name: "SHA-1 intermediate with known replacement, penflip.com",
-  //   domain: "penflip.com",
-  //   diagnosis: "bad",
-
-  //   cert: {good: false, algorithm: "sha1"},
-  //   intermediates: [
-  //     {good: false, algorithm: "sha1", replacement: "https://www.startssl.com/certs/class1/sha2/pem/sub.class1.server.sha2.ca.pem"}
-  //   ]
-  // }
 ];
 
 sites.forEach(function(site) {
