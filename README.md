@@ -41,6 +41,14 @@ node app.js
 
 For best results, make sure your system is using the latest version of `openssl`.
 
+To run the tests:
+
+```
+npm test
+```
+
+Tests use `faucet`, which should have been installed during `npm install` above.
+
 ### Command line version
 
 To check a domain's certificate on the command line, use this repository's command line tool:
