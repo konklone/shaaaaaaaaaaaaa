@@ -1,6 +1,10 @@
 ## SHAAAAAAAAAAAAA
 
-This repository contains the code for **[shaaaaaaaaaaaaa.com](https://shaaaaaaaaaaaaa.com)**, a tool to check whether your site's certificate is signed using **SHA-1** (common, bad) or **SHA-2** (rare, good).
+**Note:** This project, and much of its documentation, was written in the fall of 2014, when SHA-1 was still very common and the transition was only beginning. **As of 2016, all CAs are required to only issue SHA-2**, so updating should be easy, and the situation is less dire.
+
+### What this repo is
+
+This repository contains the code for **[shaaaaaaaaaaaaa.com](https://shaaaaaaaaaaaaa.com)**, a tool to check whether your site's certificate is signed using **SHA-1** or **SHA-2**.
 
 **[Read more about why I built this tool](https://konklone.com/post/why-google-is-hurrying-the-web-to-kill-sha-1)** and why replacing SHA-1 is important.
 
@@ -10,7 +14,11 @@ This tool does *not* validate certificates, or test anything besides SHA-1 vs SH
 
 ### How do I update to SHA-2?
 
-Read the [instructions on shaaaaaaaaaaaaa.com](https://shaaaaaaaaaaaaa.com#sha2-certificate) for replacing your cert and any intermediates.
+Now that it's 2016: just get a new certificate. As of January 1 2016, all publicly trusted CAs are required to issue only SHA-2 certificates.
+
+To update your intermediate, check what your CA is currently offering as the default, or go through the issuance process again to see what they provide you.
+
+If you somehow get a SHA-1 certificate, or are given a SHA-1 intermediate, [open an issue](https://github.com/konklone/shaaaaaaaaaaaaa/issues/new) and the folks on this repo will be happy to badger the CA or figure out what's going on.
 
 ### How can I help?
 
