@@ -27,7 +27,7 @@ Really, just making the site better all around.
 
 ### Running the website
 
-This app requires [Node](http://nodejs.org). Then, install dependencies:
+This app requires [Node](https://nodejs.org). Then, install dependencies:
 
 ```bash
 npm install
