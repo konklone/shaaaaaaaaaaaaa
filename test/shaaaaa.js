@@ -23,7 +23,7 @@ var shaaaaa = require("../shaaaaa");
 
 var sites = [
   {
-    name: "SHA-1 leaf, sha1-2017.badssl.com",
+    name: "SHA-1 leaf (requires SNI), sha1-2017.badssl.com",
     domain: "sha1-2017.badssl.com",
 
     diagnosis: "bad",
