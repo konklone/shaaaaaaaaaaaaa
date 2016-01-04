@@ -1,6 +1,6 @@
 {
   "name": "shaaaaaaaaaaaaa",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Do you have the latest SHA???",
   "main": "app.js",
   "private": true,
@@ -28,7 +28,8 @@
     "method-override": "*",
     "errorhandler": "*",
     "x509": "*",
-    "minimist": "*"
+    "minimist": "*",
+    "tape": "*"
   },
   "keywords": [
     "sha",
