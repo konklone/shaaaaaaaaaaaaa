@@ -128,7 +128,7 @@ var Shaaa = {
           var pem = Shaaa.derToPem(peerCert.raw);
           if (pem) {
             certsArray.push(x509.parseCert(pem));
-            if (peerCert.issuerCertificate)
+            if (peerCert.issuerCertificate && (peerCert.issuerCertificate !== peerCert))
               peerCert = peerCert.issuerCertificate;
             else
               break; // no more depth levels
