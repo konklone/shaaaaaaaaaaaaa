@@ -119,19 +119,24 @@ var Shaaa = {
     socket.on('close', function() {
       if (options.verbose || options.debug) console.log('[tlsSocket] disconnected');
 
-      // Walk through peerCert object.  Grab DER-encoded certs.  Convert to PEM and push to certsArray.
+      // Walk the depth of the peerCert object.  Grab DER-encoded certs.  Convert to PEM and push to certsArray.
       var certsArray = [];
-      function eachDer(cert) {
-        if (cert) {
-          var pem = Shaaa.derToPem(cert.raw);
+      var maxdepth = 7;
+      if (peerCert) {
+        var depth = 0;
+        while (depth < maxdepth) {
+          var pem = Shaaa.derToPem(peerCert.raw);
           if (pem) {
             certsArray.push(x509.parseCert(pem));
-            if (cert.issuerCertificate !== cert) // peerCert contains circular obj ref.  This stops us.
-              eachDer(cert.issuerCertificate);
-          }
+            if (peerCert.issuerCertificate)
+              peerCert = peerCert.issuerCertificate;
+            else
+              break; // no more depth levels
+          } else
+            break; // no more certs
+          ++depth;
         }
       }
-      eachDer(peerCert);
 
       if (certsArray.length == 0)
         callback({message: "No certs returned"});
