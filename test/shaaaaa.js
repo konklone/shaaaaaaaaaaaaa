@@ -26,7 +26,8 @@ var sites = [
     diagnosis: "bad",
     cert: {good: false, algorithm: "sha1"},
     intermediates: [
-      {good: false, algorithm: "sha1"}
+      {good: false, algorithm: "sha1"},
+      {good: true, algorithm: "sha1", root: true}
     ]
   },
   {
@@ -36,17 +37,8 @@ var sites = [
     diagnosis: "good",
     cert: {good: true, algorithm: "sha256"},
     intermediates: [
-      {good: true, algorithm: "sha256"}
-    ]
-  },
-  {
-    name: "Domain with number, individual8.com",
-    domain: "individual8.com",
-
-    diagnosis: "good",
-    cert: {good: true, algorithm: "sha256"},
-    intermediates: [
-      {good: true, algorithm: "sha256"}
+      {good: true, algorithm: "sha256"},
+      {good: true, algorithm: "sha1", root: true}
     ]
   },
   {
@@ -56,7 +48,8 @@ var sites = [
     diagnosis: "good",
     cert: {good: true, algorithm: "sha256"},
     intermediates: [
-      {good: true, algorithm: "sha256"}
+      {good: true, algorithm: "sha256"},
+      {good: true, algorithm: "sha1", root: true}
     ]
   },
   {
@@ -66,17 +59,8 @@ var sites = [
     diagnosis: "good",
     cert: {good: true, algorithm: "sha256"},
     intermediates: [
-      {good: true, algorithm: "sha256"}
-    ]
-  },
-  {
-    name: "Domain with number and port, individual8.com:443",
-    domain: "individual8.com:443",
-
-    diagnosis: "good",
-    cert: {good: true, algorithm: "sha256"},
-    intermediates: [
-      {good: true, algorithm: "sha256"}
+      {good: true, algorithm: "sha256"},
+      {good: true, algorithm: "sha1", root: true}
     ]
   },
   {
