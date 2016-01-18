@@ -3,15 +3,15 @@
 *
 * Checks a domain for its certificate algorithm.
 *
-* Depends on openssl installed and accessible on the PATH.
 */
 
-// used to call out to openssl
-var exec = require("child_process").exec;
 var fs = require('fs'); // loads root certs
 
 // yorkie's fork, includes signatureAlgorithm
 var x509 = require("x509");
+
+// network cxn handled directly by tls
+var tls = require('tls');
 
 var Shaaa = {
 
@@ -71,52 +71,89 @@ var Shaaa = {
     return {algorithm: answer, raw: raw, good: good};
   },
 
+  // Convert DER certificate to PEM
+  derToPem: function(derBuffer) {
+    if (derBuffer) {
+      var b64Der = derBuffer.toString('base64');
+      var b64DerLines = b64Der.match(/.{1,64}/g);
+      return "-----BEGIN CERTIFICATE-----\n" + b64DerLines.join('\n') + "\n-----END CERTIFICATE-----\n";
+    }
+    return null;
+  },
+
   certs: function(domain, callback, options) {
     if (!options) options = {};
 
-    // This accounts for -servername/SNI, which cannot have a port
-    var server_name = domain.replace(/[^\w\.\-]+(:\d+])/, '');
-
-    // This accounts for -connect, which can have a port
-    var server_connect = domain.replace(/[^\w\.\-:]/g, '');
-
-    // If the address does not have a port defined, add default :443
-    if (server_connect.match(/:\d+^/g) === null) {
-      server_connect += ":443";
+    var defaultport = 443;
+    var matchdomain = domain.match(/^[\w\.\-\:]+$/);
+    // make sure domain looks valid, look for a port otherwise use defaultport
+    if (matchdomain) {
+      var matchport = domain.match(/([^:]+):(\d+)$/);
+      if (matchport) {
+        domain = matchport[1];
+        port = matchport[2];
+      } else {
+        port = defaultport;
+      }
+    } else {
+      callback({message: "Invalid domain"});
+      return;
     }
 
-    // adapted from http://askubuntu.com/a/201923/3096
-    var command = "" +
-      // piping into openssl tells it not to hold an open connection
-      "echo -n" +
-      // connect to given domain on port 443
-      " | openssl s_client -connect " + server_connect +
-      // specify hostname in case server uses SNI
-      " -servername " + server_name +
-      // ask for the full cert chain
-      " -showcerts";
+    var peerCert = {};
 
-    if (options.verbose || options.debug) console.log(command + "\n");
+    var tlsOptions = {
+      host: domain,
+      servername: domain,
+      ca: 'x', // prevents adding known roots to response
+      port: port,
+      rejectUnauthorized: false
+    };
 
-    exec(command, {timeout: options.timeout || 5000}, function(error, stdout, stderr) {
-      if (error) return callback(error);
+    var socket = tls.connect(tlsOptions, function() {
+      if (options.verbose || options.debug) console.log('[tlsSocket] connected');
+      peerCert = socket.getPeerCertificate(true);
+      socket.end();
+    });
 
-      // stdout is a long block of openssl output - grab the certs
-      var certs = [];
-      // using multiline workaround: http://stackoverflow.com/a/1068308/16075
-      var regex = /(\-+BEGIN CERTIFICATE\-+[\s\S]*?\-+END CERTIFICATE\-+)/g
+    socket.on('close', function() {
+      if (options.verbose || options.debug) console.log('[tlsSocket] disconnected');
 
-      var match = regex.exec(stdout);
-      if(match == null) {
+      // Walk the depth of the peerCert object.  Grab DER-encoded certs.  Convert to PEM and push to certsArray.
+      var certsArray = [];
+      var maxdepth = 7;
+      if (peerCert) {
+        var depth = 0;
+        while (depth < maxdepth) {
+          var pem = Shaaa.derToPem(peerCert.raw);
+          if (pem) {
+            certsArray.push(x509.parseCert(pem));
+            if (peerCert.issuerCertificate && (peerCert.issuerCertificate !== peerCert))
+              peerCert = peerCert.issuerCertificate;
+            else
+              break; // no more depth levels
+          } else
+            break; // no more certs
+          ++depth;
+        }
+      }
+
+      if (certsArray.length == 0)
         callback({message: "No certs returned"});
-        return;
-      }
-      while (match != null) {
-        certs.push(match[1]);
-        match = regex.exec(stdout);
-      }
+      else
+        callback(null, certsArray);
+    });
 
-      callback(null, certs);
+    socket.on('error', function(error) {
+      if (options.verbose || options.debug) console.log('[tlsSocket] error ', error);
+      // callback({message: error});
+    });
+
+    // this is to catch-all for any hangs.
+    socket.setTimeout(3000, function() {
+      socket.destroy();
+      if (options.verbose || options.debug) console.log('[tlsSocket] timeout to '+domain);
+      // callback({message: "Could not establish a connection to "+domain});
     });
   },
 
@@ -127,8 +164,7 @@ var Shaaa = {
     }
   },
 
-  cert: function(text) {
-    var cert = x509.parseCert(text);
+  cert: function(cert) {
     var answer = Shaaa.algorithm(cert.signatureAlgorithm);
     var root = Shaaa.isRoot(cert);
     var replacement = (root ? null : Shaaa.sha2URL(cert.fingerPrint));

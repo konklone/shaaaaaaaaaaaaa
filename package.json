@@ -29,7 +29,8 @@
     "errorhandler": "*",
     "x509": "*",
     "minimist": "*",
-    "faucet": "*"
+    "faucet": "*",
+    "tls": "*"
   },
   "keywords": [
     "sha",

@@ -13,9 +13,6 @@
   They are here to be used during development and debugging,
   during which other production testing sites should be used
   if something seems to have changed, like SSL Labs.
-
-  TODO: Freeze test cases.
-  TODO: Test on Alexa top X for crashes.
 */
 
 var test = require("tape");
@@ -23,13 +20,14 @@ var shaaaaa = require("../shaaaaa");
 
 var sites = [
   {
-    name: "SHA-1 leaf, sha1-2017.badssl.com",
+    name: "SHA-1 leaf (requires SNI), sha1-2017.badssl.com",
     domain: "sha1-2017.badssl.com",
 
     diagnosis: "bad",
     cert: {good: false, algorithm: "sha1"},
     intermediates: [
-      {good: false, algorithm: "sha1"}
+      {good: false, algorithm: "sha1"},
+      {good: true, algorithm: "sha1", root: true}
     ]
   },
   {
@@ -39,17 +37,8 @@ var sites = [
     diagnosis: "good",
     cert: {good: true, algorithm: "sha256"},
     intermediates: [
-      {good: true, algorithm: "sha256"}
-    ]
-  },
-  {
-    name: "Domain with number, individual8.com",
-    domain: "individual8.com",
-
-    diagnosis: "good",
-    cert: {good: true, algorithm: "sha256"},
-    intermediates: [
-      {good: true, algorithm: "sha256"}
+      {good: true, algorithm: "sha256"},
+      {good: true, algorithm: "sha1", root: true}
     ]
   },
   {
@@ -59,7 +48,8 @@ var sites = [
     diagnosis: "good",
     cert: {good: true, algorithm: "sha256"},
     intermediates: [
-      {good: true, algorithm: "sha256"}
+      {good: true, algorithm: "sha256"},
+      {good: true, algorithm: "sha1", root: true}
     ]
   },
   {
@@ -69,17 +59,8 @@ var sites = [
     diagnosis: "good",
     cert: {good: true, algorithm: "sha256"},
     intermediates: [
-      {good: true, algorithm: "sha256"}
-    ]
-  },
-  {
-    name: "Domain with number and port, individual8.com:443",
-    domain: "individual8.com:443",
-
-    diagnosis: "good",
-    cert: {good: true, algorithm: "sha256"},
-    intermediates: [
-      {good: true, algorithm: "sha256"}
+      {good: true, algorithm: "sha256"},
+      {good: true, algorithm: "sha1", root: true}
     ]
   },
   {
@@ -132,12 +113,17 @@ sites.forEach(function(site) {
 
       if (site.intermediates) {
         for (var i=0; i<answer.intermediates.length; i++) {
-          t.equal(answer.intermediates[i].good, site.intermediates[i].good, "Intermediate " + i + ": wrong diagnosis.")
-          t.equal(answer.intermediates[i].algorithm, site.intermediates[i].algorithm, "Intermediate " + i + ": wrong algorithm.")
+          if (!site.intermediates[i])
+            t.fail("More certificates returned in server chain than expected.")
 
-          if (site.intermediates[i].root) t.ok(answer.intermediates[i].root);
-          if (site.intermediates[i].replacement)
-            t.equal(answer.intermediates[i].replacement, site.intermediates[i].replacement);
+          else {
+            t.equal(answer.intermediates[i].good, site.intermediates[i].good, "Intermediate " + i + ": wrong diagnosis.")
+            t.equal(answer.intermediates[i].algorithm, site.intermediates[i].algorithm, "Intermediate " + i + ": wrong algorithm.")
+
+            if (site.intermediates[i].root) t.ok(answer.intermediates[i].root);
+            if (site.intermediates[i].replacement)
+              t.equal(answer.intermediates[i].replacement, site.intermediates[i].replacement);
+          }
         }
       }
 
