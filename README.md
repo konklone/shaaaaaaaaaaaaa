@@ -1,12 +1,16 @@
 ## SHAAAAAAAAAAAAA
 
-**Note:** This project, and much of its documentation, was written in the fall of 2014, when SHA-1 was still very common and the transition was only beginning. **As of 2016, all CAs are required to only issue SHA-2**, so updating should be easy, and the situation is less dire.
+**Note:** This project, and much of its documentation, was written in the fall of 2014, when SHA-1 was still very common and the transition was only beginning.
+
+**As of 2016, all CAs are required to only issue SHA-2**, and SHA-1 was mostly removed from modern OSes and browsers in 2017.
+
+This web service has been retired, but the code may still be useful for other purposes.
 
 ### What this repo is
 
-This repository contains the code for **[shaaaaaaaaaaaaa.com](https://shaaaaaaaaaaaaa.com)**, a tool to check whether your site's certificate is signed using **SHA-1** or **SHA-2**.
+This repository contains the code for **[shaaaaaaaaaaaaa.com](https://shaaaaaaaaaaaaa.com)**, a tool which was used to check whether your site's certificate is signed using **SHA-1** or **SHA-2**.
 
-**[Read more about why I built this tool](https://konklone.com/post/why-google-is-hurrying-the-web-to-kill-sha-1)** and why replacing SHA-1 is important.
+SHA-1 is largely gone now, and so this tool is retired. You can [read more about why I originally built this tool](https://konklone.com/post/why-google-is-hurrying-the-web-to-kill-sha-1) and why replacing SHA-1 was important.
 
 This tool does *not* validate certificates, or test anything besides SHA-1 vs SHA-2. For that, please visit the magnificent [SSL Labs](https://www.ssllabs.com/ssltest/analyze.html) for a far more comprehensive review of your SSL configuration.
 
@@ -33,9 +37,13 @@ Check out the [issue tracker](https://github.com/konklone/shaaaaaaaaaaaaa/issues
 
 Really, just making the site better all around.
 
-### Running the website
+### Running the current website
 
-This app requires [Node](https://nodejs.org). Then, install dependencies:
+The website at https://shaaaaaaaaaaaaa.com is now a static site, using a frozen snapshot of the HTML in the `snapshot/` directory. So if you want to reproduce that, for some reason, just point a web server at the static files in that directory.
+
+### Running the old website
+
+The dynamic version of the app requires [Node](https://nodejs.org). Then, install dependencies:
 
 ```bash
 npm install
