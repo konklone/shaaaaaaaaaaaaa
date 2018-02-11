@@ -1,0 +1,115 @@
+/** Main styles for shaaaaaaaaaaaaa.com. */
+
+
+/* layout */
+#main {
+  padding: 0 20px; max-width: 768px;
+  margin: 0 auto;
+}
+#results {width: 100%;}
+
+a {color: #036;}
+
+/* fonts */
+body {
+  font-family: "Open Sans", "Arial", sans-serif;
+  font-size: 11pt;
+}
+h1 {font-size: 5.1em; margin: 0;}
+p {line-height: 22px;}
+li {line-height: 23px; margin: 10px 0;}
+h2 {font-size: 1.5em;}
+header p {font-size: 11pt; line-height: 25px;}
+.lead p {font-size: 16pt; line-height: 30px;}
+#loading {font-size: 10pt;}
+
+#results .result p.bottom {font-size: 12pt;}
+
+/* spacing */
+h2 {margin-top: 30px;}
+header p {margin-top: 0;}
+.lead {margin-bottom: 30px;}
+
+/* octicon link */
+h2 {position: relative;}
+h2 a {
+  background-image: url(/link-64.png);
+  background-repeat: no-repeat;
+  position: absolute;
+
+  background-size: 16px;
+  width: 25px;
+  height: 25px;
+  margin-left: -25px;
+  margin-top: 7px;
+
+  visibility: hidden;
+}
+h2:hover a,a:hover {visibility: visible;}
+
+#loading {display: none; margin-left: 10px; }
+
+#results .result {
+  background-color: #e5e5e5;
+  padding: 10px;
+}
+#results form {margin-top: 8px;}
+#results .result.answer,
+#results .result.error,
+#results .result.answer .word {display: none;}
+#results .result.answer #sha {display: none;}
+
+#results .result .domain {font-weight: bold;}
+#results .result .algorithm {font-weight: bold;}
+
+#results strong.word {
+  display: block; font-size: 5.1em;
+  margin-bottom: 5px;
+}
+#results .result strong.good {color: #090;}
+#results .result strong.bad {color: #900;}
+#results .result strong.error {color: #000;}
+#results .result strong.almost {color: #FA9008;}
+
+#results .result p {
+  margin-left: 5px;
+  margin-top: 0; margin-bottom: 15px;
+  font-size: 14pt; line-height: 25px;
+}
+
+#results .result small {
+  margin-left: 7px;
+}
+
+#results .pure-form input#domain {
+  padding-top: 9px; padding-bottom: 9px;
+  display: inline-block;
+  width: 300px;
+  margin-bottom: 10px;
+  font-size: 2.1em;
+}
+
+input[type=submit] {
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-left: 5px;
+  font-size: 1.5em;
+  height: 51px;
+}
+
+
+p code {
+  display: block;
+  margin-top: 10px;
+  padding: 10px;
+  overflow: auto;
+  font-size: 85%;
+  line-height: 1.45;
+  background-color: #e5e5e5;
+  border-radius: 3px;
+}
+
+/*
+.result ul {padding-left: 0; margin-left: 7px;}
+.result ul, .result li {list-style-type: none;}
+*/
