@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>
+  SHAAAAAAAAAAAAA | Check your site for weak SHA-1 certificates.
+</title>
+<meta name="og:title" content="SHAAAAAAAAAAAAA | Check your site for weak SHA-1 certificates.">
+<meta name="description" content="(Retired.) Check a site to see if it&#39;s still using dangerously weak SHA-1 certificates. Open source tool by @konklone.">
+<meta name="og:description" content="(Retired.) Check a site to see if it&#39;s still using dangerously weak SHA-1 certificates. Open source tool by @konklone.">
+
+
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta property="og:site_name" content="SHAAAAAAAAAAAAA.com">
+
+
+<meta name="author" content="Eric Mill">
+
+<meta name="twitter:creator" content="@konklone">
+<meta name="twitter:creator:id" content="5232171">
+<meta name="twitter:site" content="@konklone">
+<meta name="twitter:site:id" content="5232171">
+<meta name="twitter:url" content="https://shaaaaaaaaaaaaa.com">
+
+<meta name="og:image" content="https://konklone.com/assets/images/blog/sha-1/shaaaaa-site-2.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="vcs-git" href="https://github.com/konklone/shaaaaaaaaaaaaa" title="code for shaaaaaaaaaaaaa.com">
+
+<link rel="shortcut icon" href="https://shaaaaaaaaaaaaa.com/favicon.png">
+<link rel="canonical" href="https://shaaaaaaaaaaaaa.com/">
+
+<link href="./index_files/google-fonts.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="./index_files/pure-min-0.5.0.css">
+<link rel="stylesheet" href="./index_files/main.css">
+
+<script async="" src="./index_files/analytics.js"></script><script src="./index_files/jquery-2.1.1.min.js"></script>
+
+</head>
+<body>
+
+<div id="main">
+
+  <h1>SHAAAAAAAAAAAAA</h1>
+
+  <header>
+    <p>
+      Check your site for weak SHA-1 certificates. <a href="https://github.com/konklone/shaaaaaaaaaaaaa">Open source</a>, by <a href="https://twitter.com/konklone">@konklone</a>.
+    </p>
+  </header>
+<!--
+  <div id="results">
+    <div class="result form">
+      <form action="#" class="pure-form" method="get">
+        <input pattern="[\w\.\-:]+" id="domain" name="domain" placeholder="yourdomain.com" autofocus="">
+        <input type="submit" class="pure-button pure-button-primary" value="Go">
+
+        <span class="inline-block" id="loading">
+          If it hangs, <a href="#" class="start-over">start over</a>.
+        </span>
+
+      </form>
+    </div>
+
+    <div class="result answer">
+
+      <strong class="word good">Nice.</strong>
+      <strong class="word almost">Almost.</strong>
+      <strong class="word bad">Dang.</strong>
+
+      <p class="details good">
+        <span class="domain"></span> has a certificate chain signed with <span class="algorithm"></span><span class="extra"></span>.
+        <br><br>
+        If Chrome still says the site uses SHA-1, it's probably <a href="https://sslmate.com/blog/post/chrome_cached_sha1_chains">a chain caching bug on your computer</a>.
+      </p>
+
+      <p class="details almost">
+        <span class="domain"></span> has a <span class="algorithm"></span> certificate, but needs to <a href="#sha2-intermediate">update its intermediates</a><span class="extra"></span>.
+      </p>
+
+      <p class="details bad">
+        <span class="domain"></span> is using <span class="algorithm"></span><span class="extra"></span>.
+      </p>
+
+      <p>
+        See the details at <a class="ssllabs" href="#">SSL Labs</a>, or <a href="#" class="start-over">start over</a>.
+      </p>
+    </div>
+
+    <div class="result error">
+      <strong class="word error">Argh.</strong>
+
+      <p class="error">
+        There was an error checking <span class="domain"></span>. Check the developer console for details.
+      </p>
+
+      <p>
+        <a href="#" class="start-over">Start over.</a>
+      </p>
+    </div>
+  </div>
+-->
+
+  <div class="lead">
+    <p>
+      From late 2014 through the full retirement of SHA-1 at the end of 2016, this site provided a web-based tool to check if a web service's certificate was using the <a href="https://konklone.com/post/why-google-is-hurrying-the-web-to-kill-sha-1">dangerously outdated</a> SHA-1 signature algorithm.
+    </p>
+
+    <p>
+      Since SHA-1 is largely gone from the ecosystem, <strong>this tool has been disabled</strong>, but its code remains <strong><a href="https://github.com/konklone/shaaaaaaaaaaaaa">open source</a></strong>.
+    </p>
+    <p>
+      This also includes a <strong><a href="https://github.com/konklone/shaaaaaaaaaaaaa#command-line-version">command line tool</a></strong>, which could easily be modified to support detection of other signature types.
+    </p>
+  </div>
+
+  <p>
+    <strong>Background</strong>: As of January 1, 2016, no publicly trusted CA is allowed to issue a SHA-1 certificate. In addition, SHA-1 support was removed by most modern browsers and operating systems in early 2017. Any new certificate you get should automatically use a SHA-2 algorithm for its signature.
+  </p>
+
+  <p>
+    Legacy clients will continue to accept SHA-1 certificates, and it is possible to have requested a certificate on December 31, 2015 that is valid for 39 months. So, it is possible to see SHA-1 certificates in the wild that expire in early 2019.
+  </p>
+
+  <p>
+    The author "looks forward" to reviving this tool when SHA-2 is demonstrated to be weak, and the ecosystem begins moving towards SHA-3 or another suitable replacement.
+  </p>
+
+  <h2>
+    <a name="credits" href="#credits"></a>
+    Credits
+  </h2>
+
+  <p>
+    Thanks to <a href="https://twitter.com/mathias">Mathias Bynens</a>, <a href="https://twitter.com/jmayer">Justin Mayer</a>, and <a href="https://twitter.com/jonnybarnes">Jonny Barnes</a> for inspiration and assistance.
+  </p>
+
+</div>
+
+<script src="./index_files/main.js"></script>
+<script>
+
+  var domain = null;
+
+
+  $(function() {
+    if (domain) {
+      $("#domain").val(domain);
+      checkDomain(domain);
+    }
+  });
+</script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  // Anonymize user IPs (cut off the last triplet).
+  ga('set', 'anonymizeIp', true);
+  ga('set', 'forceSSL', true);
+
+  ga('create', 'UA-252618-19', 'shaaaaaaaaaaaaa.com');
+  ga('send', 'pageview');
+</script>
+
+
+
+</body></html>
